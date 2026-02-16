@@ -1,0 +1,101 @@
+{
+  "homepage": {
+    "welcomeText": "Welcome to the digital gallery of Michel Balasis. Original pop art paintings created in Chicago USA. Each piece is hand painted in acrylic on canvas.\n\nContact Michel about availability and purchase.",
+    "contact": {
+      "phone": "(312) 405-4595",
+      "email": "mbpopart@gmail.com"
+    },
+    "exhibiting": [
+      "KE Salon | 2211 W Montrose | Chicago, IL",
+      "Liquor Park | 1937 W North Ave | Chicago, IL",
+      "Taquizo | 1835 N North Ave | Chicago, IL",
+      "Exhibit Closed | Due to Covid-19 | New Exhibit soon",
+      "Exhibit Closed | Due to Covid-19 | New Exhibit soon",
+      "Exhibit Closed | Due to Covid-19 | New Exhibit soon",
+      "Exhibit Closed | Due to Covid-19 | New Exhibit soon",
+      "Exhibit Closed | Due to Covid-19 | New Exhibit soon"
+    ]
+  },
+  "bio": {
+    "bioText": "Born in France and raised by Greek parents in Michigan, Michel Balasis is a Pop Artist with a modern edge who draws from a wide range of life experiences. His bold graphic imagery is derived from a childhood addiction to comic books and cartoons. The resulting style is reminiscent of comic Pop Art of the 60's and 70's.\n\nMichel is a graduate of Michigan State University where he earned his MFA in Design. He also played football for the Spartans as an undergrad. He is the owner of Pop Chicago Gallery in Wicker Park, where he shows his own paintings and represents several other prominent Pop Artists.\n\nMichel proudly recalls a chance meeting with Roy Lichtenstein in New York circa 1997, where he nervously showed slides of his paintings to his mentor. Michel's concern was that his painting style too closely mimicked that of Mr. Lichtenstein, but to his pleasant surprise the Comic Pop Art master gave him the green light, commenting, \"This is clever, you seem to have found something here, I'd go with it\".",
+    "contact": {
+      "phone": "(312) 405-4595",
+      "email": "mbpopart@gmail.com"
+    }
+  },
+  "venues": [
+    {
+      "name": "Pop Chicago Gallery",
+      "address": "Chicago, IL",
+      "phone": "(312) 405-4595",
+      "email": null,
+      "website": "http://www.popchicagogallery.com/",
+      "imageUrl": "https://mbpopart.com/assets/Venue%20Photos/pop205.jpg"
+    },
+    {
+      "name": "Pop Gallery Santa Fe",
+      "address": "142 Lincoln Ave. Suite 102, Santa Fe, NM, 87501",
+      "phone": "(505) 820-0788",
+      "email": null,
+      "website": "http://www.popsantafe.com/",
+      "imageUrl": "https://mbpopart.com/assets/Venue%20Photos/popsantafe.gif"
+    },
+    {
+      "name": "694 Wine & Spirits",
+      "address": "694 N Milwaukee Ave, Chicago, IL, 60622",
+      "phone": "(312) 492-6620",
+      "email": null,
+      "website": "http://www.694wineandspirits.com/",
+      "imageUrl": "https://mbpopart.com/assets/Venue%20Photos/juicy.gif"
+    },
+    {
+      "name": "Life's a Cabernet",
+      "address": "1937 W North Ave, Chicago, IL, 60622",
+      "phone": null,
+      "email": null,
+      "website": "http://lifesacabernet.net/",
+      "imageUrl": "https://mbpopart.com/assets/Venue%20Photos/lifes.gif"
+    },
+    {
+      "name": "KE Salon",
+      "address": "2211 W Montrose, Chicago, IL, 60618",
+      "phone": "(773) 588-5332",
+      "email": null,
+      "website": "http://www.kesalonchicago.com/",
+      "imageUrl": "https://mbpopart.com/assets/Venue%20Photos/kesalon.gif"
+    },
+    {
+      "name": "Caffe Baci",
+      "address": "225 W Wacker, Chicago, IL, 60606",
+      "phone": "(312) 251-0135",
+      "email": null,
+      "website": "http://www.caffebaci.com/",
+      "imageUrl": "https://mbpopart.com/assets/Venue%20Photos/window.jpg"
+    },
+    {
+      "name": "Las Palmas",
+      "address": "1835 W North Ave, Chicago, IL, 60622",
+      "phone": "(773) 289-4991",
+      "email": null,
+      "website": "http://laspalmaschicago.com/",
+      "imageUrl": "https://mbpopart.com/assets/Venue%20Photos/laspalmas.gif"
+    },
+    {
+      "name": "Utopic",
+      "address": "420 N Wabash, Chicago, IL, 60611",
+      "phone": null,
+      "email": "artviewing@utopic.net",
+      "website": "http://www.utopicgallery.com/",
+      "imageUrl": "https://mbpopart.com/assets/Venue%20Photos/utopic.gif"
+    },
+    {
+      "name": "Steven Amedee Gallery",
+      "address": "41 N Moore Street, New York, NY, 60611",
+      "phone": "(212) 343-1696",
+      "email": null,
+      "website": null,
+      "imageUrl": "https://mbpopart.com/assets/Venue%20Photos/amadee.gif"
+    }
+  ],
+  "scrapedAt": "2026-02-14T21:20:17.235Z"
+}
