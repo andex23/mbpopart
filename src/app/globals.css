@@ -341,7 +341,7 @@ a:hover {
 .legacy-bubble {
   position: relative;
   background: linear-gradient(180deg, #f7f7f4, #f2f2ee);
-  border: 4px solid var(--bubble-border);
+  border: 3px solid var(--bubble-border);
   border-radius: 24px;
   padding: 16px 12px 14px;
   box-shadow: var(--shadow-strong), 0 12px 24px rgba(5, 13, 26, 0.12);
@@ -360,11 +360,11 @@ a:hover {
 .legacy-bubble::after {
   content: "";
   position: absolute;
-  left: 94px;
-  bottom: -27px;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-top: 27px solid #f2f2ee;
+  left: 92px;
+  bottom: -31px;
+  border-left: 22px solid transparent;
+  border-right: 22px solid transparent;
+  border-top: 31px solid #f2f2ee;
 }
 
 .legacy-home-hero {
@@ -932,12 +932,12 @@ a:hover {
   }
 
   .legacy-bubble::after {
-    left: 56px;
+    left: 54px;
     transform: none;
-    border-left-width: 13px;
-    border-right-width: 13px;
-    border-top-width: 14px;
-    bottom: -13px;
+    border-left-width: 14px;
+    border-right-width: 14px;
+    border-top-width: 15px;
+    bottom: -15px;
   }
 }
 
@@ -959,7 +959,7 @@ a:hover {
   }
 
   .legacy-bubble::after {
-    left: 48px;
+    left: 46px;
   }
 
   .legacy-heading {
@@ -991,7 +991,7 @@ a:hover {
   }
 
   .legacy-home-hero-image {
-    object-fit: contain;
+    object-fit: cover;
   }
 
   .legacy-home-right,
