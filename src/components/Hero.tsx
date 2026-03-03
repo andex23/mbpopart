@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Button from '@/components/Button';
 import { AnimatedSection } from '@/components/AnimatedSection';
 import { getFeaturedWorks } from '@/data/artworks';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 export default function Hero() {
   const featured = getFeaturedWorks();
@@ -16,7 +17,7 @@ export default function Hero() {
       {heroImage && (
         <div className="absolute inset-0">
           <Image
-            src={heroImage.imageUrl}
+            src={resolveLegacyImageUrl(heroImage.imageUrl)}
             alt={heroImage.paintingName}
             fill
             className="object-cover"

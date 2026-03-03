@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 interface FooterProps {
   contactEmail: string;
@@ -19,7 +20,7 @@ export default function Footer({
     <footer className="site-footer">
       <div className="site-footer-inner">
         <Image
-          src={footerPortraitUrl}
+          src={resolveLegacyImageUrl(footerPortraitUrl)}
           alt="Michel icon"
           width={128}
           height={128}

@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import PortableTextContent from '@/components/PortableTextContent';
 import { getLandingPageContent, getSiteSettingsContent } from '@/lib/cms-content';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 export default async function Home() {
   const [landingContent, siteSettings] = await Promise.all([
@@ -22,7 +23,7 @@ export default async function Home() {
         <div className="legacy-home-content-shell">
           <div className="legacy-home-hero">
             <Image
-              src={heroImage.imageUrl}
+              src={resolveLegacyImageUrl(heroImage.imageUrl)}
               alt={heroImage.alt}
               fill
               className="legacy-home-hero-image"

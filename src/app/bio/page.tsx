@@ -4,6 +4,7 @@ import LegacySplitLayout from '@/components/LegacySplitLayout';
 import LegacyThumbGallery from '@/components/LegacyThumbGallery';
 import PortableTextContent from '@/components/PortableTextContent';
 import { getBioPageContent, getSiteSettingsContent } from '@/lib/cms-content';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 export default async function BioPage() {
   const [bioPage, siteSettings] = await Promise.all([
@@ -53,7 +54,7 @@ export default async function BioPage() {
         titleAside={(
           <div className="bio-title-portrait">
             <Image
-              src={bioPage.portraitImageUrl || '/assets/mbface.png'}
+              src={resolveLegacyImageUrl(bioPage.portraitImageUrl || '/assets/mbface.png')}
               alt="Michel Balasis portrait"
               fill
               className="object-cover"

@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import type { LegacyThumbItem } from '@/lib/content.types';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 interface LegacyThumbCardProps {
   item: LegacyThumbItem;
@@ -17,6 +18,8 @@ export default function LegacyThumbCard({
 }: LegacyThumbCardProps) {
   const previewSrc = item.thumbUrl || item.imageUrl || '/placeholders/new-painting-coming-soon.svg';
   const fullSrc = item.imageUrl || previewSrc;
+  const resolvedPreviewSrc = resolveLegacyImageUrl(previewSrc);
+  const resolvedFullSrc = resolveLegacyImageUrl(fullSrc);
   const caption = item.caption?.trim() || 'Untitled';
 
   return (
@@ -25,7 +28,7 @@ export default function LegacyThumbCard({
         <button type="button" onClick={onOpen} className="legacy-thumb-trigger" aria-label={`Open ${caption}`}>
           <div className="legacy-thumb-media" style={{ aspectRatio: mediaAspect }}>
             <Image
-              src={previewSrc}
+              src={resolvedPreviewSrc}
               alt={caption}
               fill
               className="legacy-thumb-image"
@@ -36,10 +39,10 @@ export default function LegacyThumbCard({
           </div>
         </button>
       ) : (
-        <a href={fullSrc} target="_blank" rel="noopener noreferrer" className="legacy-thumb-link">
+        <a href={resolvedFullSrc} target="_blank" rel="noopener noreferrer" className="legacy-thumb-link">
           <div className="legacy-thumb-media" style={{ aspectRatio: mediaAspect }}>
             <Image
-              src={previewSrc}
+              src={resolvedPreviewSrc}
               alt={caption}
               fill
               className="legacy-thumb-image"

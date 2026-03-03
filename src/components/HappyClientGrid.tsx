@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { HappyClientPhotoView, LegacyThumbItem } from '@/lib/content.types';
 import LegacyThumbViewer from '@/components/LegacyThumbViewer';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 interface HappyClientGridProps {
   clients: HappyClientPhotoView[];
@@ -36,15 +37,15 @@ export default function HappyClientGrid({ clients }: HappyClientGridProps) {
     () =>
       realClients
         .map((c) => ({
-          imageUrl: c.image,
-          thumbUrl: c.thumb,
+          imageUrl: resolveLegacyImageUrl(c.image),
+          thumbUrl: resolveLegacyImageUrl(c.thumb),
           caption: c.caption ?? '',
         })),
     [realClients],
   );
 
   function openViewer(client: HappyClientPhotoView) {
-    const idx = viewerItems.findIndex((v) => v.imageUrl === client.image);
+    const idx = viewerItems.findIndex((v) => v.imageUrl === resolveLegacyImageUrl(client.image));
     if (idx !== -1) {
       setViewerIndex(idx);
       setViewerOpen(true);
@@ -72,7 +73,7 @@ export default function HappyClientGrid({ clients }: HappyClientGridProps) {
               >
                 <div className="happy-cell-media">
                   <Image
-                    src={client.image}
+                    src={resolveLegacyImageUrl(client.image)}
                     alt={client.caption ?? 'Happy client with painting'}
                     fill
                     className="happy-cell-image"

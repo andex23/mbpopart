@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 interface MichelTalkBubbleProps {
   quote: string;
@@ -18,7 +19,7 @@ export default function MichelTalkBubble({
         <div className="michel-avatar-frame">
           <div className="relative aspect-square">
             <Image
-              src="https://mbpopart.com/assets/BioPhotos/Prof-Balasis.gif"
+              src={resolveLegacyImageUrl('https://mbpopart.com/assets/BioPhotos/Prof-Balasis.gif')}
               alt="Michel Balasis"
               fill
               className="object-cover"

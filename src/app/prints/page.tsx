@@ -4,6 +4,7 @@ import LegacySplitLayout from '@/components/LegacySplitLayout';
 import LegacyThumbGallery from '@/components/LegacyThumbGallery';
 import PortableTextContent from '@/components/PortableTextContent';
 import { getPrintsPageContent, getSiteSettingsContent } from '@/lib/cms-content';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 export default async function PrintsPage() {
   const [printsPage, siteSettings] = await Promise.all([
@@ -17,7 +18,7 @@ export default async function PrintsPage() {
       {printsPage.shipBoxImageUrl ? (
         <div className="legacy-print-box relative w-full max-w-[283px] aspect-[283/350] border border-[var(--box-border)] bg-white p-1">
           <Image
-            src={printsPage.shipBoxImageUrl}
+            src={resolveLegacyImageUrl(printsPage.shipBoxImageUrl)}
             alt={printsPage.shipBoxImageAlt}
             fill
             className="object-cover"

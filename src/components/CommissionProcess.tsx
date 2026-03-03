@@ -4,6 +4,7 @@ import React from 'react';
 import { useMemo, useState } from 'react';
 import type { CommissionProcessStepView, LegacyThumbItem } from '@/lib/content.types';
 import LegacyThumbViewer from '@/components/LegacyThumbViewer';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 interface CommissionProcessProps {
   title?: string;
@@ -98,7 +99,7 @@ export default function CommissionProcess({
                       >
                         <div className="process-step-media">
                           <img
-                            src={src}
+                            src={resolveLegacyImageUrl(src)}
                             alt={step.label}
                             className="process-step-img"
                           />

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { AnimatedSection } from '@/components/AnimatedSection';
 import { getAllYearGroups } from '@/data/artworks';
 import type { YearGroup } from '@/data/artworks';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 export default function GalleryEntryPoints() {
   const yearGroups = getAllYearGroups();
@@ -58,7 +59,7 @@ export default function GalleryEntryPoints() {
                 className="group relative aspect-square rounded-xl overflow-hidden"
               >
                 <Image
-                  src={work.thumbnailUrl || work.imageUrl}
+                  src={resolveLegacyImageUrl(work.thumbnailUrl || work.imageUrl)}
                   alt={work.paintingName}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"

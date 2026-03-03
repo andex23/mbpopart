@@ -3,6 +3,7 @@ import Image from 'next/image';
 import LegacySplitLayout from '@/components/LegacySplitLayout';
 import PortableTextContent from '@/components/PortableTextContent';
 import { getSiteSettingsContent, getVenuesPageContent } from '@/lib/cms-content';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 export default async function VenuesPage() {
   const [venuesPage, siteSettings] = await Promise.all([
@@ -33,7 +34,7 @@ export default async function VenuesPage() {
           {venue.imageUrl ? (
             <div className="relative w-[120px] h-[120px] flex-shrink-0 border border-[var(--box-border)] bg-white">
               <Image
-                src={venue.imageUrl}
+                src={resolveLegacyImageUrl(venue.imageUrl)}
                 alt={venue.name}
                 fill
                 className="object-cover"

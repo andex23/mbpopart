@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import { normalizeRangeFilterKey, YEAR_RANGE_FILTERS } from '@/data/artworks';
 import type { NavigationViewItem } from '@/lib/content.types';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 interface NavigationProps {
   items: NavigationViewItem[];
@@ -85,7 +86,7 @@ export default function Navigation({ items }: NavigationProps) {
         <div className="site-header-inner">
           <Link href="/" className="site-logo" aria-label="MB Pop Art Home">
             <Image
-              src="https://mbpopart.com/assets/mbpopart-small.png"
+              src={resolveLegacyImageUrl('https://mbpopart.com/assets/mbpopart-small.png')}
               alt="MB Pop Art"
               width={280}
               height={62}

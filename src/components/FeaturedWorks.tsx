@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { AnimatedSection } from '@/components/AnimatedSection';
 import { getFeaturedWorks } from '@/data/artworks';
 import type { Artwork } from '@/data/artworks';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 function ArtworkPreviewCard({ work, index }: { work: Artwork; index: number }) {
   return (
@@ -13,7 +14,7 @@ function ArtworkPreviewCard({ work, index }: { work: Artwork; index: number }) {
       <div className="card-premium group cursor-pointer overflow-hidden">
         <div className="img-zoom-container aspect-[3/4] relative">
           <Image
-            src={work.thumbnailUrl || work.imageUrl}
+            src={resolveLegacyImageUrl(work.thumbnailUrl || work.imageUrl)}
             alt={work.paintingName}
             fill
             className="img-zoom object-cover"

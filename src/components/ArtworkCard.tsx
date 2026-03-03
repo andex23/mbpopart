@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { getArtworkDisplayTitle, getArtworkYearValue } from '@/data/artworks';
 import type { Artwork } from '@/data/artworks';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 interface ArtworkCardProps {
   work: Artwork;
@@ -13,6 +14,7 @@ interface ArtworkCardProps {
 
 export default function ArtworkCard({ work, onClick, priority = false }: ArtworkCardProps) {
   const previewSrc = work.thumbnailUrl || work.imageUrl;
+  const resolvedPreviewSrc = resolveLegacyImageUrl(previewSrc);
   const title = getArtworkDisplayTitle(work);
   const copyrightYear = work.copyrightYear ?? getArtworkYearValue(work);
   const metaParts = [
@@ -28,7 +30,7 @@ export default function ArtworkCard({ work, onClick, priority = false }: Artwork
     >
       <div className="img-zoom-container">
         <Image
-          src={previewSrc}
+          src={resolvedPreviewSrc}
           alt={title}
           fill
           className="img-zoom object-cover"

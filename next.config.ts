@@ -7,10 +7,20 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    localPatterns: [
+      {
+        pathname: "/api/legacy-image",
+      },
+    ],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "mbpopart.com",
+        pathname: "/assets/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.mbpopart.com",
         pathname: "/assets/**",
       },
     ],

@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import type { LegacyThumbItem } from '@/lib/content.types';
+import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 interface LegacyThumbViewerProps {
   items: LegacyThumbItem[];
@@ -89,7 +90,7 @@ export default function LegacyThumbViewer({
 
         <div className="legacy-lightbox-image-wrap">
           <img
-            src={item.imageUrl}
+            src={resolveLegacyImageUrl(item.imageUrl)}
             alt={item.caption}
             className="legacy-lightbox-image"
           />
