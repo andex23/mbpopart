@@ -4,7 +4,6 @@ import React from 'react';
 import { AnimatedSection } from '@/components/AnimatedSection';
 import { siteContent } from '@/data/artworks';
 import { MapPin, Phone, ExternalLink } from 'lucide-react';
-import Link from 'next/link';
 
 export default function VenuesSection() {
   const venues = siteContent.venues.slice(0, 6);
@@ -62,16 +61,6 @@ export default function VenuesSection() {
           ))}
         </div>
 
-        <AnimatedSection animation="fade-in-up" delay={180}>
-          <div className="mt-8 text-center">
-            <Link
-              href="/venues"
-              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--accent)] hover:underline"
-            >
-              View all venues &rarr;
-            </Link>
-          </div>
-        </AnimatedSection>
       </div>
     </section>
   );

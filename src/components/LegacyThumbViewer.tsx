@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useCallback, useEffect } from 'react';
-import Image from 'next/image';
-import { X } from 'lucide-react';
-import type { LegacyThumbItem } from '@/data/legacy-content';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import type { LegacyThumbItem } from '@/lib/content.types';
 
 interface LegacyThumbViewerProps {
   items: LegacyThumbItem[];
@@ -62,21 +61,40 @@ export default function LegacyThumbViewer({
       <button className="legacy-lightbox-backdrop" aria-label="Close preview" onClick={onClose} />
 
       <div className="legacy-lightbox-panel">
+        {currentIndex > 0 ? (
+          <button
+            type="button"
+            className="legacy-lightbox-nav legacy-lightbox-nav-prev"
+            onClick={goPrev}
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+        ) : null}
+
+        {currentIndex < items.length - 1 ? (
+          <button
+            type="button"
+            className="legacy-lightbox-nav legacy-lightbox-nav-next"
+            onClick={goNext}
+            aria-label="Next image"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        ) : null}
+
         <button type="button" className="legacy-lightbox-close" onClick={onClose} aria-label="Close preview">
           <X className="w-5 h-5" />
         </button>
 
         <div className="legacy-lightbox-image-wrap">
-          <Image
+          <img
             src={item.imageUrl}
             alt={item.caption}
-            fill
             className="legacy-lightbox-image"
-            sizes="100vw"
-            priority
-            unoptimized
           />
         </div>
+        {item.caption ? <div className="legacy-lightbox-caption">{item.caption}</div> : null}
       </div>
     </div>
   );

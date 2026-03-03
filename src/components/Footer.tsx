@@ -1,26 +1,44 @@
 import React from 'react';
 import Image from 'next/image';
-import { siteContent } from '@/data/artworks';
 
-export default function Footer() {
-  const { contact } = siteContent.bio;
+interface FooterProps {
+  contactEmail: string;
+  contactPhone: string;
+  footerText: string;
+  footerPortraitUrl?: string;
+}
+
+export default function Footer({
+  contactEmail,
+  contactPhone,
+  footerText,
+  footerPortraitUrl = '/assets/mbface.png',
+}: FooterProps) {
 
   return (
     <footer className="site-footer">
       <div className="site-footer-inner">
         <Image
-          src="https://mbpopart.com/assets/mbface.png"
+          src={footerPortraitUrl}
           alt="Michel icon"
           width={128}
           height={128}
           className="site-footer-face"
           unoptimized
         />
-        <p className="site-footer-line">
-          <span className="site-footer-label">Contact Michel:</span> Phone {contact.phone} Email:{' '}
-          <a href={`mailto:${contact.email}`}>{contact.email}</a>
-          <span className="site-footer-copy">&copy; 2020 Michel Balasis</span>
-        </p>
+        <div className="site-footer-content">
+          <div className="site-footer-contact" role="contentinfo">
+            <p className="site-footer-line site-footer-line-main">Contact Michel</p>
+            <div className="site-footer-line-bottom">
+              <p className="site-footer-line">Phone / Text : {contactPhone}</p>
+              <p className="site-footer-copy">{footerText}</p>
+            </div>
+            <p className="site-footer-line">
+              Email :{' '}
+              <a className="site-footer-email" href={`mailto:${contactEmail}`}>{contactEmail}</a>
+            </p>
+          </div>
+        </div>
       </div>
     </footer>
   );

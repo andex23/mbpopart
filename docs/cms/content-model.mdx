@@ -1,0 +1,39 @@
+# CMS Content Model
+
+All user-facing content is managed through Sanity documents.
+
+## Singleton documents
+
+- `siteSettings`
+- `navigation`
+- `landingPage`
+- `bioPage`
+- `paintingsPage`
+- `availablePage`
+- `commissionsPage`
+- `happyClientsPage`
+
+## Collection documents
+
+- `painting`
+
+## Paintings year grouping
+
+Year groups are computed in frontend code:
+
+- Before 1998
+- 1999–2004
+- 2005–2009
+- 2010–2015
+- 2016–2020
+- 2021–2025
+- 2026–Current
+
+Editors only enter real year values (for example `2014`). No manual range maintenance is required.
+
+## Guardrails
+
+- Route keys are fixed in code.
+- Navigation label/order/visibility is editable.
+- Layout containers and sizing remain fixed in code.
+- Image fields include alt/caption support where required.

@@ -1,0 +1,42 @@
+# Troubleshooting
+
+## Studio CORS error
+
+Symptom:
+
+- `CorsOriginError` in `/studio`
+
+Fix:
+
+- Add current Studio host and app domain to Sanity project CORS and Studio hosts.
+
+## Studio fails to connect with `project-id.api.sanity.io`
+
+Symptom:
+
+- URL still contains `your-project-id`
+
+Fix:
+
+- Confirm `NEXT_PUBLIC_SANITY_PROJECT_ID` and `NEXT_PUBLIC_SANITY_DATASET`.
+- Restart local dev server after changing env values.
+
+## Build error: invalid Sanity project ID
+
+Symptom:
+
+- `projectId can only contain a-z, 0-9 and dashes`
+
+Fix:
+
+- Remove hidden spaces/newlines in env values.
+- Re-enter env vars directly in Vercel dashboard or CLI.
+
+## Revalidation does not refresh content
+
+Fix checklist:
+
+- Webhook URL includes `?secret=...`
+- Secret matches `SANITY_REVALIDATE_SECRET`
+- Webhook triggers on publish/update
+- Request returns HTTP 200

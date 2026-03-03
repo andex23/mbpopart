@@ -1,0 +1,45 @@
+# Local Development
+
+## Prerequisites
+
+- Node.js 20+
+- npm 10+
+- Sanity project access
+
+## Environment variables
+
+Create `.env.local` in the project root:
+
+```bash
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2026-02-23
+SANITY_REVALIDATE_SECRET=your_revalidate_secret
+SANITY_API_WRITE_TOKEN=your_sanity_write_token
+```
+
+## Run app + studio
+
+```bash
+npm install
+npm run dev -- --port 3010
+```
+
+Open:
+
+- Site: [http://localhost:3010](http://localhost:3010)
+- Studio: [http://localhost:3010/studio](http://localhost:3010/studio)
+
+## Seed content into Sanity
+
+Full seed:
+
+```bash
+curl -X POST "http://localhost:3010/api/cms/seed?scope=all&secret=$SANITY_REVALIDATE_SECRET"
+```
+
+Singletons only:
+
+```bash
+curl -X POST "http://localhost:3010/api/cms/seed?scope=singletons&secret=$SANITY_REVALIDATE_SECRET"
+```

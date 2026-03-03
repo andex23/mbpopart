@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { getArtworkDisplayTitle, getArtworkYearValue } from '@/data/artworks';
 import type { Artwork } from '@/data/artworks';
 
 interface ArtworkCardProps {
@@ -11,6 +12,15 @@ interface ArtworkCardProps {
 }
 
 export default function ArtworkCard({ work, onClick, priority = false }: ArtworkCardProps) {
+  const previewSrc = work.thumbnailUrl || work.imageUrl;
+  const title = getArtworkDisplayTitle(work);
+  const copyrightYear = work.copyrightYear ?? getArtworkYearValue(work);
+  const metaParts = [
+    work.dimensions?.trim(),
+    copyrightYear ? `© ${copyrightYear}` : undefined,
+  ].filter(Boolean) as string[];
+  const metadata = metaParts.join(' · ');
+
   return (
     <button
       onClick={onClick}
@@ -18,19 +28,18 @@ export default function ArtworkCard({ work, onClick, priority = false }: Artwork
     >
       <div className="img-zoom-container">
         <Image
-          src={work.thumbnailUrl || work.imageUrl}
-          alt={work.paintingName}
+          src={previewSrc}
+          alt={title}
           fill
           className="img-zoom object-cover"
           sizes="(max-width: 640px) 48vw, (max-width: 768px) 32vw, (max-width: 1024px) 24vw, 180px"
           priority={priority}
           unoptimized
         />
-      </div>
-      <div className="pt-2">
-        <h3 className="legacy-thumb-caption line-clamp-2">
-          {work.paintingName}
-        </h3>
+        <div className="artwork-preview-overlay">
+          <p className="artwork-preview-title">{title}</p>
+          {metadata ? <p className="artwork-preview-meta">{metadata}</p> : null}
+        </div>
       </div>
     </button>
   );

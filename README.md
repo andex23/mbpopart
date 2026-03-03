@@ -1,89 +1,107 @@
-# MBPopArt (Classic-Style Modernization)
+# MB Pop Art
 
-Modernized Next.js rebuild of [mbpopart.com](https://www.mbpopart.com) that preserves the original comic-pop visual language and structure while making the site responsive for desktop/tablet/mobile.
+Next.js + Sanity implementation of [mbpopart.com](https://www.mbpopart.com), with fixed layout templates and CMS-managed content.
 
-## What This Project Preserves
-
-- Original page rhythm and voice
-- Top navigation style and route flow
-- Speech-bubble container motif
-- Left rail (copy/contact) + right rail (visual content) composition
-- Legacy artwork, captions, and core text structure
-
-## What Was Modernized
-
-- Responsive layout behavior across breakpoints
-- Mobile navigation (hamburger + paintings year submenu)
-- Shared page layout components for consistency
-- Unified card/grid styling and interactions
-- In-page image preview behavior for media pages
-- Cleaner spacing/typography and maintainable CSS organization
-
-## Tech Stack
+## Stack
 
 - Next.js 15 (App Router)
 - React 19
 - TypeScript
-- Tailwind (imported in global stylesheet)
+- Sanity Studio v3 (embedded at `/studio`)
 
-## Project Structure
+## Key Routes
 
-- `src/app/` - route pages and global styles
-- `src/components/` - shared UI components (nav, split layout, cards, viewers)
-- `src/data/` - legacy text/media datasets and scraped content
-- `scripts/scrape.mjs` - utility used to collect legacy site content/media
+- `/` home
+- `/bio`
+- `/gallery`
+- `/available`
+- `/commissions`
+- `/photos`
+- `/studio` Sanity CMS
 
-## Routes
+## Project Layout
 
-- `/` - Home
-- `/bio` - Bio
-- `/gallery` - Paintings (supports `?year=...`)
-- `/available` - Available Paintings
-- `/commissions` - Commissions
-- `/prints` - Framed Prints
-- `/venues` - Venues
-- `/news` - News
-- `/photos` - Photos
+- `src/app/` routes, API endpoints, global styles
+- `src/components/` UI building blocks
+- `src/lib/` Sanity client, queries, mapping, and fetch helpers
+- `schemaTypes/` Sanity schema documents/objects
+- `src/data/` migration seed sources from legacy content
+- `docs/` Mintlify documentation
 
-## Run Locally
+## Local Setup
+
+1. Install dependencies:
 
 ```bash
 npm install
-npm run dev
 ```
 
-Default URL:
+2. Configure environment variables in `.env.local`:
 
-- `http://localhost:3000`
+```bash
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2026-02-23
+SANITY_REVALIDATE_SECRET=your_revalidate_secret
+SANITY_API_WRITE_TOKEN=your_sanity_write_token
+```
 
-If port `3000` is busy, Next.js will automatically use the next available port.
+3. Start local app:
 
-## Build
+```bash
+npm run dev -- --port 3010
+```
+
+4. Open:
+
+- Site: `http://localhost:3010`
+- Studio: `http://localhost:3010/studio`
+
+## Seed CMS Content
+
+Seed all singleton documents and paintings:
+
+```bash
+curl -X POST "http://localhost:3010/api/cms/seed?scope=all&secret=$SANITY_REVALIDATE_SECRET"
+```
+
+Seed only singleton documents:
+
+```bash
+curl -X POST "http://localhost:3010/api/cms/seed?scope=singletons&secret=$SANITY_REVALIDATE_SECRET"
+```
+
+## Revalidation
+
+Webhook endpoint:
+
+```text
+/api/revalidate?secret=SANITY_REVALIDATE_SECRET
+```
+
+Set this URL in Sanity webhooks for publish/update events.
+
+## Build and Run
 
 ```bash
 npm run build
 npm run start
 ```
 
-## Content/Data Notes
+## Mintlify Docs
 
-The project intentionally keeps legacy content and media references to preserve brand continuity:
+Documentation is managed with Mintlify config at `mint.json`.
 
-- `src/data/legacy-content.ts`
-- `src/data/scraped-content.json`
-- `src/data/scraped-artworks.json`
+Local docs preview:
 
-## Deploy (GitHub -> Vercel)
+```bash
+npx mintlify dev
+```
 
-1. Push this repo to GitHub.
-2. In Vercel, create a new project and import this repository.
-3. Build command: `npm run build`
-4. Output handled by Next.js automatically.
+## Deployment (Vercel)
 
-No special environment variables are required for the current site.
-
-## Maintainer Notes
-
-- Keep copy/captions faithful to source unless explicitly requested.
-- Prefer structure-preserving visual tweaks over redesign.
-- Test key pages on both desktop and mobile before release.
+1. Push branch to GitHub.
+2. Import project in Vercel.
+3. Add all required environment variables.
+4. Deploy.
+5. Register Studio host in Sanity (`https://your-domain/studio`) and add CORS origin (`https://your-domain`).

@@ -1,41 +1,215 @@
 'use client';
 
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import LegacySplitLayout from '@/components/LegacySplitLayout';
 import ArtworkCard from '@/components/ArtworkCard';
 import ImageViewer from '@/components/ImageViewer';
-import { getAllYearGroups } from '@/data/artworks';
+import RetroNavButton from '@/components/RetroNavButton';
+import {
+  doesYearGroupMatchRangeFilter,
+  getAllYearGroups,
+  getArtworkYearValue,
+  getRangeFromFilterKey,
+  normalizeRangeFilterKey,
+  YEAR_RANGE_FILTERS,
+} from '@/data/artworks';
 import { commonContact } from '@/data/legacy-content';
 import type { Artwork } from '@/data/artworks';
 
 const INITIAL_COUNT = 30;
 
+interface GallerySection {
+  key: string;
+  label: string;
+  works: Artwork[];
+}
+
+function parseQueryYear(value: string | null): number | null {
+  if (!value || !/^\d{4}$/.test(value)) {
+    return null;
+  }
+
+  return Number(value);
+}
+
 function GalleryContent() {
   const searchParams = useSearchParams();
-  const yearParam = searchParams.get('year');
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const rangeFromQuery = normalizeRangeFilterKey(searchParams.get('range'));
+  const yearFromQuery = parseQueryYear(searchParams.get('year'));
+  const legacyRangeParam = searchParams.get('year');
+  const legacyRangeFromQuery = normalizeRangeFilterKey(
+    yearFromQuery === null ? legacyRangeParam : null,
+  );
+  const initialRange = rangeFromQuery ?? legacyRangeFromQuery;
 
   const yearGroups = useMemo(() => getAllYearGroups(), []);
-  const [activeYear, setActiveYear] = useState<string | null>(yearParam);
-  const [expandedYears, setExpandedYears] = useState<Record<string, boolean>>({});
+  const [activeRangeKey, setActiveRangeKey] = useState<string | null>(initialRange);
+  const [activeYear, setActiveYear] = useState<number | null>(yearFromQuery);
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerIndex, setViewerIndex] = useState(0);
 
   useEffect(() => {
-    setActiveYear(yearParam);
-  }, [yearParam]);
+    setActiveRangeKey(initialRange);
+    setActiveYear(yearFromQuery);
+  }, [initialRange, yearFromQuery]);
 
-  const visibleGroups = activeYear ? yearGroups.filter((group) => group.year === activeYear) : yearGroups;
-
-  const allVisibleWorks = useMemo(() => {
-    const output: Artwork[] = [];
-    for (const group of visibleGroups) {
-      const isExpanded = expandedYears[group.year];
-      const works = isExpanded ? group.works : group.works.slice(0, INITIAL_COUNT);
-      output.push(...works);
+  const visibleRangeGroups = useMemo(() => {
+    if (!activeRangeKey) {
+      return yearGroups;
     }
-    return output;
-  }, [expandedYears, visibleGroups]);
+
+    return yearGroups.filter((group) => doesYearGroupMatchRangeFilter(group.year, activeRangeKey));
+  }, [activeRangeKey, yearGroups]);
+
+  const rangeBuckets = useMemo(() => {
+    const bucket = new Map<number, Artwork[]>();
+    const range = activeRangeKey ? getRangeFromFilterKey(activeRangeKey) : null;
+    const minYear = range?.from ?? Number.NEGATIVE_INFINITY;
+    const maxYear = range?.to ?? Number.POSITIVE_INFINITY;
+
+    for (const group of visibleRangeGroups) {
+      for (const work of group.works) {
+        const numericYear = getArtworkYearValue(work);
+        if (numericYear === null) {
+          continue;
+        }
+        if (numericYear < minYear || numericYear > maxYear) {
+          continue;
+        }
+
+        const current = bucket.get(numericYear);
+        if (current) {
+          current.push(work);
+        } else {
+          bucket.set(numericYear, [work]);
+        }
+      }
+    }
+
+    return bucket;
+  }, [activeRangeKey, visibleRangeGroups]);
+
+  const availableYearsInRange = useMemo(
+    () => Array.from(rangeBuckets.keys()).sort((a, b) => b - a),
+    [rangeBuckets],
+  );
+
+  useEffect(() => {
+    if (!activeRangeKey) {
+      if (activeYear !== null) {
+        setActiveYear(null);
+      }
+      return;
+    }
+
+    if (availableYearsInRange.length === 0) {
+      if (activeYear !== null) {
+        setActiveYear(null);
+      }
+      return;
+    }
+
+    if (activeYear === null || !availableYearsInRange.includes(activeYear)) {
+      setActiveYear(availableYearsInRange[0]);
+    }
+  }, [activeRangeKey, activeYear, availableYearsInRange]);
+
+  useEffect(() => {
+    setExpandedSections({});
+  }, [activeRangeKey, activeYear]);
+
+  const displaySections = useMemo<GallerySection[]>(() => {
+    if (!activeRangeKey) {
+      return visibleRangeGroups.map((group) => ({
+        key: `group-${group.year}`,
+        label: group.year,
+        works: group.works,
+      }));
+    }
+
+    if (availableYearsInRange.length === 0) {
+      return [];
+    }
+
+    if (activeYear !== null) {
+      const works = rangeBuckets.get(activeYear) ?? [];
+      return [
+        {
+          key: `year-${activeYear}`,
+          label: String(activeYear),
+          works,
+        },
+      ];
+    }
+
+    return availableYearsInRange.map((year) => ({
+      key: `year-${year}`,
+      label: String(year),
+      works: rangeBuckets.get(year) ?? [],
+    }));
+  }, [activeRangeKey, activeYear, availableYearsInRange, rangeBuckets, visibleRangeGroups]);
+
+  const renderedSections = useMemo(() => (
+    displaySections.map((section) => {
+      const isExpanded = expandedSections[section.key];
+      const totalWorks = section.works.length;
+      const hasMore = totalWorks > INITIAL_COUNT;
+      const works = isExpanded ? section.works : section.works.slice(0, INITIAL_COUNT);
+
+      return {
+        ...section,
+        totalWorks,
+        hasMore,
+        isExpanded,
+        works,
+      };
+    })
+  ), [displaySections, expandedSections]);
+
+  const allVisibleWorks = useMemo(() => (
+    renderedSections.flatMap((section) => section.works)
+  ), [renderedSections]);
+
+  const updateQuery = (rangeKey: string | null, year: number | null) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('range');
+    params.delete('year');
+
+    if (rangeKey) {
+      params.set('range', rangeKey);
+    }
+
+    if (year !== null) {
+      params.set('year', String(year));
+    }
+
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
+
+  const handleRangeChange = (rangeKey: string | null) => {
+    setActiveRangeKey(rangeKey);
+    if (!rangeKey) {
+      setActiveYear(null);
+      updateQuery(null, null);
+      return;
+    }
+
+    const range = getRangeFromFilterKey(rangeKey);
+    const fallbackYear = range?.to ?? new Date().getFullYear();
+    setActiveYear(fallbackYear);
+    updateQuery(rangeKey, null);
+  };
+
+  const handleYearChange = (year: number) => {
+    setActiveYear(year);
+    updateQuery(activeRangeKey, year);
+  };
 
   const openViewer = (work: Artwork) => {
     const index = allVisibleWorks.findIndex((current) => current.imageUrl === work.imageUrl);
@@ -45,13 +219,13 @@ function GalleryContent() {
     }
   };
 
-  const leftContent = (
+  const leftContent = activeRangeKey === null ? (
     <>
       <p>Browse Michel Balasis paintings by year. Click any thumbnail to view a larger image.</p>
       <p>Use the year buttons to jump directly to a specific collection.</p>
       <ul className="legacy-contact-lines">
         <li><b>Contact Michel</b></li>
-        <li>Phone: {commonContact.phone}</li>
+        <li>Phone / Text: {commonContact.phone}</li>
         <li>
           Email:{' '}
           <a href={`mailto:${commonContact.email}`} className="text-[var(--link)] hover:underline">
@@ -60,69 +234,105 @@ function GalleryContent() {
         </li>
       </ul>
     </>
-  );
+  ) : null;
+
+  const activeRangeLabel = YEAR_RANGE_FILTERS.find((range) => range.key === activeRangeKey)?.label;
 
   const rightContent = (
     <>
-      <div className="flex flex-wrap gap-2 mb-4">
-        <button
-          className={`site-nav-btn ${activeYear === null ? 'active' : ''}`}
-          onClick={() => setActiveYear(null)}
-        >
-          All Years
-        </button>
-        {yearGroups.map((group) => (
-          <button
-            key={group.year}
-            className={`site-nav-btn ${activeYear === group.year ? 'active' : ''}`}
-            onClick={() => setActiveYear(group.year)}
+      {activeRangeKey === null ? (
+        <div className="flex flex-wrap gap-2 mb-3">
+          <RetroNavButton
+            type="button"
+            active
+            onClick={() => handleRangeChange(null)}
           >
-            {group.year}
-          </button>
-        ))}
-      </div>
+            All Years
+          </RetroNavButton>
+          {YEAR_RANGE_FILTERS.map((range) => (
+            <RetroNavButton
+              type="button"
+              key={range.key}
+              active={false}
+              onClick={() => handleRangeChange(range.key)}
+            >
+              {range.label}
+            </RetroNavButton>
+          ))}
+        </div>
+      ) : null}
 
-      {visibleGroups.map((group) => {
-        const isExpanded = expandedYears[group.year];
-        const works = isExpanded ? group.works : group.works.slice(0, INITIAL_COUNT);
-        const hasMore = group.works.length > INITIAL_COUNT;
+      {activeRangeKey && availableYearsInRange.length > 0 ? (
+        <div className="gallery-year-selector">
+          <p className="gallery-year-selector-label">
+            {activeRangeLabel ? `${activeRangeLabel} Years` : 'Year Selector'}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {availableYearsInRange.map((year) => (
+              <RetroNavButton
+                type="button"
+                key={year}
+                active={activeYear === year}
+                onClick={() => handleYearChange(year)}
+              >
+                {year}
+              </RetroNavButton>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
-        return (
-          <section key={group.year} className="mb-6 last:mb-0">
-            <h2 className="legacy-subtitle mb-2">
-              {group.year} ({group.works.length})
+      {renderedSections.length === 0 ? (
+        <section className="gallery-empty-state" aria-live="polite">
+          <p className="gallery-empty-text">No paintings were found for this selection.</p>
+        </section>
+      ) : null}
+
+      {renderedSections.map((section) => (
+        <section key={section.key} className="gallery-year-section">
+          <div className="gallery-year-header">
+            <h2 className="legacy-subtitle mb-0">
+              {section.label} ({section.totalWorks})
             </h2>
-
-            <div className="legacy-thumb-grid">
-              {works.map((work, index) => (
-                <ArtworkCard
-                  key={work.imageUrl}
-                  work={work}
-                  priority={index < 10}
-                  onClick={() => openViewer(work)}
-                />
-              ))}
-            </div>
-
-            {hasMore ? (
-              <div className="mt-3">
-                <button
-                  className="site-nav-btn"
-                  onClick={() => setExpandedYears((prev) => ({ ...prev, [group.year]: !prev[group.year] }))}
-                >
-                  {isExpanded ? 'Show Less' : `Show All ${group.works.length}`}
-                </button>
-              </div>
+            {section.hasMore ? (
+              <RetroNavButton
+                type="button"
+                onClick={() =>
+                  setExpandedSections((prev) => ({
+                    ...prev,
+                    [section.key]: !prev[section.key],
+                  }))
+                }
+              >
+                {section.isExpanded ? 'Collapse Year' : `Show All ${section.totalWorks}`}
+              </RetroNavButton>
             ) : null}
-          </section>
-        );
-      })}
+          </div>
+
+          <div className="legacy-thumb-grid">
+            {section.works.map((work, index) => (
+              <ArtworkCard
+                key={work.imageUrl}
+                work={work}
+                priority={index < 10}
+                onClick={() => openViewer(work)}
+              />
+            ))}
+          </div>
+        </section>
+      ))}
     </>
   );
 
   return (
     <>
-      <LegacySplitLayout title="Paintings" leftContent={leftContent} rightContent={rightContent} />
+      {activeRangeKey === null ? (
+        <LegacySplitLayout title="Paintings" leftContent={leftContent} rightContent={rightContent} />
+      ) : (
+        <div className="legacy-bubble gallery-range-page">
+          <section className="gallery-range-content">{rightContent}</section>
+        </div>
+      )}
       {viewerOpen ? (
         <ImageViewer
           works={allVisibleWorks}

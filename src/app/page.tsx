@@ -1,79 +1,58 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import { siteContent } from '@/data/artworks';
+import PortableTextContent from '@/components/PortableTextContent';
+import { getLandingPageContent, getSiteSettingsContent } from '@/lib/cms-content';
 
-const HOME_IMAGES = [
-  'https://mbpopart.com/assets/home_01.jpg',
-  'https://mbpopart.com/assets/home_02.jpg',
-  'https://mbpopart.com/assets/home_03.jpg',
-];
+export default async function Home() {
+  const [landingContent, siteSettings] = await Promise.all([
+    getLandingPageContent(),
+    getSiteSettingsContent(),
+  ]);
 
-export default function Home() {
-  const [heroImage, setHeroImage] = useState(HOME_IMAGES[0]);
-  const { welcomeText, contact, exhibiting } = siteContent.homepage;
-  const welcomeParagraphs = welcomeText.split('\n\n').filter(Boolean);
-
-  useEffect(() => {
-    setHeroImage(HOME_IMAGES[Math.floor(Math.random() * HOME_IMAGES.length)]);
-    document.body.classList.add('home-bg');
-    return () => {
-      document.body.classList.remove('home-bg');
-    };
-  }, []);
+  const heroImage = landingContent.heroImages[0] ?? {
+    imageUrl: '/home/home_01.jpg',
+    alt: 'Featured Michel artwork',
+    caption: '',
+    order: 1,
+  };
 
   return (
     <section className="pb-8 page-home">
       <div className="legacy-bubble">
-        <div className="legacy-home-hero">
-          <Image
-            src={heroImage}
-            alt="Featured Michel Balasis artwork"
-            fill
-            className="legacy-home-hero-image"
-            sizes="(max-width: 768px) 100vw, 1200px"
-            priority
-            unoptimized
-          />
-        </div>
+        <div className="legacy-home-content-shell">
+          <div className="legacy-home-hero">
+            <Image
+              src={heroImage.imageUrl}
+              alt={heroImage.alt}
+              fill
+              className="legacy-home-hero-image"
+              sizes="(max-width: 768px) 100vw, 904px"
+              priority
+              unoptimized
+            />
+          </div>
 
-        <div className="legacy-split-layout">
-          <aside className="legacy-left-rail legacy-home-left">
-            <div className="legacy-left-copy">
-              {welcomeParagraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-              <ul className="legacy-contact-lines">
-                <li>Phone: {contact.phone}</li>
-                <li>
-                  Email:{' '}
-                  <a href={`mailto:${contact.email}`} className="text-[var(--link)] hover:underline">
-                    {contact.email}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </aside>
-
-          <section className="legacy-right-rail legacy-home-right">
-            <div className="legacy-divider" />
-            <h2 className="legacy-subtitle">Exhibiting</h2>
-            <ul className="legacy-exhibiting-list">
-              {exhibiting.map((item, index) => {
-                const [name, line2, line3] = item.split('|').map((part) => part.trim());
-                return (
-                  <li key={`${item}-${index}`}>
-                    <b>{name}</b>
-                    <br />
-                    {line2}
-                    <br />
-                    {line3}
+          <div className="legacy-split-layout legacy-home-split">
+            <aside className="legacy-left-rail legacy-home-left">
+              <div className="legacy-left-copy home-copy-content">
+                <PortableTextContent value={landingContent.introBody} />
+                <ul className="legacy-contact-lines">
+                  <li>Phone / Text: {siteSettings.contactPhone}</li>
+                  <li>
+                    Email:{' '}
+                    <a href={`mailto:${siteSettings.contactEmail}`} className="text-[var(--link)] hover:underline">
+                      {siteSettings.contactEmail}
+                    </a>
                   </li>
-                );
-              })}
-            </ul>
-          </section>
+                </ul>
+              </div>
+            </aside>
+
+            <section className="legacy-right-rail legacy-home-right">
+              <div className="legacy-divider" />
+              <p className="legacy-home-message">{siteSettings.sandsDisplayMessage}</p>
+            </section>
+          </div>
         </div>
       </div>
     </section>

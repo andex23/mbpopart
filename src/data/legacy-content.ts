@@ -15,6 +15,13 @@ export interface LegacyNewsItem {
   pdfUrl: string;
 }
 
+export interface CommissionProcessStep {
+  id: string;
+  label: string;
+  images: string[];
+  caption?: string;
+}
+
 export const legacyPageCopy = {
   available: {
     title: 'Available Paintings',
@@ -328,6 +335,33 @@ export const availableItems: LegacyThumbItem[] = [
     caption: 'Oh No U Didn\'t \u00A92011 (SOLD)',
     status: 'SOLD',
     meta: 'Oh No U Didn\'t \u00A92011 Acrylic on Canvas 44" x 44" cash price SOLD',
+  },
+];
+
+export const commissionProcessSteps: CommissionProcessStep[] = [
+  {
+    id: 'client-photo',
+    label: 'Client Photo',
+    images: ['/commissions/process/client-photo.png'],
+    caption: 'You provide a reference image.',
+  },
+  {
+    id: 'bw-sketch',
+    label: 'B&W Sketch',
+    images: ['/commissions/process/bw-sketch.jpg'],
+    caption: 'Michel builds the black and white sketch for approval.',
+  },
+  {
+    id: 'completed-painting',
+    label: 'Completed Painting',
+    images: ['/commissions/process/completed-painting.jpg'],
+    caption: 'The final hand-painted pop art piece is completed.',
+  },
+  {
+    id: 'happy-client',
+    label: 'Happy Client',
+    images: ['/commissions/process/happy-client.png'],
+    caption: 'Finished artwork with the client.',
   },
 ];
 

@@ -1,0 +1,35 @@
+# Sanity Setup
+
+## 1. Create or use a Sanity project
+
+- Go to [sanity.io](https://www.sanity.io/)
+- Use existing project or create one.
+- Keep dataset as `production`.
+
+## 2. Configure CORS and Studio host
+
+In Sanity project settings:
+
+- CORS origins:
+  - `http://localhost:3010`
+  - your production domain (for example `https://mbpopart.vercel.app`)
+- Studio hosts:
+  - `http://localhost:3010/studio`
+  - your production studio URL (for example `https://mbpopart.vercel.app/studio`)
+
+## 3. Token setup
+
+Create token in Sanity Manage:
+
+- Role: Editor or custom write role for seeding
+- Use as `SANITY_API_WRITE_TOKEN` in `.env.local`
+
+## 4. Revalidation webhook
+
+Create webhook in Sanity:
+
+- URL: `https://YOUR_DOMAIN/api/revalidate?secret=YOUR_SECRET`
+- Trigger: create, update, delete, publish
+- Filter: all content types used by site
+
+The secret must match `SANITY_REVALIDATE_SECRET` in Vercel and local env.

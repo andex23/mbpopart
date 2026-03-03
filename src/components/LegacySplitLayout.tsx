@@ -5,6 +5,7 @@ interface LegacySplitLayoutProps {
   leftContent: React.ReactNode;
   rightContent: React.ReactNode;
   rightHeader?: React.ReactNode;
+  titleAside?: React.ReactNode;
   bubbleClassName?: string;
 }
 
@@ -13,13 +14,17 @@ export default function LegacySplitLayout({
   leftContent,
   rightContent,
   rightHeader,
+  titleAside,
   bubbleClassName = '',
 }: LegacySplitLayoutProps) {
   return (
     <div className={`legacy-bubble ${bubbleClassName}`.trim()}>
       <div className="legacy-split-layout">
         <aside className="legacy-left-rail">
-          <h1 className="legacy-heading">{title}</h1>
+          <div className="legacy-title-row">
+            <h1 className="legacy-heading">{title}</h1>
+            {titleAside ? <div className="legacy-title-aside">{titleAside}</div> : null}
+          </div>
           <div className="legacy-left-copy">{leftContent}</div>
         </aside>
         <section className="legacy-right-rail">

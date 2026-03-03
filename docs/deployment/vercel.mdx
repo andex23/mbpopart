@@ -1,0 +1,32 @@
+# Vercel Deployment
+
+## Deploy flow
+
+1. Push branch to GitHub.
+2. Import repository in Vercel.
+3. Configure environment variables.
+4. Deploy to preview.
+5. Promote to production.
+
+## Required environment variables
+
+```bash
+NEXT_PUBLIC_SANITY_PROJECT_ID=
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2026-02-23
+SANITY_REVALIDATE_SECRET=
+```
+
+If seeding from production environment is required:
+
+```bash
+SANITY_API_WRITE_TOKEN=
+```
+
+## Post-deploy checks
+
+- `/` renders
+- `/gallery` renders grouped years correctly
+- `/commissions` and `/photos` lightbox behavior works
+- `/studio` loads and authenticates
+- webhook to `/api/revalidate` succeeds

@@ -24,6 +24,8 @@
 .DS_Store
 *.pem
 /.playwright-mcp
+/.claude
+/.mintlify
 
 # debug
 npm-debug.log*
@@ -33,6 +35,7 @@ yarn-error.log*
 
 # env files
 .env*.local
+.env.vercel.*
 
 # vercel
 .vercel

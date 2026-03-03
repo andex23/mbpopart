@@ -1,21 +1,25 @@
 import React from 'react';
 import LegacySplitLayout from '@/components/LegacySplitLayout';
 import LegacyThumbGallery from '@/components/LegacyThumbGallery';
-import { availableItems, commonContact, legacyPageCopy } from '@/data/legacy-content';
+import PortableTextContent from '@/components/PortableTextContent';
+import { getAvailablePageContent, getSiteSettingsContent } from '@/lib/cms-content';
 
-export default function AvailablePage() {
+export default async function AvailablePage() {
+  const [availablePage, siteSettings] = await Promise.all([
+    getAvailablePageContent(),
+    getSiteSettingsContent(),
+  ]);
+
   const leftContent = (
     <>
-      {legacyPageCopy.available.paragraphs.map((paragraph) => (
-        <p key={paragraph}>{paragraph}</p>
-      ))}
+      <PortableTextContent value={availablePage.introText} />
       <ul className="legacy-contact-lines">
         <li><b>Contact Michel</b></li>
-        <li>Phone: {commonContact.phone}</li>
+        <li>Phone / Text: {siteSettings.contactPhone}</li>
         <li>
           Email:{' '}
-          <a href={`mailto:${commonContact.email}`} className="text-[var(--link)] hover:underline">
-            {commonContact.email}
+          <a href={`mailto:${siteSettings.contactEmail}`} className="text-[var(--link)] hover:underline">
+            {siteSettings.contactEmail}
           </a>
         </li>
       </ul>
@@ -23,13 +27,13 @@ export default function AvailablePage() {
   );
 
   const rightContent = (
-    <LegacyThumbGallery items={availableItems} />
+    <LegacyThumbGallery items={availablePage.items} />
   );
 
   return (
     <section className="pb-8">
       <LegacySplitLayout
-        title={legacyPageCopy.available.title}
+        title={availablePage.title}
         leftContent={leftContent}
         rightContent={rightContent}
       />

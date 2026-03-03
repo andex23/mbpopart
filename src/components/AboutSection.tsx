@@ -33,14 +33,6 @@ export default function AboutSection() {
               <Button variant="primary" size="md" href="/bio" showArrow>
                 Read Full Bio
               </Button>
-              <Button
-                variant="outline"
-                size="md"
-                href="/news"
-                className="!border-[#2d4a99] !text-[#122150] hover:!text-[#0f5faf] hover:!border-[#0f5faf]"
-              >
-                Press & News
-              </Button>
             </div>
           </MichelTalkBubble>
         </AnimatedSection>

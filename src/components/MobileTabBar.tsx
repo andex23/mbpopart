@@ -3,13 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Image, User, Newspaper, Mail } from 'lucide-react';
+import { Home, Image, User, ShoppingBag, Mail } from 'lucide-react';
 
 const TABS = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'Gallery', href: '/gallery', icon: Image },
   { label: 'Bio', href: '/bio', icon: User },
-  { label: 'News', href: '/news', icon: Newspaper },
+  { label: 'Available', href: '/available', icon: ShoppingBag },
   { label: 'Contact', href: '/#contact', icon: Mail },
 ];
 

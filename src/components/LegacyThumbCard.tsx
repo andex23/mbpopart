@@ -1,43 +1,56 @@
 import React from 'react';
 import Image from 'next/image';
-import type { LegacyThumbItem } from '@/data/legacy-content';
+import type { LegacyThumbItem } from '@/lib/content.types';
 
 interface LegacyThumbCardProps {
   item: LegacyThumbItem;
   onOpen?: () => void;
+  imageFit?: 'cover' | 'contain';
+  mediaAspect?: string;
 }
 
-export default function LegacyThumbCard({ item, onOpen }: LegacyThumbCardProps) {
+export default function LegacyThumbCard({
+  item,
+  onOpen,
+  imageFit = 'cover',
+  mediaAspect = '1 / 1',
+}: LegacyThumbCardProps) {
+  const previewSrc = item.thumbUrl || item.imageUrl || '/placeholders/new-painting-coming-soon.svg';
+  const fullSrc = item.imageUrl || previewSrc;
+  const caption = item.caption?.trim() || 'Untitled';
+
   return (
     <figure className="legacy-thumb">
       {onOpen ? (
-        <button type="button" onClick={onOpen} className="legacy-thumb-trigger" aria-label={`Open ${item.caption}`}>
-          <div className="legacy-thumb-media">
+        <button type="button" onClick={onOpen} className="legacy-thumb-trigger" aria-label={`Open ${caption}`}>
+          <div className="legacy-thumb-media" style={{ aspectRatio: mediaAspect }}>
             <Image
-              src={item.thumbUrl}
-              alt={item.caption}
+              src={previewSrc}
+              alt={caption}
               fill
-              className="legacy-thumb-image object-cover"
+              className="legacy-thumb-image"
+              style={{ objectFit: imageFit }}
               sizes="(max-width: 768px) 46vw, (max-width: 1200px) 24vw, 170px"
               unoptimized
             />
           </div>
         </button>
       ) : (
-        <a href={item.imageUrl} target="_blank" rel="noopener noreferrer" className="legacy-thumb-link">
-          <div className="legacy-thumb-media">
+        <a href={fullSrc} target="_blank" rel="noopener noreferrer" className="legacy-thumb-link">
+          <div className="legacy-thumb-media" style={{ aspectRatio: mediaAspect }}>
             <Image
-              src={item.thumbUrl}
-              alt={item.caption}
+              src={previewSrc}
+              alt={caption}
               fill
-              className="legacy-thumb-image object-cover"
+              className="legacy-thumb-image"
+              style={{ objectFit: imageFit }}
               sizes="(max-width: 768px) 46vw, (max-width: 1200px) 24vw, 170px"
               unoptimized
             />
           </div>
         </a>
       )}
-      <figcaption className="legacy-thumb-caption">{item.caption}</figcaption>
+      <figcaption className="legacy-thumb-caption">{caption}</figcaption>
       {item.status ? <p className={`legacy-status ${item.status.toLowerCase()}`}>{item.status}</p> : null}
       {item.meta ? <p className="legacy-meta">{item.meta}</p> : null}
     </figure>

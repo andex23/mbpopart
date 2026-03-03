@@ -1,25 +1,36 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import './globals.css';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { getGlobalContent, getSiteSettingsContent } from '@/lib/cms-content';
 
-export const metadata: Metadata = {
-  title: 'Michel Balasis | Pop Art — Chicago',
-  description:
-    'Original pop art paintings by Michel Balasis. Hand-painted acrylic on canvas, created in Chicago USA.',
-  keywords: ['pop art', 'Chicago', 'Michel Balasis', 'paintings', 'acrylic', 'canvas', 'gallery'],
-  openGraph: {
-    title: 'Michel Balasis | Pop Art — Chicago',
-    description: 'Original pop art paintings by Michel Balasis.',
-    type: 'website',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettingsContent();
+  const title = settings.seo?.metaTitle || 'Michel Balasis | Pop Art — Chicago';
+  const description = settings.seo?.metaDescription ||
+    'Original pop art paintings by Michel Balasis. Hand-painted acrylic on canvas, created in Chicago USA.';
 
-export default function RootLayout({
+  return {
+    title,
+    description,
+    keywords: ['pop art', 'Chicago', 'Michel Balasis', 'paintings', 'acrylic', 'canvas', 'gallery'],
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      images: settings.seo?.ogImageUrl ? [{ url: settings.seo.ogImageUrl }] : undefined,
+    },
+  };
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { navigation, siteSettings } = await getGlobalContent();
+
   return (
     <html lang="en">
       <head>
@@ -29,9 +40,16 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased">
-        <Navigation />
+        <Suspense fallback={null}>
+          <Navigation items={navigation} />
+        </Suspense>
         <main className="site-shell">{children}</main>
-        <Footer />
+        <Footer
+          contactEmail={siteSettings.contactEmail}
+          contactPhone={siteSettings.contactPhone}
+          footerText={siteSettings.footerText}
+          footerPortraitUrl={siteSettings.footerPortraitUrl}
+        />
       </body>
     </html>
   );
