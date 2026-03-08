@@ -34,6 +34,7 @@ export default async function PhotosPage() {
         title={photosPage.title}
         leftContent={leftContent}
         rightContent={rightContent}
+        bubbleClassName="happy-clients-page"
       />
     </section>
   );

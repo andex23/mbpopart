@@ -36,6 +36,7 @@ export default async function AvailablePage() {
         title={availablePage.title}
         leftContent={leftContent}
         rightContent={rightContent}
+        bubbleClassName="available-page"
       />
     </section>
   );

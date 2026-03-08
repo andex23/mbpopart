@@ -9,6 +9,7 @@ export const bioPage = defineType({
       name: 'title',
       title: 'Page Title',
       type: 'string',
+      description: 'Shown as the large blue heading on the Bio page. Keep it short so it stays on one line on desktop.',
       initialValue: 'INTRO BIO',
       validation: (Rule) => Rule.required().max(60),
     }),

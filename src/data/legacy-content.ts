@@ -24,7 +24,7 @@ export interface CommissionProcessStep {
 
 export const legacyPageCopy = {
   available: {
-    title: 'Available Paintings',
+    title: 'Available',
     paragraphs: [
       'These original Michel paintings are currently available for purchase.',
       'Click on each painting to see a larger photo, size, and price information.',

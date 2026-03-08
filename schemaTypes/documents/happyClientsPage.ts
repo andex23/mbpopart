@@ -9,7 +9,8 @@ export const happyClientsPage = defineType({
       name: 'title',
       title: 'Page Title',
       type: 'string',
-      initialValue: 'Happy Clients with Their Michel Paintings',
+      description: 'Short section title shown in blue at the top of the page.',
+      initialValue: 'Happy Clients',
       validation: (Rule) => Rule.required().max(120),
     }),
     defineField({

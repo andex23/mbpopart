@@ -78,6 +78,7 @@ export default function HappyClientGrid({ clients }: HappyClientGridProps) {
                     fill
                     className="happy-cell-image"
                     sizes="(max-width: 768px) 46vw, (max-width: 1200px) 30vw, 280px"
+                    referrerPolicy="no-referrer"
                     unoptimized
                   />
                 </div>

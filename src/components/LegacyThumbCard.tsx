@@ -34,6 +34,7 @@ export default function LegacyThumbCard({
               className="legacy-thumb-image"
               style={{ objectFit: imageFit }}
               sizes="(max-width: 768px) 46vw, (max-width: 1200px) 24vw, 170px"
+              referrerPolicy="no-referrer"
               unoptimized
             />
           </div>
@@ -48,6 +49,7 @@ export default function LegacyThumbCard({
               className="legacy-thumb-image"
               style={{ objectFit: imageFit }}
               sizes="(max-width: 768px) 46vw, (max-width: 1200px) 24vw, 170px"
+              referrerPolicy="no-referrer"
               unoptimized
             />
           </div>

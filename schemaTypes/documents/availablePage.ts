@@ -9,7 +9,8 @@ export const availablePage = defineType({
       name: 'title',
       title: 'Page Title',
       type: 'string',
-      initialValue: 'Available Paintings',
+      description: 'Short section title shown in blue at the top of the page.',
+      initialValue: 'Available',
       validation: (Rule) => Rule.required().max(80),
     }),
     defineField({

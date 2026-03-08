@@ -16,11 +16,7 @@ export function resolveLegacyImageUrl(value: string | null | undefined): string 
     return DEFAULT_IMAGE_PLACEHOLDER;
   }
 
-  if (raw.startsWith(LEGACY_IMAGE_PROXY_PREFIX)) {
-    return raw;
-  }
-
-  if (raw.startsWith('/')) {
+  if (raw.startsWith(LEGACY_IMAGE_PROXY_PREFIX) || raw.startsWith('/')) {
     return raw;
   }
 
@@ -29,10 +25,13 @@ export function resolveLegacyImageUrl(value: string | null | undefined): string 
     if (!['http:', 'https:'].includes(parsed.protocol)) {
       return raw;
     }
+
     if (!isLegacyImageHost(parsed.hostname)) {
       return raw;
     }
-    return `${LEGACY_IMAGE_PROXY_PREFIX}${encodeURIComponent(parsed.toString())}`;
+
+    const proxyUrl = parsed.toString().replace(/^https?:\/\//, '');
+    return `https://images.weserv.nl/?url=${encodeURIComponent(proxyUrl)}`;
   } catch {
     return raw;
   }

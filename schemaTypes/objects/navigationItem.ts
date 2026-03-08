@@ -26,7 +26,7 @@ export const navigationItem = defineType({
       name: 'label',
       title: 'Menu Label',
       type: 'string',
-      description: 'Visible text in the menu button.',
+      description: 'Visible text in the menu button. For the bio route, the current label is "Intro Bio".',
       validation: (Rule) => Rule.required().max(32),
     }),
     defineField({

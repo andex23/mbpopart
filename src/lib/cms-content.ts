@@ -74,7 +74,7 @@ const NAV_ROUTE_MAP: Record<NavKey, string> = {
 };
 
 const DEFAULT_NAVIGATION: NavigationViewItem[] = [
-  { key: 'bio', label: 'Bio', enabled: true, order: 1, href: '/bio' },
+  { key: 'bio', label: 'Intro Bio', enabled: true, order: 1, href: '/bio' },
   { key: 'paintings', label: 'Paintings', enabled: true, order: 2, href: '/gallery' },
   { key: 'available', label: 'Available', enabled: true, order: 3, href: '/available' },
   { key: 'commissions', label: 'Commissions', enabled: true, order: 4, href: '/commissions' },
@@ -90,8 +90,14 @@ const FALLBACK_HERO_IMAGES = [
 ];
 
 const AVAILABLE_COMING_SOON_IMAGE = '/placeholders/new-painting-coming-soon.svg';
+const DEFAULT_AVAILABLE_TITLE = 'Available';
 const DEFAULT_COMMISSION_DOWN_PAYMENT_RULE =
-  '50% down payment required before sketching begins. No sketching begins until down payment is received. Down payment covers materials (canvas, paint, brushes, hardware for hanging, etc.).';
+  'Clients can make their 50% Down Payment via Zelle, Venmo, or Cash';
+const DEFAULT_COMMISSION_PROCESS_SUBTITLE =
+  'Many commissions follow a structured creative process — from your reference photo to a finished original Michel painting.';
+const DEFAULT_FOOTER_COPY = '© 2026 Michel Balasis';
+const DEFAULT_HAPPY_CLIENTS_TITLE = 'Happy Clients';
+const DEFAULT_PLACEHOLDER_TITLE = 'New Painting Coming Soon';
 
 function normalizeString(value: string | undefined | null): string {
   return (value ?? '').trim().toLowerCase();
@@ -101,6 +107,17 @@ function normalizeCommissionSpelling(value: string): string {
   return value
     .replace(/\bcommision\b/gi, 'commission')
     .replace(/\bcommisions\b/gi, 'commissions');
+}
+
+function isComingSoonPlaceholder(item: Pick<LegacyThumbItem, 'imageUrl' | 'thumbUrl' | 'caption'>): boolean {
+  const imageKey = normalizeString(item.imageUrl);
+  const thumbKey = normalizeString(item.thumbUrl);
+  const captionKey = normalizeString(item.caption);
+
+  return imageKey === normalizeString(AVAILABLE_COMING_SOON_IMAGE) ||
+    thumbKey === normalizeString(AVAILABLE_COMING_SOON_IMAGE) ||
+    captionKey === normalizeString('New Painting Available - Coming Soon') ||
+    captionKey === normalizeString(DEFAULT_PLACEHOLDER_TITLE);
 }
 
 function sanitizeAvailableCaption(value: string): string {
@@ -378,7 +395,7 @@ function toFallbackSiteSettings(): SiteSettingsView {
     contactPhone: commonContact.phone,
     locationLabel: 'Venice Florida USA',
     sandsDisplayMessage: siteContent.homepage.exhibiting[0] ?? '',
-    footerText: '\u00A9 2020 Michel Balasis',
+    footerText: DEFAULT_FOOTER_COPY,
     footerPortraitUrl: '/assets/mbface.png',
     socialLinks: [],
     footerLinks: [],
@@ -406,7 +423,7 @@ export async function getSiteSettingsContent(): Promise<SiteSettingsView> {
     contactPhone: settings.contactPhone?.trim() || commonContact.phone,
     locationLabel: settings.locationLabel?.trim() || 'Venice Florida USA',
     sandsDisplayMessage: settings.sandsDisplayMessage?.trim() || siteContent.homepage.exhibiting[0] || '',
-    footerText: settings.footerText?.trim() || '\u00A9 2020 Michel Balasis',
+    footerText: settings.footerText?.trim() || DEFAULT_FOOTER_COPY,
     footerPortraitUrl: getSanityImageUrl(settings.footerPortrait, { width: 280, fit: 'crop' }) || '/assets/mbface.png',
     socialLinks: (settings.socialLinks ?? [])
       .filter((item) => Boolean(item?.label && item?.url))
@@ -576,6 +593,16 @@ export async function getAvailablePageContent(): Promise<AvailablePageView> {
 
   const mergedItems = mergeLegacyThumbItems(cmsItems, availableItems);
   const normalizedItems = (mergedItems.length > 0 ? mergedItems : availableItems).map((item) => {
+    if (isComingSoonPlaceholder(item)) {
+      return {
+        imageUrl: AVAILABLE_COMING_SOON_IMAGE,
+        thumbUrl: AVAILABLE_COMING_SOON_IMAGE,
+        caption: DEFAULT_PLACEHOLDER_TITLE,
+        status: undefined,
+        meta: undefined,
+      } satisfies LegacyThumbItem;
+    }
+
     const statusFromCaption = item.caption.match(/\((available|sold)\)/i)?.[1]?.toLowerCase();
     const status = item.status ?? (statusFromCaption === 'available'
       ? 'AVAILABLE'
@@ -606,13 +633,13 @@ export async function getAvailablePageContent(): Promise<AvailablePageView> {
       {
         imageUrl: AVAILABLE_COMING_SOON_IMAGE,
         thumbUrl: AVAILABLE_COMING_SOON_IMAGE,
-        caption: 'New Painting Available - Coming Soon',
+        caption: DEFAULT_PLACEHOLDER_TITLE,
         meta: undefined,
       } satisfies LegacyThumbItem,
     ];
 
   return {
-    title: page?.title?.trim() || legacyPageCopy.available.title,
+    title: page?.title?.trim() || legacyPageCopy.available.title || DEFAULT_AVAILABLE_TITLE,
     introText: (page?.introText && page.introText.length > 0)
       ? page.introText
       : paragraphsToPortableText(legacyPageCopy.available.paragraphs),
@@ -667,8 +694,7 @@ export async function getCommissionsPageContent(): Promise<CommissionsPageView> 
       : paragraphsToPortableText(legacyPageCopy.commissions.paragraphs),
     processTitle: normalizeCommissionSpelling(page?.howItWorksTitle?.trim() || 'The Commission Process'),
     processSubtitle: normalizeCommissionSpelling(
-      page?.howItWorksSubtitle?.trim() ||
-      'Every commission follows a structured creative process — from your reference photo to a finished original Michel painting.',
+      page?.howItWorksSubtitle?.trim() || DEFAULT_COMMISSION_PROCESS_SUBTITLE,
     ),
     downPaymentRule: page?.downPaymentRule?.trim() || DEFAULT_COMMISSION_DOWN_PAYMENT_RULE,
     processSteps: resolvedProcessSteps,
@@ -722,7 +748,7 @@ export async function getHappyClientsPageContent(): Promise<HappyClientsPageView
   });
 
   return {
-    title: page?.title?.trim() || 'Happy Client Photos',
+    title: page?.title?.trim() || DEFAULT_HAPPY_CLIENTS_TITLE,
     introText: (page?.introText && page.introText.length > 0)
       ? page.introText
       : paragraphsToPortableText(legacyPageCopy.photos.paragraphs),

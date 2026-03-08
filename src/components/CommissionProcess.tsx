@@ -13,18 +13,36 @@ interface CommissionProcessProps {
   steps: CommissionProcessStepView[];
 }
 
-function EmptyStepThumb({ label, isPayment }: { label: string; isPayment?: boolean }) {
+function EmptyStepThumb({
+  label,
+  isPayment,
+  paymentText,
+}: {
+  label: string;
+  isPayment?: boolean;
+  paymentText?: string;
+}) {
+  if (isPayment) {
+    return (
+      <div className="process-placeholder process-placeholder-payment">
+        <div className="process-payment-window">
+          <span className="process-payment-text">{paymentText}</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={`process-placeholder${isPayment ? ' process-placeholder-payment' : ''}`}>
-      <span className="process-placeholder-label">{isPayment ? '50% Down Payment' : label}</span>
+    <div className="process-placeholder">
+      <span className="process-placeholder-label">{label}</span>
     </div>
   );
 }
 
 export default function CommissionProcess({
   title = 'The Commission Process',
-  subtitle = 'Every commission follows a structured creative process — from your reference photo to a finished original Michel painting.',
-  downPaymentRule = '50% down payment required before sketching begins. No sketching begins until down payment is received. Down payment covers materials (canvas, paint, brushes, hardware for hanging, etc.).',
+  subtitle = 'Many commissions follow a structured creative process — from your reference photo to a finished original Michel painting.',
+  downPaymentRule = 'Clients can make their 50% Down Payment via Zelle, Venmo, or Cash',
   steps,
 }: CommissionProcessProps) {
   const [viewerOpen, setViewerOpen] = useState(false);
@@ -83,44 +101,47 @@ export default function CommissionProcess({
             const isDownPayment = /down\s*payment/i.test(step.label);
 
             return (
-            <li key={step.id} className="process-step">
-              <span className="process-step-number">{i + 1}</span>
+              <li key={step.id} className="process-step">
+                <span className="process-step-number">{i + 1}</span>
 
-              <div className="process-step-card">
-                {step.images.length > 0 ? (
-                  <div className="process-step-images">
-                    {step.images.map((src) => (
-                      <button
-                        key={src}
-                        type="button"
-                        className="process-step-image-trigger"
-                        onClick={() => openViewer(src)}
-                        aria-label={`Open ${step.label}`}
-                      >
-                        <div className="process-step-media">
+                <div className={`process-step-card${isDownPayment ? ' process-step-card-payment' : ''}`}>
+                  {isDownPayment ? (
+                    <EmptyStepThumb label={step.label} isPayment paymentText={downPaymentRule} />
+                  ) : step.images.length > 0 ? (
+                    <div className="process-step-images">
+                      {step.images.map((src) => (
+                        <button
+                          key={src}
+                          type="button"
+                          className="process-step-image-trigger"
+                          onClick={() => openViewer(src)}
+                          aria-label={`Open ${step.label}`}
+                        >
+                          <div className="process-step-media">
                           <img
                             src={resolveLegacyImageUrl(src)}
                             alt={step.label}
                             className="process-step-img"
+                            referrerPolicy="no-referrer"
                           />
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                ) : (
-                  <EmptyStepThumb label={step.label} isPayment={isDownPayment} />
-                )}
-                <span className="process-step-label">{step.label}</span>
-                {step.caption && (
-                  <span className="process-step-caption">{step.caption}</span>
-                )}
-              </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <EmptyStepThumb label={step.label} />
+                  )}
+                  <span className="process-step-label">{step.label}</span>
+                  {step.caption && !isDownPayment ? (
+                    <span className="process-step-caption">{step.caption}</span>
+                  ) : null}
+                </div>
 
-              {i < flowSteps.length - 1 && (
-                <span className="process-arrow" aria-hidden="true" />
-              )}
-            </li>
-          );
+                {i < flowSteps.length - 1 && (
+                  <span className="process-arrow" aria-hidden="true" />
+                )}
+              </li>
+            );
           })}
         </ol>
       </div>

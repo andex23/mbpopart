@@ -63,7 +63,8 @@ export const siteSettings = defineType({
       name: 'footerText',
       title: 'Footer Text',
       type: 'string',
-      description: 'Example: © 2020 Michel Balasis',
+      description: 'Shown in the footer copyright line. Example: © 2026 Michel Balasis',
+      initialValue: '© 2026 Michel Balasis',
       validation: (Rule) => Rule.max(120),
     }),
     defineField({

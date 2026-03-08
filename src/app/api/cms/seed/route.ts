@@ -28,12 +28,22 @@ const revalidateSecret = process.env.SANITY_REVALIDATE_SECRET ?? '';
 const writeToken = process.env.SANITY_API_WRITE_TOKEN ?? '';
 
 const DEFAULT_NAV_ITEMS = [
-  { _key: 'nav-bio', key: 'bio', label: 'Bio', enabled: true, order: 1 },
+  { _key: 'nav-bio', key: 'bio', label: 'Intro Bio', enabled: true, order: 1 },
   { _key: 'nav-paintings', key: 'paintings', label: 'Paintings', enabled: true, order: 2 },
   { _key: 'nav-available', key: 'available', label: 'Available', enabled: true, order: 3 },
   { _key: 'nav-commissions', key: 'commissions', label: 'Commissions', enabled: true, order: 4 },
   { _key: 'nav-happy-clients', key: 'happyClients', label: 'Happy Client Photos', enabled: true, order: 5 },
 ];
+
+const LEGACY_DEFAULT_STRING_UPDATES = new Map<string, Set<string>>([
+  ['Intro Bio', new Set(['Bio'])],
+  ['Available', new Set(['Available Paintings'])],
+  ['Happy Clients', new Set(['Happy Client Photos', 'Happy Clients with Their Michel Paintings'])],
+  ['Many commissions follow a structured creative process — from your reference photo to a finished original Michel painting.', new Set([
+    'Every commission follows a structured creative process — from your reference photo to a finished original Michel painting.',
+  ])],
+  ['© 2026 Michel Balasis', new Set(['© 2020 Michel Balasis'])],
+]);
 
 const REVALIDATE_TAGS = [
   'sanity',
@@ -104,7 +114,15 @@ function keepExistingValue(existing: unknown, seeded: unknown): unknown {
   }
 
   if (typeof seeded === 'string') {
-    return normalizeText(String(existing)) ? existing : seeded;
+    const existingText = normalizeText(String(existing));
+    const seededText = normalizeText(String(seeded));
+    const legacyMatches = LEGACY_DEFAULT_STRING_UPDATES.get(seededText);
+
+    if (existingText && legacyMatches?.has(existingText)) {
+      return seeded;
+    }
+
+    return existingText ? existing : seeded;
   }
 
   if (typeof seeded === 'number' || typeof seeded === 'boolean') {
@@ -486,7 +504,7 @@ async function buildSingletonSeedDocuments(client: SanityClient) {
       locationLabel: 'Venice Florida USA',
       sandsDisplayMessage: siteContent.homepage.exhibiting[0] ?? '',
       footerPortrait,
-      footerText: '\u00A9 2020 Michel Balasis',
+      footerText: '© 2026 Michel Balasis',
       socialLinks: [],
       footerLinks: [],
       defaultSEO: {
@@ -542,9 +560,8 @@ async function buildSingletonSeedDocuments(client: SanityClient) {
       introText: toPortableText(legacyPageCopy.commissions.paragraphs),
       howItWorksTitle: 'The Commission Process',
       howItWorksSubtitle:
-        'Every commission follows a structured creative process — from your reference photo to a finished original Michel painting.',
-      downPaymentRule:
-        '50% down payment required before sketching begins. No sketching begins until down payment is received. Down payment covers materials (canvas, paint, brushes, hardware for hanging, etc.).',
+        'Many commissions follow a structured creative process — from your reference photo to a finished original Michel painting.',
+      downPaymentRule: 'Clients can make their 50% Down Payment via Zelle, Venmo, or Cash',
       examplesTitle: 'Recent Commission Examples',
       steps: commissionSteps,
       examples: commissionExamples,
@@ -552,7 +569,7 @@ async function buildSingletonSeedDocuments(client: SanityClient) {
     {
       _id: 'happyClientsPage',
       _type: 'happyClientsPage',
-      title: 'Happy Client Photos',
+      title: 'Happy Clients',
       introText: toPortableText(legacyPageCopy.photos.paragraphs),
       photos: happyPhotos,
     },

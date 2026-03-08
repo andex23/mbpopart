@@ -1,26 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
-  <title id="title">New Painting Available - Coming Soon</title>
+  <title id="title">New Painting Coming Soon</title>
   <desc id="desc">Placeholder tile for upcoming painting entries.</desc>
-  <defs>
-    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#3a4251"/>
-      <stop offset="100%" stop-color="#252b36"/>
-    </linearGradient>
-    <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1.2" fill="rgba(255,255,255,0.16)"/>
-    </pattern>
-  </defs>
-  <rect width="800" height="800" fill="url(#bg)"/>
-  <rect width="800" height="800" fill="url(#dots)"/>
-  <rect x="64" y="64" width="672" height="672" rx="20" fill="#f4f4f1" stroke="#2a2a2a" stroke-width="8"/>
-  <rect x="96" y="96" width="608" height="520" fill="#d8dbe0" stroke="#aeb4bd" stroke-width="4"/>
-  <text x="400" y="300" text-anchor="middle" fill="#cc3399" font-family="'Barlow Condensed', Arial, sans-serif" font-size="64" font-weight="700" letter-spacing="2">
+  <rect width="800" height="800" fill="#718092" fill-opacity="0.08"/>
+  <rect x="72" y="72" width="656" height="656" rx="20" fill="none" stroke="#718092" stroke-opacity="0.26" stroke-width="8"/>
+  <rect x="118" y="118" width="564" height="564" rx="14" fill="none" stroke="#718092" stroke-opacity="0.18" stroke-width="3"/>
+  <path d="M180 584h440" fill="none" stroke="#718092" stroke-opacity="0.28" stroke-width="4" stroke-linecap="round"/>
+  <path d="M212 228h376" fill="none" stroke="#718092" stroke-opacity="0.2" stroke-width="4" stroke-linecap="round"/>
+  <text x="400" y="344" text-anchor="middle" fill="#718092" fill-opacity="0.88" font-family="'Barlow Condensed', Arial, sans-serif" font-size="64" font-weight="600" letter-spacing="2">
     NEW PAINTING
   </text>
-  <text x="400" y="380" text-anchor="middle" fill="#2b2b2b" font-family="'Barlow Condensed', Arial, sans-serif" font-size="52" font-weight="700" letter-spacing="1.5">
-    AVAILABLE
-  </text>
-  <text x="400" y="560" text-anchor="middle" fill="#2a5ca1" font-family="'Barlow Condensed', Arial, sans-serif" font-size="54" font-weight="700" letter-spacing="1.5">
+  <text x="400" y="432" text-anchor="middle" fill="#718092" fill-opacity="0.88" font-family="'Barlow Condensed', Arial, sans-serif" font-size="56" font-weight="600" letter-spacing="1.8">
     COMING SOON
   </text>
 </svg>

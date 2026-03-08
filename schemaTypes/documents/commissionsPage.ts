@@ -30,6 +30,9 @@ export const commissionsPage = defineType({
       name: 'howItWorksSubtitle',
       title: 'How It Works Subtitle',
       type: 'string',
+      description: 'Intro sentence shown under "The Commission Process".',
+      initialValue:
+        'Many commissions follow a structured creative process — from your reference photo to a finished original Michel painting.',
       validation: (Rule) => Rule.max(220),
     }),
     defineField({
@@ -37,8 +40,7 @@ export const commissionsPage = defineType({
       title: 'Down Payment Rule',
       type: 'text',
       rows: 3,
-      initialValue:
-        '50% down payment required before sketching begins. No sketching begins until down payment is received. Down payment covers materials (canvas, paint, brushes, hardware for hanging, etc.).',
+      initialValue: 'Clients can make their 50% Down Payment via Zelle, Venmo, or Cash',
       validation: (Rule) => Rule.max(360),
     }),
     defineField({

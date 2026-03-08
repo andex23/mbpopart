@@ -467,8 +467,22 @@ a:hover {
   align-items: flex-end;
 }
 
+.available-page .legacy-title-row,
+.happy-clients-page .legacy-title-row {
+  margin: 0 0 16px;
+  padding-top: 4px;
+  padding-left: 2px;
+}
+
+.available-page .legacy-heading,
+.happy-clients-page .legacy-heading {
+  letter-spacing: 0.018em;
+}
+
 .bio-page .legacy-title-row .legacy-heading {
   text-align: left;
+  text-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .bio-page .legacy-title-row {
@@ -755,7 +769,8 @@ a:hover {
 }
 
 .process-placeholder {
-  height: 140px;
+  width: 100%;
+  aspect-ratio: 4 / 5;
   background: repeating-linear-gradient(
     -45deg,
     #e8e8e8,
@@ -768,6 +783,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px;
 }
 
 .process-placeholder-label {
@@ -782,8 +798,38 @@ a:hover {
 }
 
 .process-placeholder-payment {
-  background: linear-gradient(180deg, #ffe8f4 0%, #f6d6ea 100%);
-  border: 1px solid #d8a6c8;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 12px;
+  background: linear-gradient(180deg, #f5f7fa 0%, #edf1f5 100%);
+  border: 1px solid #c6cdd6;
+}
+
+.process-step-card-payment {
+  gap: 8px;
+}
+
+.process-payment-window {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #bcc5cf;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.86);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 16px;
+}
+
+.process-payment-text {
+  display: block;
+  max-width: 240px;
+  margin: 0 auto;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  font-weight: 600;
+  text-align: center;
 }
 
 .process-step-images {
@@ -833,7 +879,7 @@ a:hover {
   font-weight: 500;
   color: var(--text-primary);
   line-height: 1.35;
-  text-align: left;
+  text-align: center;
   min-height: 1.5em;
 }
 
@@ -843,7 +889,7 @@ a:hover {
   font-size: 0.78rem;
   color: var(--text-muted);
   line-height: 1.35;
-  text-align: left;
+  text-align: center;
   min-height: 2.8em;
 }
 
@@ -1455,7 +1501,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
+  gap: 3px;
 }
 
 .site-footer-line-main {
@@ -1468,6 +1514,7 @@ a:hover {
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
+  margin-top: 1px;
 }
 
 .site-footer-email {
@@ -1482,6 +1529,7 @@ a:hover {
   line-height: 1.3;
   text-align: right;
   white-space: nowrap;
+  margin-left: auto;
   padding-inline-end: 8px;
 }
 
@@ -1776,6 +1824,19 @@ a:hover {
     text-align: center;
   }
 
+  .available-page .legacy-title-row,
+  .happy-clients-page .legacy-title-row {
+    margin: 0 0 14px;
+    padding-top: 1px;
+    padding-left: 0;
+    justify-content: center;
+  }
+
+  .available-page .legacy-heading,
+  .happy-clients-page .legacy-heading {
+    letter-spacing: 0.016em;
+  }
+
   .legacy-subtitle {
     font-size: 1.65rem;
   }
@@ -1976,12 +2037,13 @@ a:hover {
     margin: 0;
     font-size: 12px;
     text-align: right;
-    white-space: normal;
+    white-space: nowrap;
     margin-left: auto;
-    padding-inline-end: 6px;
+    padding-inline-end: 0;
   }
 
   .legacy-title-row {
     align-items: center;
+    justify-content: center;
   }
 }
