@@ -2027,18 +2027,18 @@ a:hover {
   }
 
   .site-footer-line-bottom {
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1px;
   }
 
   .site-footer-copy {
     margin: 0;
     font-size: 12px;
-    text-align: right;
-    white-space: nowrap;
-    margin-left: auto;
+    text-align: left;
+    white-space: normal;
+    margin-left: 0;
     padding-inline-end: 0;
   }
 
