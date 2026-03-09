@@ -1463,7 +1463,7 @@ a:hover {
   padding: 12px 22px 10px;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 28px;
 }
 
 .site-footer-inner a {
@@ -1488,7 +1488,7 @@ a:hover {
 .site-footer-content {
   flex: 1;
   min-width: 0;
-  padding: 0;
+  padding: 0 0 0 12px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -1498,12 +1498,10 @@ a:hover {
   flex: 1;
   min-width: 0;
   margin-left: auto;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
-  padding-inline-start: 10px;
 }
 
 .site-footer-line-main {
@@ -1993,7 +1991,7 @@ a:hover {
     align-items: center;
     flex-direction: row;
     text-align: left;
-    gap: 11px;
+    gap: 16px;
     padding: 10px 10px 12px;
   }
 
@@ -2020,13 +2018,12 @@ a:hover {
     align-items: flex-start;
     justify-content: center;
     gap: 2px;
-    padding: 0;
+    padding: 0 0 0 10px;
   }
 
   .site-footer-contact {
     width: 100%;
     gap: 1px;
-    padding-inline-start: 6px;
   }
 
   .site-footer-line-bottom {
