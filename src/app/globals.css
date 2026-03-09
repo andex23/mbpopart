@@ -1498,10 +1498,12 @@ a:hover {
   flex: 1;
   min-width: 0;
   margin-left: auto;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
+  padding-inline-start: 10px;
 }
 
 .site-footer-line-main {
@@ -2024,6 +2026,7 @@ a:hover {
   .site-footer-contact {
     width: 100%;
     gap: 1px;
+    padding-inline-start: 6px;
   }
 
   .site-footer-line-bottom {
