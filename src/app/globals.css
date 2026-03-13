@@ -471,12 +471,13 @@ a:hover {
 .happy-clients-page .legacy-title-row {
   margin: 0 0 16px;
   padding-top: 4px;
-  padding-left: 2px;
+  padding-left: 8px;
+  justify-content: flex-start;
 }
 
 .available-page .legacy-heading,
 .happy-clients-page .legacy-heading {
-  letter-spacing: 0.018em;
+  letter-spacing: 0.022em;
 }
 
 .bio-page .legacy-title-row .legacy-heading {
@@ -1828,13 +1829,14 @@ a:hover {
   .happy-clients-page .legacy-title-row {
     margin: 0 0 14px;
     padding-top: 1px;
-    padding-left: 0;
-    justify-content: center;
+    padding-left: 8px;
+    justify-content: flex-start;
   }
 
   .available-page .legacy-heading,
   .happy-clients-page .legacy-heading {
-    letter-spacing: 0.016em;
+    text-align: left;
+    letter-spacing: 0.018em;
   }
 
   .legacy-subtitle {

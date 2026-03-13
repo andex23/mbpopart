@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import LegacySplitLayout from '@/components/LegacySplitLayout';
 import ArtworkCard from '@/components/ArtworkCard';
 import ImageViewer from '@/components/ImageViewer';
+import LegacyThumbCard from '@/components/LegacyThumbCard';
 import RetroNavButton from '@/components/RetroNavButton';
 import {
   doesYearGroupMatchRangeFilter,
@@ -16,8 +17,14 @@ import {
 } from '@/data/artworks';
 import { commonContact } from '@/data/legacy-content';
 import type { Artwork } from '@/data/artworks';
+import type { LegacyThumbItem } from '@/lib/content.types';
 
 const INITIAL_COUNT = 30;
+const EMPTY_SECTION_PLACEHOLDERS: LegacyThumbItem[] = Array.from({ length: 4 }, (_, index) => ({
+  imageUrl: `/placeholders/new-painting-coming-soon.svg?slot=${index + 1}`,
+  thumbUrl: `/placeholders/new-painting-coming-soon.svg?slot=${index + 1}`,
+  caption: 'New Painting Coming Soon',
+}));
 
 interface GallerySection {
   key: string;
@@ -283,8 +290,17 @@ function GalleryContent() {
       ) : null}
 
       {renderedSections.length === 0 ? (
-        <section className="gallery-empty-state" aria-live="polite">
-          <p className="gallery-empty-text">No paintings were found for this selection.</p>
+        <section className="gallery-year-section" aria-live="polite">
+          <div className="gallery-year-header">
+            <h2 className="legacy-subtitle mb-0">
+              {(activeYear !== null ? String(activeYear) : activeRangeLabel) || 'Selected Section'} (0)
+            </h2>
+          </div>
+          <div className="legacy-thumb-grid">
+            {EMPTY_SECTION_PLACEHOLDERS.map((item) => (
+              <LegacyThumbCard key={item.imageUrl} item={item} />
+            ))}
+          </div>
         </section>
       ) : null}
 
@@ -310,14 +326,20 @@ function GalleryContent() {
           </div>
 
           <div className="legacy-thumb-grid">
-            {section.works.map((work, index) => (
-              <ArtworkCard
-                key={work.imageUrl}
-                work={work}
-                priority={index < 10}
-                onClick={() => openViewer(work)}
-              />
-            ))}
+            {section.works.length > 0 ? (
+              section.works.map((work, index) => (
+                <ArtworkCard
+                  key={work.imageUrl}
+                  work={work}
+                  priority={index < 10}
+                  onClick={() => openViewer(work)}
+                />
+              ))
+            ) : (
+              EMPTY_SECTION_PLACEHOLDERS.map((item) => (
+                <LegacyThumbCard key={`${section.key}-${item.imageUrl}`} item={item} />
+              ))
+            )}
           </div>
         </section>
       ))}
