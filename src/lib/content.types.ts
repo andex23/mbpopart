@@ -58,6 +58,7 @@ export interface BioPageView {
 export interface PaintingsPageView {
   title: string;
   introText: PortableTextValue;
+  emptySectionPlaceholderText: string;
   yearGroups: YearGroup[];
 }
 

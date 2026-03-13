@@ -547,6 +547,7 @@ export async function getPaintingsPageContent(): Promise<PaintingsPageView> {
           'Browse Michel Balasis paintings by year. Click any thumbnail to view a larger image.',
           'Use the year buttons to jump directly to a specific collection.',
         ]),
+    emptySectionPlaceholderText: page?.emptySectionPlaceholderText?.trim() || DEFAULT_PLACEHOLDER_TITLE,
     yearGroups: getGroupedYearRanges(sourceArtworks),
   };
 }

@@ -73,6 +73,7 @@ export const PAINTINGS_PAGE_QUERY = groq`
   *[_type == "paintingsPage"][0]{
     title,
     introText,
+    emptySectionPlaceholderText,
     yearGroupingMode
   }
 `;

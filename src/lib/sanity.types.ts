@@ -83,6 +83,7 @@ export interface CmsPainting {
 export interface CmsPaintingsPage {
   title?: string;
   introText?: PortableTextValue;
+  emptySectionPlaceholderText?: string;
   yearGroupingMode?: string;
 }
 
