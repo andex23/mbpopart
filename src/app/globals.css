@@ -468,7 +468,8 @@ a:hover {
 }
 
 .available-page .legacy-title-row,
-.happy-clients-page .legacy-title-row {
+.happy-clients-page .legacy-title-row,
+.commission-page .legacy-title-row {
   margin: 0 0 16px;
   padding-top: 4px;
   padding-left: 8px;
@@ -476,7 +477,8 @@ a:hover {
 }
 
 .available-page .legacy-heading,
-.happy-clients-page .legacy-heading {
+.happy-clients-page .legacy-heading,
+.commission-page .legacy-heading {
   letter-spacing: 0.022em;
 }
 
@@ -1826,7 +1828,8 @@ a:hover {
   }
 
   .available-page .legacy-title-row,
-  .happy-clients-page .legacy-title-row {
+  .happy-clients-page .legacy-title-row,
+  .commission-page .legacy-title-row {
     margin: 0 0 14px;
     padding-top: 1px;
     padding-left: 8px;
@@ -1834,7 +1837,8 @@ a:hover {
   }
 
   .available-page .legacy-heading,
-  .happy-clients-page .legacy-heading {
+  .happy-clients-page .legacy-heading,
+  .commission-page .legacy-heading {
     text-align: left;
     letter-spacing: 0.018em;
   }
