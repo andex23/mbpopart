@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 import './globals.css';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-import ConstructionNotice from '@/components/ConstructionNotice';
+import SiteGate from '@/components/SiteGate';
 import { getGlobalContent, getSiteSettingsContent } from '@/lib/cms-content';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -41,22 +38,9 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased">
-        <Suspense fallback={null}>
-          <Navigation items={navigation} />
-        </Suspense>
-        <main className="site-shell">
-          <ConstructionNotice
-            contactEmail={siteSettings.contactEmail}
-            contactPhone={siteSettings.contactPhone}
-          />
+        <SiteGate navigation={navigation} siteSettings={siteSettings}>
           {children}
-        </main>
-        <Footer
-          contactEmail={siteSettings.contactEmail}
-          contactPhone={siteSettings.contactPhone}
-          footerText={siteSettings.footerText}
-          footerPortraitUrl={siteSettings.footerPortraitUrl}
-        />
+        </SiteGate>
       </body>
     </html>
   );

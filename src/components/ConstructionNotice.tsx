@@ -1,32 +1,27 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
-
 interface ConstructionNoticeProps {
   contactEmail: string;
   contactPhone?: string;
+  fullPage?: boolean;
 }
 
 export default function ConstructionNotice({
   contactEmail,
   contactPhone,
+  fullPage = false,
 }: ConstructionNoticeProps) {
-  const pathname = usePathname();
-
-  if (pathname.startsWith('/studio')) {
-    return null;
-  }
-
   return (
-    <section className="site-construction-banner" aria-label="Website under construction notice">
+    <section
+      className={`site-construction-banner${fullPage ? ' site-construction-banner-full' : ''}`}
+      aria-label="Website under construction notice"
+    >
       <div className="site-construction-panel">
         <div className="site-construction-grid">
           <div className="site-construction-copy">
             <p className="site-construction-kicker">Temporary site update</p>
             <h2 className="site-construction-title">Website Under Construction</h2>
             <p className="site-construction-text">
-              We&apos;re refreshing the site and reorganizing artwork pages. The current content is still
-              available while the full update is being finished.
+              We&apos;re refreshing the site and reorganizing artwork pages. Please check back soon while the
+              full update is being finished.
             </p>
           </div>
 

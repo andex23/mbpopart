@@ -75,8 +75,22 @@ a:hover {
   padding: 0 14px 28px;
 }
 
+.site-shell-construction {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
 .site-construction-banner {
   margin: 0 0 16px;
+}
+
+.site-construction-banner-full {
+  width: min(100%, 980px);
+  margin: 0;
 }
 
 .site-construction-panel {
@@ -177,6 +191,41 @@ a:hover {
 .site-construction-link {
   color: var(--link);
   font-weight: 700;
+}
+
+.site-construction-banner-full .site-construction-panel {
+  border-radius: 28px;
+}
+
+.site-construction-banner-full .site-construction-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding: 28px 28px 26px;
+}
+
+.site-construction-banner-full .site-construction-copy {
+  text-align: center;
+}
+
+.site-construction-banner-full .site-construction-kicker {
+  margin-bottom: 11px;
+}
+
+.site-construction-banner-full .site-construction-title {
+  font-size: clamp(2.6rem, 7vw, 5.3rem);
+}
+
+.site-construction-banner-full .site-construction-text {
+  max-width: 42rem;
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
+
+.site-construction-banner-full .site-construction-contact {
+  justify-items: center;
+  width: min(100%, 420px);
+  margin: 0 auto;
+  text-align: center;
 }
 
 .site-header {
@@ -1914,6 +1963,12 @@ a:hover {
     padding: 0 8px 24px;
   }
 
+  .site-shell-construction {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    min-height: 100vh;
+  }
+
   .site-construction-banner {
     margin-bottom: 12px;
   }
@@ -1935,6 +1990,19 @@ a:hover {
 
   .site-construction-contact {
     padding: 12px 12px 11px;
+  }
+
+  .site-construction-banner-full .site-construction-grid {
+    padding: 18px 14px 16px;
+  }
+
+  .site-construction-banner-full .site-construction-title {
+    font-size: clamp(2.2rem, 12vw, 3.3rem);
+    text-align: center;
+  }
+
+  .site-construction-banner-full .site-construction-text {
+    font-size: 1rem;
   }
 
   .legacy-bubble {
