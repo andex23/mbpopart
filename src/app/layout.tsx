@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import './globals.css';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import ConstructionNotice from '@/components/ConstructionNotice';
 import { getGlobalContent, getSiteSettingsContent } from '@/lib/cms-content';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -43,7 +44,13 @@ export default async function RootLayout({
         <Suspense fallback={null}>
           <Navigation items={navigation} />
         </Suspense>
-        <main className="site-shell">{children}</main>
+        <main className="site-shell">
+          <ConstructionNotice
+            contactEmail={siteSettings.contactEmail}
+            contactPhone={siteSettings.contactPhone}
+          />
+          {children}
+        </main>
         <Footer
           contactEmail={siteSettings.contactEmail}
           contactPhone={siteSettings.contactPhone}

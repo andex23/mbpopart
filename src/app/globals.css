@@ -75,6 +75,110 @@ a:hover {
   padding: 0 14px 28px;
 }
 
+.site-construction-banner {
+  margin: 0 0 16px;
+}
+
+.site-construction-panel {
+  position: relative;
+  overflow: hidden;
+  border: 3px solid var(--bubble-border);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.58), transparent 36%),
+    linear-gradient(180deg, #f6f2d7 0%, #f4efe2 52%, #f1ece4 100%);
+  box-shadow: var(--shadow-strong), 0 10px 22px rgba(5, 13, 26, 0.12);
+}
+
+.site-construction-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(115deg, rgba(89, 180, 234, 0.08), rgba(204, 51, 153, 0.04)),
+    radial-gradient(circle at 1px 1px, rgba(62, 74, 92, 0.12) 1px, transparent 0);
+  background-size: auto, 16px 16px;
+  pointer-events: none;
+}
+
+.site-construction-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(240px, 320px);
+  gap: 18px;
+  align-items: center;
+  padding: 16px 18px;
+}
+
+.site-construction-copy {
+  min-width: 0;
+}
+
+.site-construction-kicker {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 9px;
+  padding: 5px 10px 4px;
+  border: 1px solid rgba(42, 42, 42, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--accent);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.site-construction-title {
+  margin: 0 0 7px;
+  color: #59b4ea;
+  font-family: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 0.92;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.site-construction-text {
+  margin: 0;
+  max-width: 48rem;
+  color: var(--text-secondary);
+  font-size: 1.04rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.site-construction-contact {
+  display: grid;
+  gap: 5px;
+  justify-items: start;
+  padding: 13px 15px;
+  border: 1px solid rgba(42, 42, 42, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.48);
+  color: #2a5ca1;
+  font-size: 1rem;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.site-construction-contact-label {
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 1.08rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.site-construction-link {
+  color: var(--link);
+  font-weight: 700;
+}
+
 .site-header {
   position: relative;
   z-index: 40;
@@ -1491,15 +1595,15 @@ a:hover {
 .site-footer-content {
   flex: 1;
   min-width: 0;
-  padding: 0 0 0 12px;
+  padding: 0 12px 0 12px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 
 .site-footer-contact {
-  flex: 1;
-  min-width: 0;
+  width: fit-content;
+  max-width: 100%;
   margin-left: auto;
   display: flex;
   flex-direction: column;
@@ -1808,6 +1912,29 @@ a:hover {
 
   .site-shell {
     padding: 0 8px 24px;
+  }
+
+  .site-construction-banner {
+    margin-bottom: 12px;
+  }
+
+  .site-construction-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px 12px;
+  }
+
+  .site-construction-title {
+    font-size: clamp(1.8rem, 10vw, 2.55rem);
+    text-align: left;
+  }
+
+  .site-construction-text {
+    font-size: 0.99rem;
+  }
+
+  .site-construction-contact {
+    padding: 12px 12px 11px;
   }
 
   .legacy-bubble {
