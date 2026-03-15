@@ -20,13 +20,13 @@ export default function ConstructionNotice({
             <p className="site-construction-kicker">Temporary site update</p>
             <h2 className="site-construction-title">Website Under Construction</h2>
             <p className="site-construction-text">
-              We&apos;re refreshing the site and reorganizing artwork pages. Please check back soon while the
-              full update is being finished.
+              Michel is refreshing the site and reorganizing artwork pages. Please contact Michel directly
+              for purchases, commissions, or questions while the full update is being finished.
             </p>
           </div>
 
           <div className="site-construction-contact">
-            <span className="site-construction-contact-label">Questions, purchases, or commissions</span>
+            <span className="site-construction-contact-label">Please contact Michel</span>
             <a href={`mailto:${contactEmail}`} className="site-construction-link">
               Email: {contactEmail}
             </a>
