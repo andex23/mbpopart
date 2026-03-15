@@ -179,15 +179,6 @@ a:hover {
   font-weight: 600;
 }
 
-.site-construction-contact-label {
-  color: var(--text-primary);
-  font-family: var(--font-ui);
-  font-size: 1.08rem;
-  line-height: 1;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
 .site-construction-link {
   color: var(--link);
   font-weight: 700;

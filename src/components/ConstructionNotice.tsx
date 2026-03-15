@@ -26,7 +26,6 @@ export default function ConstructionNotice({
           </div>
 
           <div className="site-construction-contact">
-            <span className="site-construction-contact-label">Please contact Michel</span>
             <a href={`mailto:${contactEmail}`} className="site-construction-link">
               Email: {contactEmail}
             </a>
