@@ -35,6 +35,10 @@ export default function Footer({
               Email :{' '}
               <a className="site-footer-email" href={`mailto:${contactEmail}`}>{contactEmail}</a>
             </p>
+            <div className="site-footer-line-bottom">
+              <p className="site-footer-line">Phone / Text : {contactPhone}</p>
+              <p className="site-footer-copy">{footerText}</p>
+            </div>
             {socialLinks.length > 0 ? (
               <nav className="site-footer-socials" aria-label="Social links">
                 {socialLinks.map((link) => (
@@ -50,10 +54,6 @@ export default function Footer({
                 ))}
               </nav>
             ) : null}
-            <div className="site-footer-line-bottom">
-              <p className="site-footer-line">Phone / Text : {contactPhone}</p>
-              <p className="site-footer-copy">{footerText}</p>
-            </div>
           </div>
         </div>
       </div>
