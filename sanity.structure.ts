@@ -1,4 +1,5 @@
 import type { StructureResolver } from 'sanity/structure';
+import PaintingOrderPane from './src/components/PaintingOrderPane';
 import StudioPreviewPane from './src/components/StudioPreviewPane';
 
 type StudioYearRange = {
@@ -109,6 +110,9 @@ export const deskStructure: StructureResolver = (S) =>
           S.list()
             .title('Paintings')
             .items([
+              S.listItem()
+                .title('Painting Order')
+                .child(S.component(PaintingOrderPane).title('Painting Order')),
               S.listItem()
                 .title('All Paintings')
                 .child(

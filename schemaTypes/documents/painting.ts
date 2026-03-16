@@ -100,7 +100,7 @@ export const painting = defineType({
       name: 'sortOrder',
       title: 'Manual Sort Order (Optional)',
       type: 'number',
-      description: 'Lower values appear first within the same year.',
+      description: 'Lower values appear first within the same year. Easiest method: use Paintings > Painting Order in the CMS.',
       validation: (Rule) => Rule.min(0).max(100000),
     }),
     defineField({
@@ -123,6 +123,26 @@ export const painting = defineType({
       validation: (Rule) => Rule.max(60),
     }),
   ],
+  orderings: [
+    {
+      title: 'Website Display Order',
+      name: 'websiteDisplayOrder',
+      by: [
+        { field: 'year', direction: 'desc' },
+        { field: 'sortOrder', direction: 'asc' },
+        { field: '_updatedAt', direction: 'desc' },
+      ],
+    },
+    {
+      title: 'Manual Sort Order',
+      name: 'manualSortOrder',
+      by: [
+        { field: 'sortOrder', direction: 'asc' },
+        { field: 'year', direction: 'desc' },
+        { field: '_updatedAt', direction: 'desc' },
+      ],
+    },
+  ],
   preview: {
     select: {
       title: 'title',
@@ -132,12 +152,13 @@ export const painting = defineType({
       media: 'mainImage',
       status: 'status',
       comingSoon: 'comingSoon',
+      sortOrder: 'sortOrder',
     },
-    prepare({ title, caption, year, copyrightYear, media, status, comingSoon }) {
+    prepare({ title, caption, year, copyrightYear, media, status, comingSoon, sortOrder }) {
       return {
         title: caption || title || 'Untitled painting',
         subtitle:
-          `${copyrightYear ?? year ?? 'no year'} · ${status ?? 'no status'}${comingSoon ? ' · coming soon' : ''}` +
+          `${copyrightYear ?? year ?? 'no year'} · ${status ?? 'no status'} · order: ${sortOrder ?? 'auto'}${comingSoon ? ' · coming soon' : ''}` +
           `${caption && title ? ` · title: ${title}` : ''}`,
         media,
       };

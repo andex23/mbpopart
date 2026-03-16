@@ -75,6 +75,16 @@ Use this for each individual painting:
 Important:
 - If `Status` is `Available`, it will also show on the `Available` page automatically
 
+### Painting Order
+
+Use this for:
+- changing the order of paintings inside one year section
+- moving a painting up or down without editing sort numbers by hand
+
+Important:
+- this only changes order within the same year
+- if a painting should appear in a different section, change that painting's `Year`
+
 ### Available Page
 
 Use this for:
@@ -118,6 +128,14 @@ Use this for:
 1. Open that painting
 2. Set `Status` to `Available`
 3. Click `Publish`
+
+### Change painting order inside a year
+
+1. Open `Paintings`
+2. Open `Painting Order`
+3. Choose the year
+4. Use `Up`, `Down`, `Top`, or `Bottom`
+5. Click `Save This Year Order`
 
 ### Change the menu text
 

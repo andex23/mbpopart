@@ -740,6 +740,7 @@ a:hover {
   font-size: 1.04rem;
   line-height: 1.55;
   text-align: center;
+  white-space: pre-line;
 }
 
 .legacy-right-header {
