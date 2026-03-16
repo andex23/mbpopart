@@ -7,6 +7,7 @@ interface FooterProps {
   contactPhone: string;
   footerText: string;
   footerPortraitUrl?: string;
+  socialLinks?: Array<{ label: string; url: string }>;
 }
 
 export default function Footer({
@@ -14,6 +15,7 @@ export default function Footer({
   contactPhone,
   footerText,
   footerPortraitUrl = '/assets/mbface.png',
+  socialLinks = [],
 }: FooterProps) {
   return (
     <footer className="site-footer">
@@ -33,6 +35,21 @@ export default function Footer({
               Email :{' '}
               <a className="site-footer-email" href={`mailto:${contactEmail}`}>{contactEmail}</a>
             </p>
+            {socialLinks.length > 0 ? (
+              <nav className="site-footer-socials" aria-label="Social links">
+                {socialLinks.map((link) => (
+                  <a
+                    key={`${link.label}-${link.url}`}
+                    className="site-footer-social-link"
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+            ) : null}
             <div className="site-footer-line-bottom">
               <p className="site-footer-line">Phone / Text : {contactPhone}</p>
               <p className="site-footer-copy">{footerText}</p>

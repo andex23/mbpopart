@@ -184,6 +184,24 @@ a:hover {
   font-weight: 700;
 }
 
+.site-construction-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  justify-content: flex-start;
+  margin-top: 3px;
+}
+
+.site-construction-social-link {
+  color: var(--link);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-construction-social-link:hover {
+  text-decoration: underline;
+}
+
 .site-construction-banner-full .site-construction-panel {
   border-radius: 28px;
 }
@@ -217,6 +235,10 @@ a:hover {
   width: min(100%, 420px);
   margin: 0 auto;
   text-align: center;
+}
+
+.site-construction-banner-full .site-construction-socials {
+  justify-content: center;
 }
 
 .site-header {
@@ -1653,6 +1675,26 @@ a:hover {
 
 .site-footer-line-main {
   width: 100%;
+}
+
+.site-footer-socials {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 1px;
+}
+
+.site-footer-social-link {
+  color: #6bc0da;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-footer-social-link:hover {
+  text-decoration: underline;
 }
 
 .site-footer-line-bottom {

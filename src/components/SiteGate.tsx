@@ -16,6 +16,7 @@ interface SiteGateProps {
     contactPhone: string;
     footerText: string;
     footerPortraitUrl?: string;
+    socialLinks: Array<{ label: string; url: string }>;
   };
 }
 
@@ -36,6 +37,7 @@ export default function SiteGate({
         <ConstructionNotice
           contactEmail={siteSettings.contactEmail}
           contactPhone={siteSettings.contactPhone}
+          socialLinks={siteSettings.socialLinks}
           fullPage
         />
       </main>
@@ -53,6 +55,7 @@ export default function SiteGate({
         contactPhone={siteSettings.contactPhone}
         footerText={siteSettings.footerText}
         footerPortraitUrl={siteSettings.footerPortraitUrl}
+        socialLinks={siteSettings.socialLinks}
       />
     </>
   );

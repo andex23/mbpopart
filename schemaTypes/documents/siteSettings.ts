@@ -49,6 +49,7 @@ export const siteSettings = defineType({
       name: 'socialLinks',
       title: 'Social Links',
       type: 'array',
+      description: 'Shown in the construction contact box and the footer.',
       of: [defineArrayMember({ type: 'linkItem' })],
       validation: (Rule) => Rule.max(8),
     }),

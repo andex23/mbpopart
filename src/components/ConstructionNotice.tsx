@@ -1,12 +1,14 @@
 interface ConstructionNoticeProps {
   contactEmail: string;
   contactPhone?: string;
+  socialLinks?: Array<{ label: string; url: string }>;
   fullPage?: boolean;
 }
 
 export default function ConstructionNotice({
   contactEmail,
   contactPhone,
+  socialLinks = [],
   fullPage = false,
 }: ConstructionNoticeProps) {
   return (
@@ -30,6 +32,21 @@ export default function ConstructionNotice({
               Email: {contactEmail}
             </a>
             {contactPhone ? <span>Phone / Text: {contactPhone}</span> : null}
+            {socialLinks.length > 0 ? (
+              <nav className="site-construction-socials" aria-label="Social links">
+                {socialLinks.map((link) => (
+                  <a
+                    key={`${link.label}-${link.url}`}
+                    className="site-construction-social-link"
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+            ) : null}
           </div>
         </div>
       </div>
