@@ -16,7 +16,7 @@ export const navigationItem = defineType({
           { title: 'Paintings', value: 'paintings' },
           { title: 'Available', value: 'available' },
           { title: 'Commissions', value: 'commissions' },
-          { title: 'Happy Client Photos', value: 'happyClients' },
+          { title: 'Happy Clients', value: 'happyClients' },
         ],
         layout: 'dropdown',
       },

@@ -78,7 +78,7 @@ const DEFAULT_NAVIGATION: NavigationViewItem[] = [
   { key: 'paintings', label: 'Paintings', enabled: true, order: 2, href: '/gallery' },
   { key: 'available', label: 'Available', enabled: true, order: 3, href: '/available' },
   { key: 'commissions', label: 'Commissions', enabled: true, order: 4, href: '/commissions' },
-  { key: 'happyClients', label: 'Happy Client Photos', enabled: true, order: 5, href: '/photos' },
+  { key: 'happyClients', label: 'Happy Clients', enabled: true, order: 5, href: '/photos' },
 ];
 
 const ACCENT_CYCLE = ['accent-yellow', 'accent-pink', 'accent-blue', 'accent-orange', 'accent-green'];

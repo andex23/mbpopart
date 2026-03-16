@@ -32,7 +32,7 @@ const DEFAULT_NAV_ITEMS = [
   { _key: 'nav-paintings', key: 'paintings', label: 'Paintings', enabled: true, order: 2 },
   { _key: 'nav-available', key: 'available', label: 'Available', enabled: true, order: 3 },
   { _key: 'nav-commissions', key: 'commissions', label: 'Commissions', enabled: true, order: 4 },
-  { _key: 'nav-happy-clients', key: 'happyClients', label: 'Happy Client Photos', enabled: true, order: 5 },
+  { _key: 'nav-happy-clients', key: 'happyClients', label: 'Happy Clients', enabled: true, order: 5 },
 ];
 
 const LEGACY_DEFAULT_STRING_UPDATES = new Map<string, Set<string>>([
