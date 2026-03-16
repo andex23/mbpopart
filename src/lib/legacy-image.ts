@@ -30,8 +30,7 @@ export function resolveLegacyImageUrl(value: string | null | undefined): string 
       return raw;
     }
 
-    const proxyUrl = parsed.toString().replace(/^https?:\/\//, '');
-    return `https://images.weserv.nl/?url=${encodeURIComponent(proxyUrl)}`;
+    return `${LEGACY_IMAGE_PROXY_PREFIX}${encodeURIComponent(parsed.toString())}`;
   } catch {
     return raw;
   }

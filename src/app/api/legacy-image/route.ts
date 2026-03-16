@@ -1,10 +1,58 @@
 import { NextRequest } from 'next/server';
+import http from 'node:http';
+import { Readable } from 'node:stream';
 import { getDefaultImagePlaceholder, isLegacyImageHost } from '@/lib/legacy-image';
 
 export const runtime = 'nodejs';
+const LEGACY_ASSET_SERVER_IP = '192.250.237.56';
 
 function toPlaceholderUrl(request: NextRequest): URL {
   return new URL(getDefaultImagePlaceholder(), request.url);
+}
+
+async function fetchLegacyHostImage(sourceUrl: URL, timeoutMs: number): Promise<Response | null> {
+  return new Promise((resolve) => {
+    const request = http.request(
+      {
+        host: LEGACY_ASSET_SERVER_IP,
+        path: `${sourceUrl.pathname}${sourceUrl.search}`,
+        headers: {
+          Host: sourceUrl.hostname,
+          Accept: 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
+        },
+      },
+      (response) => {
+        const contentType = response.headers['content-type']?.toLowerCase() ?? '';
+        if ((response.statusCode ?? 500) >= 400 || !contentType.startsWith('image/')) {
+          response.resume();
+          resolve(null);
+          return;
+        }
+
+        const headers = new Headers();
+        headers.set('content-type', response.headers['content-type'] ?? 'image/jpeg');
+        headers.set('cache-control', 'public, s-maxage=86400, stale-while-revalidate=604800');
+
+        const contentLength = response.headers['content-length'];
+        if (typeof contentLength === 'string') {
+          headers.set('content-length', contentLength);
+        }
+
+        resolve(new Response(Readable.toWeb(response) as ReadableStream, {
+          status: 200,
+          headers,
+        }));
+      },
+    );
+
+    request.setTimeout(timeoutMs, () => {
+      request.destroy();
+      resolve(null);
+    });
+
+    request.on('error', () => resolve(null));
+    request.end();
+  });
 }
 
 async function fetchWithTimeout(url: string, timeoutMs: number): Promise<Response | null> {
@@ -51,7 +99,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     return Response.redirect(toPlaceholderUrl(request), 302);
   }
 
-  const direct = await fetchWithTimeout(sourceUrl.toString(), 8000);
+  const direct = await fetchLegacyHostImage(sourceUrl, 8000);
   const archived = isImageResponse(direct)
     ? direct
     : await fetchWithTimeout(`https://web.archive.org/web/0im_/${sourceUrl.toString()}`, 15000);
