@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import './globals.css';
 import SiteGate from '@/components/SiteGate';
 import { getGlobalContent, getSiteSettingsContent } from '@/lib/cms-content';
+import { PREVIEW_BYPASS_COOKIE_NAME, PREVIEW_BYPASS_COOKIE_VALUE } from '@/lib/preview-bypass';
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettingsContent();
@@ -28,6 +30,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const { navigation, siteSettings } = await getGlobalContent();
+  const cookieStore = await cookies();
+  const previewBypassEnabled = cookieStore.get(PREVIEW_BYPASS_COOKIE_NAME)?.value === PREVIEW_BYPASS_COOKIE_VALUE;
 
   return (
     <html lang="en">
@@ -38,7 +42,11 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased">
-        <SiteGate navigation={navigation} siteSettings={siteSettings}>
+        <SiteGate
+          navigation={navigation}
+          siteSettings={siteSettings}
+          previewBypassEnabled={previewBypassEnabled}
+        >
           {children}
         </SiteGate>
       </body>

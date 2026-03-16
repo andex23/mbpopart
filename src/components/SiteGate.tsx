@@ -10,6 +10,7 @@ import type { NavigationViewItem } from '@/lib/content.types';
 interface SiteGateProps {
   children: React.ReactNode;
   navigation: NavigationViewItem[];
+  previewBypassEnabled: boolean;
   siteSettings: {
     contactEmail: string;
     contactPhone: string;
@@ -23,12 +24,13 @@ const MAINTENANCE_MODE = true;
 export default function SiteGate({
   children,
   navigation,
+  previewBypassEnabled,
   siteSettings,
 }: SiteGateProps) {
   const pathname = usePathname();
   const isStudioRoute = pathname.startsWith('/studio');
 
-  if (MAINTENANCE_MODE && !isStudioRoute) {
+  if (MAINTENANCE_MODE && !isStudioRoute && !previewBypassEnabled) {
     return (
       <main className="site-shell site-shell-construction">
         <ConstructionNotice
