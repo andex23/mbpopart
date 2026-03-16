@@ -1,4 +1,5 @@
 import type { StructureResolver } from 'sanity/structure';
+import StudioPreviewPane from './src/components/StudioPreviewPane';
 
 type StudioYearRange = {
   key: string;
@@ -95,6 +96,9 @@ export const deskStructure: StructureResolver = (S) =>
   S.list()
     .title('Dashboard')
     .items([
+      S.listItem()
+        .title('Site Preview')
+        .child(S.component(StudioPreviewPane).title('Site Preview')),
       singletonItem(S, 'Site Settings', 'siteSettings', 'siteSettings'),
       singletonItem(S, 'Navigation', 'navigation', 'navigation'),
       singletonItem(S, 'Landing Page', 'landingPage', 'landingPage'),
@@ -193,10 +197,7 @@ export const deskStructure: StructureResolver = (S) =>
       singletonItem(S, 'Paintings Page', 'paintingsPage', 'paintingsPage'),
       singletonItem(S, 'Available Page', 'availablePage', 'availablePage'),
       singletonItem(S, 'Commissions Page', 'commissionsPage', 'commissionsPage'),
-      singletonItem(S, 'Happy Client Photos', 'happyClientsPage', 'happyClientsPage'),
-      singletonItem(S, 'Prints Page', 'printsPage', 'printsPage'),
-      singletonItem(S, 'Venues Page', 'venuesPage', 'venuesPage'),
-      singletonItem(S, 'News Page', 'newsPage', 'newsPage'),
+      singletonItem(S, 'Happy Clients', 'happyClientsPage', 'happyClientsPage'),
     ]);
 
 export default deskStructure;

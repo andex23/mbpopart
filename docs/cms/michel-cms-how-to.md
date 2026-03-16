@@ -8,6 +8,11 @@ CMS login:
 Live website:
 - `https://mbpopart.com`
 
+Preview without construction banner:
+- open `Site Preview` inside the CMS
+- click `Open Site Preview`
+- the real website opens in a new tab for that browser
+
 ## Basic Rule
 
 After making any change:
@@ -92,28 +97,6 @@ Use this for:
 - intro text
 - client photos
 
-### Prints Page
-
-Use this for:
-- page title
-- intro text
-- print titles
-- print images
-
-### Venues Page
-
-Use this for:
-- page title
-- intro text
-- venues list
-
-### News Page
-
-Use this for:
-- page title
-- intro text
-- news items
-
 ## Most Common Tasks
 
 ### Change contact info
@@ -161,4 +144,3 @@ Use this for:
 If the CMS login does not work, ask the developer to check your Sanity access for:
 - project `jwkflhwo`
 - production dataset
-

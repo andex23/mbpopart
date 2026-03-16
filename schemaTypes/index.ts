@@ -8,9 +8,6 @@ import { paintingsPage } from './documents/paintingsPage';
 import { availablePage } from './documents/availablePage';
 import { commissionsPage } from './documents/commissionsPage';
 import { happyClientsPage } from './documents/happyClientsPage';
-import { printsPage } from './documents/printsPage';
-import { venuesPage } from './documents/venuesPage';
-import { newsPage } from './documents/newsPage';
 import { linkItem } from './objects/linkItem';
 import { navigationItem } from './objects/navigationItem';
 import { heroImageItem } from './objects/heroImageItem';
@@ -19,8 +16,6 @@ import { commissionStepItem } from './objects/commissionStepItem';
 import { commissionExampleImageItem } from './objects/commissionExampleImageItem';
 import { commissionExampleItem } from './objects/commissionExampleItem';
 import { happyClientPhotoItem } from './objects/happyClientPhotoItem';
-import { newsItem } from './objects/newsItem';
-import { venueItem } from './objects/venueItem';
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   siteSettings,
@@ -32,9 +27,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   availablePage,
   commissionsPage,
   happyClientsPage,
-  printsPage,
-  venuesPage,
-  newsPage,
   linkItem,
   navigationItem,
   heroImageItem,
@@ -43,6 +35,4 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   commissionExampleImageItem,
   commissionExampleItem,
   happyClientPhotoItem,
-  newsItem,
-  venueItem,
 ];
