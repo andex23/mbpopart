@@ -141,6 +141,25 @@ const warningStyle: React.CSSProperties = {
   color: '#8a4b00',
 };
 
+function useCompactLayout(breakpoint = 760): boolean {
+  const [isCompact, setIsCompact] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    const mediaQuery = window.matchMedia(`(max-width: ${breakpoint}px)`);
+    const sync = () => setIsCompact(mediaQuery.matches);
+    sync();
+
+    mediaQuery.addEventListener('change', sync);
+    return () => mediaQuery.removeEventListener('change', sync);
+  }, [breakpoint]);
+
+  return isCompact;
+}
+
 function getDisplayTitle(item: PaintingOrderItem): string {
   return item.caption?.trim() || item.title?.trim() || 'Untitled painting';
 }
@@ -170,6 +189,7 @@ function reorderItems(items: PaintingOrderItem[], fromIndex: number, toIndex: nu
 }
 
 export default function PaintingOrderPane() {
+  const isCompact = useCompactLayout();
   const client = useClient({ apiVersion: API_VERSION });
   const [paintings, setPaintings] = React.useState<PaintingOrderItem[]>([]);
   const [selectedYear, setSelectedYear] = React.useState<number | null>(null);
@@ -300,9 +320,95 @@ export default function PaintingOrderPane() {
     setWarning('');
   }
 
+  const compactPanelStyle: React.CSSProperties = isCompact
+    ? {
+        ...panelStyle,
+        padding: '16px',
+      }
+    : panelStyle;
+
+  const compactCardStyle: React.CSSProperties = isCompact
+    ? {
+        ...cardStyle,
+        padding: '16px',
+      }
+    : cardStyle;
+
+  const compactControlRowStyle: React.CSSProperties = isCompact
+    ? {
+        ...controlRowStyle,
+        flexDirection: 'column',
+        alignItems: 'stretch',
+      }
+    : controlRowStyle;
+
+  const compactLabelStyle: React.CSSProperties = isCompact
+    ? {
+        display: 'grid',
+        gap: '6px',
+        fontWeight: 600,
+        width: '100%',
+      }
+    : {
+        display: 'grid',
+        gap: '6px',
+        fontWeight: 600,
+      };
+
+  const compactSelectStyle: React.CSSProperties = isCompact
+    ? {
+        ...selectStyle,
+        width: '100%',
+        minWidth: 0,
+      }
+    : selectStyle;
+
+  const compactActionButtonStyle = (baseStyle: React.CSSProperties): React.CSSProperties => (
+    isCompact
+      ? {
+          ...baseStyle,
+          width: '100%',
+        }
+      : baseStyle
+  );
+
+  const compactRowStyle: React.CSSProperties = isCompact
+    ? {
+        ...rowStyle,
+        gridTemplateColumns: 'minmax(0, 1fr)',
+        gap: '10px',
+        padding: '12px',
+      }
+    : rowStyle;
+
+  const compactBadgeStyle: React.CSSProperties = isCompact
+    ? {
+        ...badgeStyle,
+        minWidth: '40px',
+        width: 'fit-content',
+      }
+    : badgeStyle;
+
+  const compactRowButtonGroupStyle: React.CSSProperties = isCompact
+    ? {
+        ...rowButtonGroupStyle,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+        justifyContent: 'stretch',
+      }
+    : rowButtonGroupStyle;
+
+  const compactRowButtonStyle: React.CSSProperties = isCompact
+    ? {
+        ...rowButtonStyle,
+        width: '100%',
+        minWidth: 0,
+      }
+    : rowButtonStyle;
+
   return (
-    <div style={panelStyle}>
-      <div style={cardStyle}>
+    <div style={compactPanelStyle}>
+      <div style={compactCardStyle}>
         <h2 style={{ margin: '0 0 8px', fontSize: '1.5rem', lineHeight: 1.15, color: '#122150' }}>Painting Order</h2>
         <p style={{ margin: '0', lineHeight: 1.6, color: '#20304b' }}>
           Choose a year, move paintings up or down, then save. This controls the display order inside that year
@@ -315,13 +421,13 @@ export default function PaintingOrderPane() {
           If a painting belongs in a different year section, open that painting and change its <b>Year</b> first.
         </p>
 
-        <div style={controlRowStyle}>
-          <label style={{ display: 'grid', gap: '6px', fontWeight: 600 }}>
+        <div style={compactControlRowStyle}>
+          <label style={compactLabelStyle}>
             <span>Year section</span>
             <select
               value={selectedYear ?? ''}
               onChange={(event) => setSelectedYear(Number(event.target.value))}
-              style={selectStyle}
+              style={compactSelectStyle}
               disabled={isLoading || years.length === 0}
             >
               {years.map((year) => (
@@ -335,7 +441,7 @@ export default function PaintingOrderPane() {
           <button
             type="button"
             onClick={() => setRefreshTick((current) => current + 1)}
-            style={isLoading || isSaving ? disabledButtonStyle : buttonStyle}
+            style={compactActionButtonStyle(isLoading || isSaving ? disabledButtonStyle : buttonStyle)}
             disabled={isLoading || isSaving}
           >
             Refresh
@@ -344,7 +450,7 @@ export default function PaintingOrderPane() {
           <button
             type="button"
             onClick={() => setDraftItems(getItemsForYear(paintings, selectedYear))}
-            style={isLoading || isSaving ? disabledButtonStyle : buttonStyle}
+            style={compactActionButtonStyle(isLoading || isSaving ? disabledButtonStyle : buttonStyle)}
             disabled={isLoading || isSaving}
           >
             Reset Year
@@ -353,7 +459,9 @@ export default function PaintingOrderPane() {
           <button
             type="button"
             onClick={saveOrder}
-            style={isLoading || isSaving || draftItems.length === 0 ? disabledButtonStyle : primaryButtonStyle}
+            style={compactActionButtonStyle(
+              isLoading || isSaving || draftItems.length === 0 ? disabledButtonStyle : primaryButtonStyle,
+            )}
             disabled={isLoading || isSaving || draftItems.length === 0}
           >
             {isSaving ? 'Saving...' : 'Save This Year Order'}
@@ -372,8 +480,8 @@ export default function PaintingOrderPane() {
         ) : (
           <div style={listStyle}>
             {draftItems.map((item, index) => (
-              <div key={item._id} style={rowStyle}>
-                <div style={badgeStyle}>{index + 1}</div>
+              <div key={item._id} style={compactRowStyle}>
+                <div style={compactBadgeStyle}>{index + 1}</div>
 
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontWeight: 700, color: '#122150' }}>{getDisplayTitle(item)}</div>
@@ -386,11 +494,11 @@ export default function PaintingOrderPane() {
                   </div>
                 </div>
 
-                <div style={rowButtonGroupStyle}>
+                <div style={compactRowButtonGroupStyle}>
                   <button
                     type="button"
                     onClick={() => moveToEdge(index, 'top')}
-                    style={index === 0 ? disabledButtonStyle : rowButtonStyle}
+                    style={index === 0 ? { ...disabledButtonStyle, ...compactRowButtonStyle } : compactRowButtonStyle}
                     disabled={index === 0 || isSaving}
                   >
                     Top
@@ -398,7 +506,7 @@ export default function PaintingOrderPane() {
                   <button
                     type="button"
                     onClick={() => moveItem(index, -1)}
-                    style={index === 0 ? disabledButtonStyle : rowButtonStyle}
+                    style={index === 0 ? { ...disabledButtonStyle, ...compactRowButtonStyle } : compactRowButtonStyle}
                     disabled={index === 0 || isSaving}
                   >
                     Up
@@ -406,7 +514,11 @@ export default function PaintingOrderPane() {
                   <button
                     type="button"
                     onClick={() => moveItem(index, 1)}
-                    style={index === draftItems.length - 1 ? disabledButtonStyle : rowButtonStyle}
+                    style={
+                      index === draftItems.length - 1
+                        ? { ...disabledButtonStyle, ...compactRowButtonStyle }
+                        : compactRowButtonStyle
+                    }
                     disabled={index === draftItems.length - 1 || isSaving}
                   >
                     Down
@@ -414,7 +526,11 @@ export default function PaintingOrderPane() {
                   <button
                     type="button"
                     onClick={() => moveToEdge(index, 'bottom')}
-                    style={index === draftItems.length - 1 ? disabledButtonStyle : rowButtonStyle}
+                    style={
+                      index === draftItems.length - 1
+                        ? { ...disabledButtonStyle, ...compactRowButtonStyle }
+                        : compactRowButtonStyle
+                    }
                     disabled={index === draftItems.length - 1 || isSaving}
                   >
                     Bottom
