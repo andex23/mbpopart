@@ -195,7 +195,8 @@ a:hover {
 .site-construction-social-link {
   color: var(--link);
   font-weight: 700;
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .site-construction-social-link:hover {
@@ -1691,7 +1692,8 @@ a:hover {
   font-size: 13px;
   line-height: 1.35;
   font-weight: 600;
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .site-footer-social-link:hover {
