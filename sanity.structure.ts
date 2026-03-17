@@ -199,7 +199,42 @@ export const deskStructure: StructureResolver = (S) =>
             ]),
         ),
       singletonItem(S, 'Paintings Page', 'paintingsPage', 'paintingsPage'),
-      singletonItem(S, 'Available Page', 'availablePage', 'availablePage'),
+      S.listItem()
+        .title('Available')
+        .child(
+          S.list()
+            .title('Available')
+            .items([
+              singletonItem(S, 'Page Settings', 'availablePage', 'availablePage'),
+              S.listItem()
+                .title('Paintings Shown on Available Page')
+                .child(
+                  S.documentList()
+                    .title('Available Page Paintings')
+                    .schemaType('painting')
+                    .filter('_type == "painting" && status in ["available", "sold"]')
+                    .defaultOrdering(paintingDefaultOrdering),
+                ),
+              S.listItem()
+                .title('Available Only')
+                .child(
+                  S.documentList()
+                    .title('Available Paintings')
+                    .schemaType('painting')
+                    .filter('_type == "painting" && status == "available"')
+                    .defaultOrdering(paintingDefaultOrdering),
+                ),
+              S.listItem()
+                .title('Sold Items Still Showing Here')
+                .child(
+                  S.documentList()
+                    .title('Sold Paintings on Available Page')
+                    .schemaType('painting')
+                    .filter('_type == "painting" && status == "sold"')
+                    .defaultOrdering(paintingDefaultOrdering),
+                ),
+            ]),
+        ),
       singletonItem(S, 'Commissions Page', 'commissionsPage', 'commissionsPage'),
       singletonItem(S, 'Happy Clients', 'happyClientsPage', 'happyClientsPage'),
     ]);

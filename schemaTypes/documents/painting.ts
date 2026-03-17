@@ -77,7 +77,7 @@ export const painting = defineType({
       name: 'status',
       title: 'Status',
       type: 'string',
-      description: 'Available appears on the Available page automatically.',
+      description: 'Available and Sold paintings appear on the Available page automatically. Use this to control what shows there.',
       options: {
         list: [
           { title: 'Available', value: 'available' },
