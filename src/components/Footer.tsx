@@ -28,6 +28,9 @@ export default function Footer({
           className="site-footer-face"
           unoptimized
         />
+        <div className="site-footer-copy-slot">
+          <p className="site-footer-copy">{footerText}</p>
+        </div>
         <div className="site-footer-content">
           <div className="site-footer-contact" role="contentinfo">
             <p className="site-footer-line site-footer-line-main">Contact Michel</p>
@@ -51,7 +54,6 @@ export default function Footer({
                 ))}
               </nav>
             ) : null}
-            <p className="site-footer-copy">{footerText}</p>
           </div>
         </div>
       </div>
