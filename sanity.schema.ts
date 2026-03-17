@@ -1,8 +1,45 @@
-import type { SchemaTypeDefinition } from 'sanity';
+import type { SchemaTypeDefinition, Template } from 'sanity';
 import { schemaTypes } from './schemaTypes';
 
-export const schema: { types: SchemaTypeDefinition[] } = {
+const templates: Template[] = [
+  {
+    id: 'gallery-painting',
+    title: 'Gallery Painting',
+    schemaType: 'painting',
+    value: {
+      status: 'notForSale',
+      inventoryOnly: false,
+      featured: false,
+      comingSoon: false,
+    },
+  },
+  {
+    id: 'available-inventory-painting',
+    title: 'Available Inventory Painting',
+    schemaType: 'painting',
+    value: {
+      status: 'available',
+      inventoryOnly: true,
+      featured: false,
+      comingSoon: false,
+    },
+  },
+  {
+    id: 'sold-inventory-painting',
+    title: 'Sold Inventory Painting',
+    schemaType: 'painting',
+    value: {
+      status: 'sold',
+      inventoryOnly: true,
+      featured: false,
+      comingSoon: false,
+    },
+  },
+];
+
+export const schema: { types: SchemaTypeDefinition[]; templates: Template[] } = {
   types: schemaTypes,
+  templates,
 };
 
 export default schema;

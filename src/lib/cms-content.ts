@@ -592,8 +592,8 @@ export async function getAvailablePageContent(): Promise<AvailablePageView> {
     })
     .filter((item): item is LegacyThumbItem => item !== null);
 
-  const mergedItems = mergeLegacyThumbItems(cmsItems, availableItems);
-  const normalizedItems = (mergedItems.length > 0 ? mergedItems : availableItems).map((item) => {
+  const sourceItems = cmsItems.length > 0 ? cmsItems : availableItems;
+  const normalizedItems = sourceItems.map((item) => {
     if (isComingSoonPlaceholder(item)) {
       return {
         imageUrl: AVAILABLE_COMING_SOON_IMAGE,

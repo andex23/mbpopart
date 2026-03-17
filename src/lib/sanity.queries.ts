@@ -79,7 +79,7 @@ export const PAINTINGS_PAGE_QUERY = groq`
 `;
 
 export const PAINTINGS_QUERY = groq`
-  *[_type == "painting" && (!defined(status) || status != "archive")]
+  *[_type == "painting" && (!defined(status) || status != "archive") && (!defined(inventoryOnly) || inventoryOnly != true)]
   | order(year desc, sortOrder asc, _updatedAt desc){
     _id,
     title,
@@ -98,6 +98,7 @@ export const PAINTINGS_QUERY = groq`
       featured
     },
     status,
+    inventoryOnly,
     featured,
     sortOrder,
     dimensions,
@@ -115,7 +116,7 @@ export const AVAILABLE_PAGE_QUERY = groq`
 
 export const AVAILABLE_PAINTINGS_QUERY = groq`
   *[_type == "painting" && status in ["available", "sold"]]
-  | order(year desc, sortOrder asc, _updatedAt desc){
+  | order(sortOrder asc, year desc, _updatedAt desc){
     _id,
     title,
     caption,
@@ -133,6 +134,7 @@ export const AVAILABLE_PAINTINGS_QUERY = groq`
       featured
     },
     status,
+    inventoryOnly,
     featured,
     sortOrder,
     dimensions,

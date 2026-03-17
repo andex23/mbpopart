@@ -28,6 +28,14 @@ const paintingDefaultOrdering = [
   { field: '_updatedAt', direction: 'desc' as const },
 ];
 
+const availableInventoryOrdering = [
+  { field: 'sortOrder', direction: 'asc' as const },
+  { field: 'year', direction: 'desc' as const },
+  { field: '_updatedAt', direction: 'desc' as const },
+];
+
+const galleryPaintingFilter = '_type == "painting" && (!defined(inventoryOnly) || inventoryOnly != true)';
+
 function getYearsForRange(range: StudioYearRange): number[] {
   if (range.from === null && range.to !== null) {
     const years: number[] = [];
@@ -58,18 +66,18 @@ function getYearsForRange(range: StudioYearRange): number[] {
 
 function paintingRangeFilter(range: StudioYearRange): string {
   if (range.from === null && range.to !== null) {
-    return '_type == "painting" && year <= $to';
+    return `${galleryPaintingFilter} && year <= $to`;
   }
 
   if (range.from !== null && range.to !== null) {
-    return '_type == "painting" && year >= $from && year <= $to';
+    return `${galleryPaintingFilter} && year >= $from && year <= $to`;
   }
 
   if (range.from !== null && range.to === null) {
-    return '_type == "painting" && year >= $from';
+    return `${galleryPaintingFilter} && year >= $from`;
   }
 
-  return '_type == "painting"';
+  return galleryPaintingFilter;
 }
 
 function paintingRangeParams(range: StudioYearRange): Record<string, number> {
@@ -110,14 +118,18 @@ export const deskStructure: StructureResolver = (S) =>
           S.list()
             .title('Paintings')
             .items([
+              singletonItem(S, 'Page Settings', 'paintingsPage', 'paintingsPage'),
               S.listItem()
                 .title('Painting Order')
                 .child(S.component(PaintingOrderPane).title('Painting Order')),
               S.listItem()
-                .title('All Paintings')
+                .title('Gallery Paintings')
                 .child(
-                  S.documentTypeList('painting')
-                    .title('All Paintings')
+                  S.documentList()
+                    .title('Gallery Paintings')
+                    .schemaType('painting')
+                    .filter(galleryPaintingFilter)
+                    .initialValueTemplates([S.initialValueTemplateItem('gallery-painting')])
                     .defaultOrdering(paintingDefaultOrdering),
                 ),
               S.listItem()
@@ -141,6 +153,7 @@ export const deskStructure: StructureResolver = (S) =>
                                       .schemaType('painting')
                                       .filter(paintingRangeFilter(range))
                                       .params(paintingRangeParams(range))
+                                      .initialValueTemplates([S.initialValueTemplateItem('gallery-painting')])
                                       .defaultOrdering(paintingDefaultOrdering),
                                   ),
                                 ...getYearsForRange(range).map((year) =>
@@ -150,8 +163,9 @@ export const deskStructure: StructureResolver = (S) =>
                                       S.documentList()
                                         .title(`Paintings - ${year}`)
                                         .schemaType('painting')
-                                        .filter('_type == "painting" && year == $year')
+                                        .filter(`${galleryPaintingFilter} && year == $year`)
                                         .params({ year })
+                                        .initialValueTemplates([S.initialValueTemplateItem('gallery-painting')])
                                         .defaultOrdering(paintingDefaultOrdering),
                                     ),
                                 ),
@@ -167,7 +181,8 @@ export const deskStructure: StructureResolver = (S) =>
                     .title('Available Paintings')
                     .schemaType('painting')
                     .filter('_type == "painting" && status == "available"')
-                    .defaultOrdering(paintingDefaultOrdering),
+                    .initialValueTemplates([S.initialValueTemplateItem('available-inventory-painting')])
+                    .defaultOrdering(availableInventoryOrdering),
                 ),
               S.listItem()
                 .title('Sold')
@@ -176,7 +191,8 @@ export const deskStructure: StructureResolver = (S) =>
                     .title('Sold Paintings')
                     .schemaType('painting')
                     .filter('_type == "painting" && status == "sold"')
-                    .defaultOrdering(paintingDefaultOrdering),
+                    .initialValueTemplates([S.initialValueTemplateItem('sold-inventory-painting')])
+                    .defaultOrdering(availableInventoryOrdering),
                 ),
               S.listItem()
                 .title('Featured')
@@ -184,7 +200,7 @@ export const deskStructure: StructureResolver = (S) =>
                   S.documentList()
                     .title('Featured Paintings')
                     .schemaType('painting')
-                    .filter('_type == "painting" && featured == true')
+                    .filter(`${galleryPaintingFilter} && featured == true`)
                     .defaultOrdering(paintingDefaultOrdering),
                 ),
               S.listItem()
@@ -193,12 +209,11 @@ export const deskStructure: StructureResolver = (S) =>
                   S.documentList()
                     .title('Archived Paintings')
                     .schemaType('painting')
-                    .filter('_type == "painting" && status == "archive"')
+                    .filter(`${galleryPaintingFilter} && status == "archive"`)
                     .defaultOrdering(paintingDefaultOrdering),
                 ),
             ]),
         ),
-      singletonItem(S, 'Paintings Page', 'paintingsPage', 'paintingsPage'),
       S.listItem()
         .title('Available')
         .child(
@@ -213,7 +228,11 @@ export const deskStructure: StructureResolver = (S) =>
                     .title('Available Page Paintings')
                     .schemaType('painting')
                     .filter('_type == "painting" && status in ["available", "sold"]')
-                    .defaultOrdering(paintingDefaultOrdering),
+                    .initialValueTemplates([
+                      S.initialValueTemplateItem('available-inventory-painting'),
+                      S.initialValueTemplateItem('sold-inventory-painting'),
+                    ])
+                    .defaultOrdering(availableInventoryOrdering),
                 ),
               S.listItem()
                 .title('Available Only')
@@ -222,7 +241,8 @@ export const deskStructure: StructureResolver = (S) =>
                     .title('Available Paintings')
                     .schemaType('painting')
                     .filter('_type == "painting" && status == "available"')
-                    .defaultOrdering(paintingDefaultOrdering),
+                    .initialValueTemplates([S.initialValueTemplateItem('available-inventory-painting')])
+                    .defaultOrdering(availableInventoryOrdering),
                 ),
               S.listItem()
                 .title('Sold Items Still Showing Here')
@@ -231,7 +251,8 @@ export const deskStructure: StructureResolver = (S) =>
                     .title('Sold Paintings on Available Page')
                     .schemaType('painting')
                     .filter('_type == "painting" && status == "sold"')
-                    .defaultOrdering(paintingDefaultOrdering),
+                    .initialValueTemplates([S.initialValueTemplateItem('sold-inventory-painting')])
+                    .defaultOrdering(availableInventoryOrdering),
                 ),
             ]),
         ),

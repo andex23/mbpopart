@@ -9,6 +9,7 @@ export const paintingsPage = defineType({
       name: 'title',
       title: 'Page Title',
       type: 'string',
+      description: 'This controls the big blue page heading only. Manage actual painting records in Paintings > Gallery Paintings.',
       initialValue: 'PAINTINGS',
       validation: (Rule) => Rule.required().max(80),
     }),
@@ -16,6 +17,7 @@ export const paintingsPage = defineType({
       name: 'introText',
       title: 'Intro Text',
       type: 'array',
+      description: 'This controls the intro copy at the top of the Paintings page.',
       of: [defineArrayMember({ type: 'block' })],
     }),
     defineField({

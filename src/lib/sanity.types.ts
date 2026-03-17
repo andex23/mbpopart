@@ -73,6 +73,7 @@ export interface CmsPainting {
   mainImageAlt?: string;
   galleryImages?: CmsImageItem[];
   status?: PaintingStatus;
+  inventoryOnly?: boolean;
   featured?: boolean;
   sortOrder?: number;
   dimensions?: string;
