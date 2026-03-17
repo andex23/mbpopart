@@ -165,6 +165,15 @@ Use this for:
 5. Add title, year, image, and status
 6. Click `Publish`
 
+### Reposition a painting inside the small window
+
+1. Open the painting
+2. Go to the `Main Image`
+3. Open the image editor
+4. Adjust the hotspot/crop until the important part of the image sits correctly in the smaller preview window
+5. Save the image edit
+6. Click `Publish`
+
 ### Put a painting on the Available page
 
 1. Open `Available > Paintings Shown on Available Page`
