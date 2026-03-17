@@ -64,9 +64,39 @@ Use this for:
 - gallery intro text
 - the message shown in empty painting sections
 
-### Painting
+Important:
+- this is only for the page heading and intro copy
+- the actual painting records are in `Paintings > Gallery Paintings`
 
-Use this for each individual painting:
+### Paintings
+
+Use this area for:
+- `Page Settings`
+- `Gallery Paintings`
+- `Painting Order`
+- paintings grouped by year range
+
+Important:
+- add normal website paintings inside `Paintings > Gallery Paintings`
+- those paintings appear in the main `Paintings` page year sections
+- this area does not control the `Available` inventory cards
+
+### Available
+
+Use this area for:
+- `Page Settings`
+- `Paintings Shown on Available Page`
+- `Available Only`
+- `Sold Items Still Showing Here`
+
+Important:
+- add available or sold inventory cards from inside the `Available` section
+- those records are kept separate from the main `Paintings` year gallery
+- this is the correct place to manage the cards shown on the `Available` page
+
+### Painting Record
+
+Use this for each individual painting or inventory card:
 - title
 - caption
 - year
@@ -76,7 +106,9 @@ Use this for each individual painting:
 - dimensions
 
 Important:
-- If `Status` is `Available`, it will also show on the `Available` page automatically
+- `Status` controls the visible tag such as `Available` or `Sold`
+- records created from the `Available` section are already tagged correctly for that page
+- records created from `Paintings > Gallery Paintings` are normal gallery paintings
 
 ### Painting Order
 
@@ -85,14 +117,9 @@ Use this for:
 - moving a painting up or down without editing sort numbers by hand
 
 Important:
+- this only changes order for the main `Paintings` gallery
 - this only changes order within the same year
 - if a painting should appear in a different section, change that painting's `Year`
-
-### Available Page
-
-Use this for:
-- page title
-- intro text
 
 ### Commissions Page
 
@@ -120,17 +147,19 @@ Use this for:
 
 ### Add a new painting
 
-1. Open `Painting`
-2. Create a new item
-3. Add title, year, and image
-4. Set the status
-5. Click `Publish`
+1. Open the correct section
+2. Use `Paintings > Gallery Paintings` for normal gallery paintings
+3. Use `Available > Paintings Shown on Available Page` for available or sold inventory cards
+4. Create a new painting there
+5. Add title, year, image, and status
+6. Click `Publish`
 
 ### Put a painting on the Available page
 
-1. Open that painting
-2. Set `Status` to `Available`
-3. Click `Publish`
+1. Open `Available > Paintings Shown on Available Page`
+2. Add or edit the painting there
+3. Set `Status` to `Available` or `Sold`
+4. Click `Publish`
 
 ### Change painting order inside a year
 

@@ -19,14 +19,15 @@ const panelStyle: React.CSSProperties = {
   maxWidth: '980px',
   margin: '0 auto',
   fontFamily: 'Inter, system-ui, sans-serif',
+  color: '#162033',
 };
 
 const cardStyle: React.CSSProperties = {
-  border: '1px solid #d5d8de',
+  border: '1px solid #bcc8d6',
   borderRadius: '14px',
   padding: '20px',
-  background: '#ffffff',
-  boxShadow: '0 10px 24px rgba(15, 23, 42, 0.08)',
+  background: '#f7fbff',
+  boxShadow: '0 12px 28px rgba(15, 23, 42, 0.1)',
 };
 
 const controlRowStyle: React.CSSProperties = {
@@ -44,9 +45,9 @@ const buttonStyle: React.CSSProperties = {
   justifyContent: 'center',
   padding: '10px 14px',
   borderRadius: '10px',
-  border: '1px solid #c9d2df',
+  border: '1px solid #9db1c7',
   background: '#ffffff',
-  color: '#1f2937',
+  color: '#162033',
   textDecoration: 'none',
   fontWeight: 600,
   cursor: 'pointer',
@@ -70,9 +71,9 @@ const selectStyle: React.CSSProperties = {
   minHeight: '42px',
   padding: '8px 12px',
   borderRadius: '10px',
-  border: '1px solid #c9d2df',
+  border: '1px solid #9db1c7',
   background: '#ffffff',
-  color: '#1f2937',
+  color: '#162033',
   font: 'inherit',
 };
 
@@ -88,8 +89,8 @@ const rowStyle: React.CSSProperties = {
   alignItems: 'center',
   padding: '12px 14px',
   borderRadius: '12px',
-  border: '1px solid #d9e0ea',
-  background: '#f9fbfd',
+  border: '1px solid #c6d3e1',
+  background: '#ffffff',
 };
 
 const badgeStyle: React.CSSProperties = {
@@ -106,7 +107,7 @@ const badgeStyle: React.CSSProperties = {
 
 const itemMetaStyle: React.CSSProperties = {
   marginTop: '3px',
-  color: '#5c6677',
+  color: '#334155',
   fontSize: '0.92rem',
   lineHeight: 1.4,
 };
@@ -188,7 +189,7 @@ export default function PaintingOrderPane() {
 
       try {
         const result = await client.fetch<PaintingOrderItem[]>(
-          `*[_type == "painting" && defined(year)] | order(year desc, sortOrder asc, _updatedAt desc){
+          `*[_type == "painting" && defined(year) && (!defined(inventoryOnly) || inventoryOnly != true)] | order(year desc, sortOrder asc, _updatedAt desc){
             _id,
             title,
             caption,
@@ -302,12 +303,15 @@ export default function PaintingOrderPane() {
   return (
     <div style={panelStyle}>
       <div style={cardStyle}>
-        <h2 style={{ margin: '0 0 8px', fontSize: '1.5rem', lineHeight: 1.15 }}>Painting Order</h2>
-        <p style={{ margin: '0', lineHeight: 1.6 }}>
+        <h2 style={{ margin: '0 0 8px', fontSize: '1.5rem', lineHeight: 1.15, color: '#122150' }}>Painting Order</h2>
+        <p style={{ margin: '0', lineHeight: 1.6, color: '#20304b' }}>
           Choose a year, move paintings up or down, then save. This controls the display order inside that year
           section on the website.
         </p>
-        <p style={{ margin: '10px 0 0', lineHeight: 1.6, color: '#5c6677' }}>
+        <p style={{ margin: '10px 0 0', lineHeight: 1.6, color: '#334155' }}>
+          This screen controls the main Paintings gallery only.
+        </p>
+        <p style={{ margin: '10px 0 0', lineHeight: 1.6, color: '#334155' }}>
           If a painting belongs in a different year section, open that painting and change its <b>Year</b> first.
         </p>
 
@@ -360,9 +364,9 @@ export default function PaintingOrderPane() {
         {warning ? <p style={warningStyle}>{warning}</p> : null}
 
         {isLoading ? (
-          <p style={{ margin: 0, color: '#5c6677' }}>Loading paintings...</p>
+          <p style={{ margin: 0, color: '#334155' }}>Loading paintings...</p>
         ) : draftItems.length === 0 ? (
-          <p style={{ margin: 0, color: '#5c6677' }}>
+          <p style={{ margin: 0, color: '#334155' }}>
             No paintings were found for this year. Choose another year or add paintings first.
           </p>
         ) : (
@@ -372,7 +376,7 @@ export default function PaintingOrderPane() {
                 <div style={badgeStyle}>{index + 1}</div>
 
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontWeight: 700 }}>{getDisplayTitle(item)}</div>
+                  <div style={{ fontWeight: 700, color: '#122150' }}>{getDisplayTitle(item)}</div>
                   <div style={itemMetaStyle}>
                     {item.title && item.caption && item.caption.trim() !== item.title.trim()
                       ? `Title: ${item.title} · `

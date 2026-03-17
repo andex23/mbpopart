@@ -33,7 +33,12 @@ Not all image-window sections are controlled the same way.
 
 ### `Paintings` and `Available`
 
-These are controlled by individual `Painting` documents.
+These are controlled by individual `Painting` documents, but they now live in 2 different workflows:
+
+- `Paintings > Gallery Paintings`
+  - for the main year-by-year gallery
+- `Available > Paintings Shown on Available Page`
+  - for the available/sold inventory cards
 
 Each painting has its own:
 
@@ -45,6 +50,11 @@ Each painting has its own:
 - price
 - status
 - order
+
+Important:
+- a normal gallery painting should be created from `Paintings > Gallery Paintings`
+- an available or sold inventory card should be created from `Available > Paintings Shown on Available Page`
+- this keeps the main gallery separate from the available inventory
 
 ### `Commissions`
 
@@ -77,7 +87,7 @@ Each photo item has its own:
 
 Open:
 - `Paintings`
-- `All Paintings`
+- `Gallery Paintings`
 - then open the painting you want
 
 Fields that control what shows:
@@ -100,7 +110,10 @@ Important:
 
 ### `Available` section
 
-Open the same `Painting` document.
+Open:
+- `Available`
+- `Paintings Shown on Available Page`
+- then open the painting you want
 
 Fields that control what shows:
 
@@ -116,6 +129,7 @@ Fields that control what shows:
 Important:
 - `Available` and `Sold` paintings appear on the `Available` page
 - `Not For Sale` and `Archive` do not appear on the `Available` page
+- these inventory cards are separate from the main year gallery on the `Paintings` page
 
 ### `Commissions` section
 
@@ -171,20 +185,25 @@ Then:
 
 Important:
 - this changes order only inside that year
+- this screen controls the main `Paintings` gallery only
 - if a painting belongs in another year section, change its `Year`
 
 ### `Available` section
 
-The `Available` page uses the same `Painting` documents.
+The `Available` page uses painting inventory records inside:
+
+- `Available > Paintings Shown on Available Page`
 
 Order rules are:
 
-1. `Year` newest first
-2. `Painting Order` inside that year
+1. `Manual Sort Order` lowest number first
+2. `Year` as a fallback
 
 That means:
-- first put the painting in the correct `Year`
-- then use `Paintings > Painting Order`
+- open the painting inventory record
+- set `Manual Sort Order`
+- lower number shows first
+- good example numbers are `10`, `20`, `30`
 
 ### `Commissions` section
 
@@ -225,9 +244,13 @@ Important:
 
 ### Add a new painting to `Paintings` and `Available`
 
+There are now 2 correct places to add new painting records.
+
+### Add a new main gallery painting
+
 Open:
 - `Paintings`
-- `All Paintings`
+- `Gallery Paintings`
 
 Then:
 
@@ -244,8 +267,8 @@ Then:
 
 After that:
 
-- it appears in `Paintings` if status is not `Archive`
-- it appears in `Available` if status is `Available` or `Sold`
+- it appears in the main `Paintings` year gallery
+- it will not appear in the `Available` inventory unless you intentionally move it into that workflow
 
 If you need to place it correctly inside the year:
 
@@ -253,6 +276,31 @@ If you need to place it correctly inside the year:
 2. choose the year
 3. move it into position
 4. save
+
+### Add a new available or sold inventory painting
+
+Open:
+- `Available`
+- `Paintings Shown on Available Page`
+
+Then:
+
+1. Create a new `Painting`
+2. Fill in:
+   - `Title`
+   - `Caption`
+   - `Year`
+   - `Main Image`
+   - `Dimensions`
+   - `Price`
+   - `Status`
+3. Use `Status = Available` or `Status = Sold`
+4. Set `Manual Sort Order`
+5. Click `Publish`
+
+Important:
+- add these records from inside the `Available` section so they stay in the right workflow
+- these cards appear on the `Available` page and do not enter the main year gallery
 
 ### Add a new commission example
 
@@ -306,7 +354,7 @@ Open the painting and set:
 
 - `Status = Archive`
 
-This removes it from public painting sections while keeping it in the CMS.
+This removes it from the public site while keeping it in the CMS.
 
 #### Full removal
 
