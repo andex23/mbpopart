@@ -2,6 +2,9 @@
 
 This is the simple guide for updating the website content.
 
+Detailed painting-sections guide:
+- see `docs/cms/michel-painting-sections-guide.md`
+
 CMS login:
 - `https://mbpopart.com/studio`
 
