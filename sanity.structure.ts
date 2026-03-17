@@ -1,4 +1,5 @@
 import type { StructureResolver } from 'sanity/structure';
+import AvailableOrderPane from './src/components/AvailableOrderPane';
 import PaintingOrderPane from './src/components/PaintingOrderPane';
 import StudioPreviewPane from './src/components/StudioPreviewPane';
 
@@ -221,6 +222,9 @@ export const deskStructure: StructureResolver = (S) =>
             .title('Available')
             .items([
               singletonItem(S, 'Page Settings', 'availablePage', 'availablePage'),
+              S.listItem()
+                .title('Available Order')
+                .child(S.component(AvailableOrderPane).title('Available Order')),
               S.listItem()
                 .title('Paintings Shown on Available Page')
                 .child(

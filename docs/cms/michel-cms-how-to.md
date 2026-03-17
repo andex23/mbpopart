@@ -85,6 +85,7 @@ Important:
 
 Use this area for:
 - `Page Settings`
+- `Available Order`
 - `Paintings Shown on Available Page`
 - `Available Only`
 - `Sold Items Still Showing Here`
@@ -120,6 +121,16 @@ Important:
 - this only changes order for the main `Paintings` gallery
 - this only changes order within the same year
 - if a painting should appear in a different section, change that painting's `Year`
+
+### Available Order
+
+Use this for:
+- changing the order of cards on the `Available` page
+- moving available or sold paintings up or down without editing numbers by hand
+
+Important:
+- this controls the `Available` page only
+- use this instead of editing `Manual Sort Order` directly
 
 ### Commissions Page
 
@@ -168,6 +179,13 @@ Use this for:
 3. Choose the year
 4. Use `Up`, `Down`, `Top`, or `Bottom`
 5. Click `Save This Year Order`
+
+### Change the order on the Available page
+
+1. Open `Available`
+2. Open `Available Order`
+3. Use `Up`, `Down`, `Top`, or `Bottom`
+4. Click `Save Available Order`
 
 ### Change the menu text
 

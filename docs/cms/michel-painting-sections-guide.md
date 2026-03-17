@@ -193,17 +193,19 @@ Important:
 The `Available` page uses painting inventory records inside:
 
 - `Available > Paintings Shown on Available Page`
+- `Available > Available Order`
 
 Order rules are:
 
-1. `Manual Sort Order` lowest number first
-2. `Year` as a fallback
+1. `Available Order` screen order
+2. `Manual Sort Order` is updated automatically when you save
+3. `Year` is only a fallback
 
 That means:
-- open the painting inventory record
-- set `Manual Sort Order`
-- lower number shows first
-- good example numbers are `10`, `20`, `30`
+- open `Available > Available Order`
+- move the cards with `Top`, `Up`, `Down`, or `Bottom`
+- click `Save Available Order`
+- use `Manual Sort Order` only if you need a manual fallback
 
 ### `Commissions` section
 
@@ -301,6 +303,7 @@ Then:
 Important:
 - add these records from inside the `Available` section so they stay in the right workflow
 - these cards appear on the `Available` page and do not enter the main year gallery
+- if you want to place them in a different sequence, use `Available > Available Order`
 
 ### Add a new commission example
 
@@ -419,6 +422,11 @@ Use:
 
 Set:
 - `Status = Available` or `Status = Sold`
+
+### If you want to change the order on `Available`
+
+Use:
+- `Available > Available Order`
 
 ### If you want a painting hidden from the public site but still saved in CMS
 
