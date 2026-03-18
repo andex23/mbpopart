@@ -545,7 +545,6 @@ async function buildSingletonSeedDocuments(client: SanityClient) {
         'Browse Michel Balasis paintings by year. Click any thumbnail to view a larger image.',
         'Use the year buttons to jump directly to a specific collection.',
       ]),
-      emptySectionPlaceholderText: 'New Painting Coming Soon',
       yearGroupingMode: 'computed',
     },
     {
@@ -660,7 +659,6 @@ async function seedPaintings(client: SanityClient, limit?: number) {
       caption: normalizeText(artwork.caption) || title,
       year,
       copyrightYear: year,
-      comingSoon: false,
       mainImage: image,
       mainImageAlt: title,
       status: availableMeta?.status ?? 'notForSale',

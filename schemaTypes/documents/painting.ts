@@ -49,28 +49,13 @@ export const painting = defineType({
       of: [defineArrayMember({ type: 'block' })],
     }),
     defineField({
-      name: 'comingSoon',
-      title: 'Show "Coming Soon" Placeholder',
-      type: 'boolean',
-      group: 'images',
-      description: 'Enable when image is not ready yet. A branded placeholder tile is shown.',
-      initialValue: false,
-    }),
-    defineField({
       name: 'mainImage',
       title: 'Main Image',
       type: 'image',
       group: 'images',
       description: 'Upload high-resolution image. To change how it sits inside the smaller card window, open the image editor and adjust the square crop first. Then move the hotspot circle if needed to keep the important area visible.',
       options: { hotspot: true },
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
-          const document = context.document as { comingSoon?: boolean } | undefined;
-          if (document?.comingSoon || value) {
-            return true;
-          }
-          return 'Main Image is required unless "Show Coming Soon Placeholder" is enabled.';
-        }),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'mainImageAlt',
@@ -140,7 +125,7 @@ export const painting = defineType({
       title: 'Manual Sort Order (Optional)',
       type: 'number',
       group: 'placement',
-      description: 'Lower values appear first within the same year. Easiest method: use Paintings > Painting Order & Cleanup in the CMS.',
+      description: 'Lower values appear first within the same year. Easiest method: use Paintings > Painting Order, Archive & Delete in the CMS.',
       validation: (Rule) => Rule.min(0).max(100000),
     }),
     defineField({
@@ -194,16 +179,15 @@ export const painting = defineType({
       copyrightYear: 'copyrightYear',
       media: 'mainImage',
       status: 'status',
-      comingSoon: 'comingSoon',
       sortOrder: 'sortOrder',
       inventoryOnly: 'inventoryOnly',
       cardImageFit: 'cardImageFit',
     },
-    prepare({ title, caption, year, copyrightYear, media, status, comingSoon, sortOrder, inventoryOnly, cardImageFit }) {
+    prepare({ title, caption, year, copyrightYear, media, status, sortOrder, inventoryOnly, cardImageFit }) {
       return {
         title: caption || title || 'Untitled painting',
         subtitle:
-          `${copyrightYear ?? year ?? 'no year'} · ${status ?? 'no status'} · order: ${sortOrder ?? 'auto'}${inventoryOnly ? ' · inventory only' : ''}${comingSoon ? ' · coming soon' : ''}` +
+          `${copyrightYear ?? year ?? 'no year'} · ${status ?? 'no status'} · order: ${sortOrder ?? 'auto'}${inventoryOnly ? ' · inventory only' : ''}` +
           `${cardImageFit === 'contain' ? ' · full card' : ''}` +
           `${caption && title ? ` · title: ${title}` : ''}`,
         media,

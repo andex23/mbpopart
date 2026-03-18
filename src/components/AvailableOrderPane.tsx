@@ -7,8 +7,7 @@ const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && status in ["available", 
   caption,
   year,
   sortOrder,
-  status,
-  comingSoon
+  status
 }`;
 
 export default function AvailableOrderPane() {

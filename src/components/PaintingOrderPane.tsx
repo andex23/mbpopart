@@ -7,19 +7,18 @@ const PAINTING_ORDER_QUERY = `*[_type == "painting" && defined(year) && (!define
   caption,
   year,
   sortOrder,
-  status,
-  comingSoon
+  status
 }`;
 
 export default function PaintingOrderPane() {
   return (
     <SortablePaintingsPane
-      title="Painting Order & Cleanup"
-      intro="Choose a year, move paintings up or down, or hide extras. This controls the display order inside that year section on the website."
+      title="Painting Order, Archive & Delete"
+      intro="Choose a year, move paintings up or down, or archive or delete extras. This controls the display order inside that year section on the website."
       notes={[
         'This screen controls the main Paintings gallery only.',
-        'Use the checkboxes to hide several extra paintings at once, or use Hide on a single item.',
-        'Hidden paintings stay in Archived.',
+        'Use the checkboxes to archive or delete several paintings at once, or use the row buttons on a single item.',
+        'Archived paintings stay in CMS under Archived. Delete removes them permanently.',
         'If a painting belongs in a different year section, open that painting and change its Year first.',
       ]}
       query={PAINTING_ORDER_QUERY}
@@ -27,7 +26,8 @@ export default function PaintingOrderPane() {
       saveButtonLabel="Save This Year Order"
       resetButtonLabel="Reset Year"
       emptyMessage="No paintings were found for this year. Choose another year or add paintings first."
-      archiveButtonLabel="Hide"
+      archiveButtonLabel="Archive"
+      deleteButtonLabel="Delete"
     />
   );
 }

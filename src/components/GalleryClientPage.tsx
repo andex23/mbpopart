@@ -5,7 +5,6 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import ArtworkCard from '@/components/ArtworkCard';
 import ImageViewer from '@/components/ImageViewer';
 import LegacySplitLayout from '@/components/LegacySplitLayout';
-import LegacyThumbCard from '@/components/LegacyThumbCard';
 import PortableTextContent from '@/components/PortableTextContent';
 import RetroNavButton from '@/components/RetroNavButton';
 import {
@@ -16,7 +15,7 @@ import {
   YEAR_RANGE_FILTERS,
 } from '@/data/artworks';
 import type { Artwork } from '@/data/artworks';
-import type { LegacyThumbItem, PaintingsPageView, SiteSettingsView } from '@/lib/content.types';
+import type { PaintingsPageView, SiteSettingsView } from '@/lib/content.types';
 
 const INITIAL_COUNT = 30;
 
@@ -29,16 +28,6 @@ interface GallerySection {
 interface GalleryClientPageProps {
   pageContent: PaintingsPageView;
   siteSettings: SiteSettingsView;
-}
-
-function buildEmptySectionPlaceholders(label: string, caption: string): LegacyThumbItem[] {
-  const key = encodeURIComponent(label.toLowerCase().replace(/\s+/g, '-'));
-
-  return Array.from({ length: 4 }, (_, index) => ({
-    imageUrl: `/placeholders/new-painting-coming-soon.svg?section=${key}&slot=${index + 1}`,
-    thumbUrl: `/placeholders/new-painting-coming-soon.svg?section=${key}&slot=${index + 1}`,
-    caption,
-  }));
 }
 
 function parseQueryYear(value: string | null): number | null {
@@ -236,10 +225,6 @@ export default function GalleryClientPage({ pageContent, siteSettings }: Gallery
 
   const activeRangeLabel = YEAR_RANGE_FILTERS.find((range) => range.key === activeRangeKey)?.label;
   const emptySectionLabel = (activeYear !== null ? String(activeYear) : activeRangeLabel) || 'Selected Section';
-  const emptySectionItems = buildEmptySectionPlaceholders(
-    emptySectionLabel,
-    pageContent.emptySectionPlaceholderText,
-  );
 
   const leftContent = activeRangeKey === null ? (
     <>
@@ -308,11 +293,7 @@ export default function GalleryClientPage({ pageContent, siteSettings }: Gallery
               {emptySectionLabel} (0)
             </h2>
           </div>
-          <div className="legacy-thumb-grid">
-            {emptySectionItems.map((item) => (
-              <LegacyThumbCard key={item.imageUrl} item={item} />
-            ))}
-          </div>
+          <p className="legacy-empty-message">No paintings have been published in this section yet.</p>
         </section>
       ) : null}
 
@@ -338,20 +319,14 @@ export default function GalleryClientPage({ pageContent, siteSettings }: Gallery
           </div>
 
           <div className="legacy-thumb-grid">
-            {section.works.length > 0 ? (
-              section.works.map((work, index) => (
-                <ArtworkCard
-                  key={work.imageUrl}
-                  work={work}
-                  priority={index < 10}
-                  onClick={() => openViewer(work)}
-                />
-              ))
-            ) : (
-              buildEmptySectionPlaceholders(section.key, pageContent.emptySectionPlaceholderText).map((item) => (
-                <LegacyThumbCard key={item.imageUrl} item={item} />
-              ))
-            )}
+            {section.works.map((work, index) => (
+              <ArtworkCard
+                key={work.imageUrl}
+                work={work}
+                priority={index < 10}
+                onClick={() => openViewer(work)}
+              />
+            ))}
           </div>
         </section>
       ))}

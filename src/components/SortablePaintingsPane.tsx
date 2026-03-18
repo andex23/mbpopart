@@ -8,7 +8,6 @@ type PaintingOrderItem = {
   year?: number;
   sortOrder?: number;
   status?: string;
-  comingSoon?: boolean;
 };
 
 type SortScope = 'year' | 'flat';
@@ -23,6 +22,7 @@ interface SortablePaintingsPaneProps {
   resetButtonLabel: string;
   emptyMessage: string;
   archiveButtonLabel?: string;
+  deleteButtonLabel?: string;
 }
 
 const API_VERSION = '2021-10-21';
@@ -172,6 +172,13 @@ const dangerButtonStyle: React.CSSProperties = {
   background: '#fff7ed',
 };
 
+const deleteButtonStyle: React.CSSProperties = {
+  ...buttonStyle,
+  borderColor: '#dc2626',
+  color: '#991b1b',
+  background: '#fef2f2',
+};
+
 const messageStyle: React.CSSProperties = {
   margin: '0 0 14px',
   padding: '10px 12px',
@@ -248,10 +255,6 @@ function buildMetaLine(item: PaintingOrderItem, scope: SortScope): string {
   parts.push(item.status ?? 'no status');
   parts.push(`current sort: ${item.sortOrder ?? 'auto'}`);
 
-  if (item.comingSoon) {
-    parts.push('coming soon');
-  }
-
   return parts.join(' · ');
 }
 
@@ -265,6 +268,7 @@ export default function SortablePaintingsPane({
   resetButtonLabel,
   emptyMessage,
   archiveButtonLabel,
+  deleteButtonLabel,
 }: SortablePaintingsPaneProps) {
   const isCompact = useCompactLayout();
   const client = useClient({ apiVersion: API_VERSION });
@@ -274,6 +278,7 @@ export default function SortablePaintingsPane({
   const [isLoading, setIsLoading] = React.useState(true);
   const [isSaving, setIsSaving] = React.useState(false);
   const [archivingId, setArchivingId] = React.useState<string | null>(null);
+  const [deletingId, setDeletingId] = React.useState<string | null>(null);
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
   const [message, setMessage] = React.useState('');
   const [warning, setWarning] = React.useState('');
@@ -344,6 +349,7 @@ export default function SortablePaintingsPane({
   const years = getYears(paintings);
   const selectedIdSet = React.useMemo(() => new Set(selectedIds), [selectedIds]);
   const allShownSelected = draftItems.length > 0 && draftItems.every((item) => selectedIdSet.has(item._id));
+  const isActing = archivingId !== null || deletingId !== null;
 
   function toggleSelection(id: string) {
     setSelectedIds((current) => (
@@ -461,11 +467,61 @@ export default function SortablePaintingsPane({
     } catch {
       setWarning(
         itemsToArchive.length === 1
-          ? 'Could not hide that painting. Try again in a moment.'
-          : 'Could not hide the selected paintings. Try again in a moment.',
+          ? 'Could not archive that painting. Try again in a moment.'
+          : 'Could not archive the selected paintings. Try again in a moment.',
       );
     } finally {
       setArchivingId(null);
+    }
+  }
+
+  async function deleteItems(itemsToDelete: PaintingOrderItem[]) {
+    if (!deleteButtonLabel || itemsToDelete.length === 0) {
+      return;
+    }
+
+    const confirmed = typeof window === 'undefined'
+      ? true
+      : window.confirm(
+          itemsToDelete.length === 1
+            ? `Delete "${getDisplayTitle(itemsToDelete[0])}" permanently from the CMS? This cannot be undone.`
+            : `Delete ${itemsToDelete.length} paintings permanently from the CMS? This cannot be undone.`,
+        );
+
+    if (!confirmed) {
+      return;
+    }
+
+    const ids = itemsToDelete.map((item) => item._id);
+    const deleteIdSet = new Set(ids);
+    setDeletingId(itemsToDelete.length === 1 ? itemsToDelete[0]._id : '__bulk__');
+    setMessage('');
+    setWarning('');
+
+    try {
+      const transaction = client.transaction();
+      for (const item of itemsToDelete) {
+        transaction.delete(item._id);
+      }
+      await transaction.commit();
+
+      const nextPaintings = paintings.filter((painting) => !deleteIdSet.has(painting._id));
+      setPaintings(nextPaintings);
+      setDraftItems((current) => current.filter((painting) => !deleteIdSet.has(painting._id)));
+      setSelectedIds((current) => current.filter((id) => !deleteIdSet.has(id)));
+      setMessage(
+        itemsToDelete.length === 1
+          ? `Deleted "${getDisplayTitle(itemsToDelete[0])}" from the CMS.`
+          : `Deleted ${itemsToDelete.length} paintings from the CMS.`,
+      );
+    } catch {
+      setWarning(
+        itemsToDelete.length === 1
+          ? 'Could not delete that painting. Try again in a moment.'
+          : 'Could not delete the selected paintings. Try again in a moment.',
+      );
+    } finally {
+      setDeletingId(null);
     }
   }
 
@@ -475,6 +531,14 @@ export default function SortablePaintingsPane({
 
   async function archiveSelectedItems() {
     await archiveItems(draftItems.filter((item) => selectedIdSet.has(item._id)));
+  }
+
+  async function deleteItem(item: PaintingOrderItem) {
+    await deleteItems([item]);
+  }
+
+  async function deleteSelectedItems() {
+    await deleteItems(draftItems.filter((item) => selectedIdSet.has(item._id)));
   }
 
   function moveItem(index: number, direction: -1 | 1) {
@@ -608,8 +672,8 @@ export default function SortablePaintingsPane({
           <button
             type="button"
             onClick={() => setRefreshTick((current) => current + 1)}
-            style={compactActionButtonStyle(isLoading || isSaving ? disabledButtonStyle : buttonStyle)}
-            disabled={isLoading || isSaving}
+            style={compactActionButtonStyle(isLoading || isSaving || isActing ? disabledButtonStyle : buttonStyle)}
+            disabled={isLoading || isSaving || isActing}
           >
             Refresh
           </button>
@@ -617,8 +681,8 @@ export default function SortablePaintingsPane({
           <button
             type="button"
             onClick={() => setDraftItems(scope === 'year' ? getItemsForYear(paintings, selectedYear) : paintings)}
-            style={compactActionButtonStyle(isLoading || isSaving ? disabledButtonStyle : buttonStyle)}
-            disabled={isLoading || isSaving}
+            style={compactActionButtonStyle(isLoading || isSaving || isActing ? disabledButtonStyle : buttonStyle)}
+            disabled={isLoading || isSaving || isActing}
           >
             {resetButtonLabel}
           </button>
@@ -627,25 +691,25 @@ export default function SortablePaintingsPane({
             type="button"
             onClick={saveOrder}
             style={compactActionButtonStyle(
-              isLoading || isSaving || draftItems.length === 0 ? disabledButtonStyle : primaryButtonStyle,
+              isLoading || isSaving || isActing || draftItems.length === 0 ? disabledButtonStyle : primaryButtonStyle,
             )}
-            disabled={isLoading || isSaving || draftItems.length === 0}
+            disabled={isLoading || isSaving || isActing || draftItems.length === 0}
           >
             {isSaving ? 'Saving...' : saveButtonLabel}
           </button>
         </div>
 
-        {archiveButtonLabel ? (
+        {archiveButtonLabel || deleteButtonLabel ? (
           <div style={compactControlRowStyle}>
             <button
               type="button"
               onClick={toggleSelectAllShown}
               style={compactActionButtonStyle(
-                isLoading || isSaving || draftItems.length === 0 || archivingId !== null
+                isLoading || isSaving || draftItems.length === 0 || isActing
                   ? disabledButtonStyle
                   : buttonStyle,
               )}
-              disabled={isLoading || isSaving || draftItems.length === 0 || archivingId !== null}
+              disabled={isLoading || isSaving || draftItems.length === 0 || isActing}
             >
               {allShownSelected ? 'Clear Shown' : 'Select All Shown'}
             </button>
@@ -654,27 +718,44 @@ export default function SortablePaintingsPane({
               type="button"
               onClick={clearSelection}
               style={compactActionButtonStyle(
-                isLoading || isSaving || selectedIds.length === 0 || archivingId !== null
+                isLoading || isSaving || selectedIds.length === 0 || isActing
                   ? disabledButtonStyle
                   : buttonStyle,
               )}
-              disabled={isLoading || isSaving || selectedIds.length === 0 || archivingId !== null}
+              disabled={isLoading || isSaving || selectedIds.length === 0 || isActing}
             >
               Clear Selection
             </button>
 
-            <button
-              type="button"
-              onClick={archiveSelectedItems}
-              style={compactActionButtonStyle(
-                isLoading || isSaving || selectedIds.length === 0 || archivingId !== null
-                  ? disabledButtonStyle
-                  : dangerButtonStyle,
-              )}
-              disabled={isLoading || isSaving || selectedIds.length === 0 || archivingId !== null}
-            >
-              {archivingId === '__bulk__' ? 'Hiding...' : `Hide Selected (${selectedIds.length})`}
-            </button>
+            {archiveButtonLabel ? (
+              <button
+                type="button"
+                onClick={archiveSelectedItems}
+                style={compactActionButtonStyle(
+                  isLoading || isSaving || selectedIds.length === 0 || isActing
+                    ? disabledButtonStyle
+                    : dangerButtonStyle,
+                )}
+                disabled={isLoading || isSaving || selectedIds.length === 0 || isActing}
+              >
+                {archivingId === '__bulk__' ? 'Archiving...' : `${archiveButtonLabel} Selected (${selectedIds.length})`}
+              </button>
+            ) : null}
+
+            {deleteButtonLabel ? (
+              <button
+                type="button"
+                onClick={deleteSelectedItems}
+                style={compactActionButtonStyle(
+                  isLoading || isSaving || selectedIds.length === 0 || isActing
+                    ? disabledButtonStyle
+                    : deleteButtonStyle,
+                )}
+                disabled={isLoading || isSaving || selectedIds.length === 0 || isActing}
+              >
+                {deletingId === '__bulk__' ? 'Deleting...' : `${deleteButtonLabel} Selected (${selectedIds.length})`}
+              </button>
+            ) : null}
 
             <span style={selectionCountStyle}>
               {selectedIds.length} selected
@@ -697,14 +778,14 @@ export default function SortablePaintingsPane({
 
                 <div style={{ minWidth: 0 }}>
                   <div style={itemBodyStyle}>
-                    {archiveButtonLabel ? (
+                    {archiveButtonLabel || deleteButtonLabel ? (
                       <label style={itemContentStyle}>
                         <input
                           type="checkbox"
                           checked={selectedIdSet.has(item._id)}
                           onChange={() => toggleSelection(item._id)}
                           style={checkboxStyle}
-                          disabled={isSaving || archivingId !== null}
+                          disabled={isSaving || isActing}
                         />
                         <div style={{ minWidth: 0 }}>
                           <div style={{ fontWeight: 700, color: '#122150' }}>{getDisplayTitle(item)}</div>
@@ -725,7 +806,7 @@ export default function SortablePaintingsPane({
                     type="button"
                     onClick={() => moveToEdge(index, 'top')}
                     style={index === 0 ? { ...disabledButtonStyle, ...compactRowButtonStyle } : compactRowButtonStyle}
-                    disabled={index === 0 || isSaving}
+                    disabled={index === 0 || isSaving || isActing}
                   >
                     Top
                   </button>
@@ -733,7 +814,7 @@ export default function SortablePaintingsPane({
                     type="button"
                     onClick={() => moveItem(index, -1)}
                     style={index === 0 ? { ...disabledButtonStyle, ...compactRowButtonStyle } : compactRowButtonStyle}
-                    disabled={index === 0 || isSaving}
+                    disabled={index === 0 || isSaving || isActing}
                   >
                     Up
                   </button>
@@ -745,7 +826,7 @@ export default function SortablePaintingsPane({
                         ? { ...disabledButtonStyle, ...compactRowButtonStyle }
                         : compactRowButtonStyle
                     }
-                    disabled={index === draftItems.length - 1 || isSaving}
+                    disabled={index === draftItems.length - 1 || isSaving || isActing}
                   >
                     Down
                   </button>
@@ -757,7 +838,7 @@ export default function SortablePaintingsPane({
                         ? { ...disabledButtonStyle, ...compactRowButtonStyle }
                         : compactRowButtonStyle
                     }
-                    disabled={index === draftItems.length - 1 || isSaving}
+                    disabled={index === draftItems.length - 1 || isSaving || isActing}
                   >
                     Bottom
                   </button>
@@ -769,11 +850,26 @@ export default function SortablePaintingsPane({
                         ...(isCompact ? compactRowButtonStyle : rowButtonStyle),
                         ...dangerButtonStyle,
                         ...(isCompact ? { gridColumn: '1 / -1' } : {}),
-                        ...(archivingId === item._id || isSaving ? disabledButtonStyle : {}),
+                        ...(archivingId === item._id || isSaving || isActing ? disabledButtonStyle : {}),
                       }}
-                      disabled={archivingId === item._id || isSaving}
+                      disabled={archivingId === item._id || isSaving || isActing}
                     >
-                      {archivingId === item._id ? 'Hiding...' : archiveButtonLabel}
+                      {archivingId === item._id ? 'Archiving...' : archiveButtonLabel}
+                    </button>
+                  ) : null}
+                  {deleteButtonLabel ? (
+                    <button
+                      type="button"
+                      onClick={() => deleteItem(item)}
+                      style={{
+                        ...(isCompact ? compactRowButtonStyle : rowButtonStyle),
+                        ...deleteButtonStyle,
+                        ...(isCompact ? { gridColumn: '1 / -1' } : {}),
+                        ...(deletingId === item._id || isSaving || isActing ? disabledButtonStyle : {}),
+                      }}
+                      disabled={deletingId === item._id || isSaving || isActing}
+                    >
+                      {deletingId === item._id ? 'Deleting...' : deleteButtonLabel}
                     </button>
                   ) : null}
                 </div>

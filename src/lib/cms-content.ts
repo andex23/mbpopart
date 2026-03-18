@@ -297,7 +297,7 @@ function mapPaintingToArtwork(painting: CmsPainting): Artwork | null {
   }
 
   const cmsImage = getSanityImageUrl(painting.mainImage, { width: 2200, fit: 'max' });
-  const fullImage = cmsImage || (painting.comingSoon ? AVAILABLE_COMING_SOON_IMAGE : null);
+  const fullImage = cmsImage || null;
   if (!fullImage) {
     return null;
   }
@@ -545,7 +545,6 @@ export async function getPaintingsPageContent(): Promise<PaintingsPageView> {
           'Browse Michel Balasis paintings by year. Click any thumbnail to view a larger image.',
           'Use the year buttons to jump directly to a specific collection.',
         ]),
-    emptySectionPlaceholderText: page?.emptySectionPlaceholderText?.trim() || DEFAULT_PLACEHOLDER_TITLE,
     yearGroups: getGroupedYearRanges(cmsArtworks.length > 0 ? cmsArtworks : getAllArtworks()),
   };
 }
@@ -592,61 +591,35 @@ export async function getAvailablePageContent(): Promise<AvailablePageView> {
     .filter((item): item is LegacyThumbItem => item !== null);
 
   const sourceItems = cmsItems.length > 0 ? cmsItems : availableItems;
-  const normalizedItems = sourceItems.map((item) => {
-    if (isComingSoonPlaceholder(item)) {
+  const normalizedItems = sourceItems
+    .filter((item) => !isComingSoonPlaceholder(item))
+    .map((item) => {
+      const statusFromCaption = item.caption.match(/\((available|sold)\)/i)?.[1]?.toLowerCase();
+      const status = item.status ?? (statusFromCaption === 'available'
+        ? 'AVAILABLE'
+        : statusFromCaption === 'sold'
+          ? 'SOLD'
+          : undefined);
+
       return {
-        imageUrl: AVAILABLE_COMING_SOON_IMAGE,
-        thumbUrl: AVAILABLE_COMING_SOON_IMAGE,
-        caption: DEFAULT_PLACEHOLDER_TITLE,
-        status: undefined,
-        meta: undefined,
-        imageFit: undefined,
+        imageUrl: item.imageUrl || item.thumbUrl,
+        thumbUrl: item.thumbUrl || item.imageUrl,
+        caption: sanitizeAvailableCaption(item.caption || 'Untitled'),
+        status,
+        meta: buildAvailableMeta({
+          fallbackMeta: item.meta,
+        }),
+        imageFit: item.imageFit,
       } satisfies LegacyThumbItem;
-    }
-
-    const statusFromCaption = item.caption.match(/\((available|sold)\)/i)?.[1]?.toLowerCase();
-    const status = item.status ?? (statusFromCaption === 'available'
-      ? 'AVAILABLE'
-      : statusFromCaption === 'sold'
-        ? 'SOLD'
-        : undefined);
-
-    return {
-      imageUrl: item.imageUrl || AVAILABLE_COMING_SOON_IMAGE,
-      thumbUrl: item.thumbUrl || item.imageUrl || AVAILABLE_COMING_SOON_IMAGE,
-      caption: sanitizeAvailableCaption(item.caption || 'Untitled'),
-      status,
-      meta: buildAvailableMeta({
-        fallbackMeta: item.meta,
-      }),
-      imageFit: item.imageFit,
-    } satisfies LegacyThumbItem;
-  });
-
-  const hasComingSoonTile = normalizedItems.some((item) =>
-    normalizeString(item.imageUrl) === normalizeString(AVAILABLE_COMING_SOON_IMAGE) ||
-    /coming\s+soon/i.test(item.caption),
-  );
-
-  const itemsWithPlaceholder = hasComingSoonTile
-    ? normalizedItems
-    : [
-      ...normalizedItems,
-      {
-        imageUrl: AVAILABLE_COMING_SOON_IMAGE,
-        thumbUrl: AVAILABLE_COMING_SOON_IMAGE,
-        caption: DEFAULT_PLACEHOLDER_TITLE,
-        meta: undefined,
-        imageFit: undefined,
-      } satisfies LegacyThumbItem,
-    ];
+    })
+    .filter((item) => Boolean(item.imageUrl && item.thumbUrl));
 
   return {
     title: page?.title?.trim() || legacyPageCopy.available.title || DEFAULT_AVAILABLE_TITLE,
     introText: (page?.introText && page.introText.length > 0)
       ? page.introText
       : paragraphsToPortableText(legacyPageCopy.available.paragraphs),
-    items: itemsWithPlaceholder,
+    items: normalizedItems,
   };
 }
 

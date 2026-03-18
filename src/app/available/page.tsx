@@ -27,7 +27,11 @@ export default async function AvailablePage() {
   );
 
   const rightContent = (
-    <LegacyThumbGallery items={availablePage.items} />
+    availablePage.items.length > 0 ? (
+      <LegacyThumbGallery items={availablePage.items} />
+    ) : (
+      <p className="legacy-empty-message">No available paintings have been published yet.</p>
+    )
   );
 
   return (

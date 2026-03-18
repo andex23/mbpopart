@@ -826,6 +826,13 @@ a:hover {
   line-height: 1.6;
 }
 
+.legacy-empty-message {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
 .commission-examples-section .legacy-thumb-grid {
   gap: 12px;
 }

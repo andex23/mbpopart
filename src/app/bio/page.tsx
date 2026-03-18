@@ -12,21 +12,6 @@ export default async function BioPage() {
     getSiteSettingsContent(),
   ]);
 
-  const bioGalleryItems = (() => {
-    const current = bioPage.galleryItems.slice(0, 8);
-    if (current.length >= 8) {
-      return current;
-    }
-
-    const placeholders = Array.from({ length: 8 - current.length }, (_, index) => ({
-      imageUrl: '/placeholders/new-painting-coming-soon.svg',
-      thumbUrl: '/placeholders/new-painting-coming-soon.svg',
-      caption: `Bio Photo ${current.length + index + 1} - Coming Soon`,
-    }));
-
-    return [...current, ...placeholders];
-  })();
-
   const leftContent = (
     <>
       <div className="bio-intro-copy">
@@ -45,7 +30,9 @@ export default async function BioPage() {
     </>
   );
 
-  const rightContent = <LegacyThumbGallery items={bioGalleryItems} />;
+  const rightContent = bioPage.galleryItems.length > 0
+    ? <LegacyThumbGallery items={bioPage.galleryItems.slice(0, 8)} />
+    : null;
 
   return (
     <section className="pb-8">

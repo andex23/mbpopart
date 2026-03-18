@@ -21,14 +21,6 @@ export const paintingsPage = defineType({
       of: [defineArrayMember({ type: 'block' })],
     }),
     defineField({
-      name: 'emptySectionPlaceholderText',
-      title: 'Empty Section Placeholder Text',
-      type: 'string',
-      initialValue: 'New Painting Coming Soon',
-      description: 'Shown inside placeholder painting tiles when a selected year or range has no paintings yet.',
-      validation: (Rule) => Rule.required().max(80),
-    }),
-    defineField({
       name: 'yearGroupingMode',
       title: 'Year Grouping Mode',
       type: 'string',

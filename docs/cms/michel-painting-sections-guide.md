@@ -37,8 +37,8 @@ These are controlled by individual `Painting` documents, but they now live in 2 
 
 - `Paintings > Gallery Paintings`
   - for the main year-by-year gallery
-- `Paintings > Painting Order & Cleanup`
-  - for reordering one year and hiding extra gallery paintings quickly
+- `Paintings > Painting Order, Archive & Delete`
+  - for reordering one year and archiving or deleting extra gallery paintings quickly
 - `Available > Paintings Shown on Available Page`
   - for the available/sold inventory cards
 
@@ -106,8 +106,6 @@ Fields that control what shows:
 - `Card Preview Fit`
   - `Fill Window` crops to fill the square card
   - `Show Full Painting` keeps the whole painting visible inside the square card
-- `Show "Coming Soon" Placeholder`
-  - use this if the real image is not ready yet
 
 Important:
 - `Price` is not the main text on the regular `Paintings` grid
@@ -210,7 +208,7 @@ Fields that control what shows:
 
 Open:
 - `Paintings`
-- `Painting Order & Cleanup`
+- `Painting Order, Archive & Delete`
 
 Then:
 
@@ -222,9 +220,10 @@ Important:
 - this changes order only inside that year
 - this screen controls the main `Paintings` gallery only
 - if a painting belongs in another year section, change its `Year`
-- if a painting is extra and should disappear from the public gallery, click `Hide`
-- you can also tick multiple checkboxes and use `Hide Selected`
-- hidden paintings move to `Paintings > Archived`
+- if a painting is extra and should disappear from the public gallery, click `Archive`
+- you can also tick multiple checkboxes and use `Archive Selected`
+- archived paintings move to `Paintings > Archived`
+- use `Delete` only when you want the painting record removed permanently from the CMS
 
 ### `Available` section
 
@@ -383,7 +382,7 @@ Then:
 3. Turn on `Feature First` only if it should stay near the front
 4. Click `Publish`
 
-## Part 4: Remove Or Hide Items
+## Part 4: Remove Or Archive Items
 
 ### Remove a painting
 
@@ -393,9 +392,9 @@ You have 2 choices:
 
 Fastest method:
 
-1. Open `Paintings > Painting Order & Cleanup`
+1. Open `Paintings > Painting Order, Archive & Delete`
 2. Choose the year
-3. Click `Hide` on one item, or select several and click `Hide Selected`
+3. Click `Archive` on one item, or select several and click `Archive Selected`
 
 Or open the painting and set:
 - `Status = Archive`
@@ -404,7 +403,7 @@ This removes it from the public site while keeping it in the CMS.
 
 #### Full removal
 
-Open the painting and delete it.
+Open `Paintings > Painting Order, Archive & Delete`, then use `Delete` on one item or `Delete Selected` for several.
 
 Use this only if you are sure you no longer need that record.
 
@@ -459,7 +458,7 @@ Edit:
 ### If you want to change the order inside one year
 
 Use:
-- `Paintings > Painting Order & Cleanup`
+- `Paintings > Painting Order, Archive & Delete`
 
 ### If you want a painting to show on `Available`
 
@@ -474,7 +473,7 @@ Use:
 ### If you want a painting hidden from the public site but still saved in CMS
 
 Use:
-- `Paintings > Painting Order & Cleanup > Hide`
+- `Paintings > Painting Order, Archive & Delete > Archive`
 
 Or set:
 - `Status = Archive`

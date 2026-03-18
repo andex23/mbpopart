@@ -16,7 +16,10 @@ export default function LegacyThumbCard({
   imageFit = 'cover',
   mediaAspect = '1 / 1',
 }: LegacyThumbCardProps) {
-  const previewSrc = item.thumbUrl || item.imageUrl || '/placeholders/new-painting-coming-soon.svg';
+  const previewSrc = item.thumbUrl || item.imageUrl || '';
+  if (!previewSrc) {
+    return null;
+  }
   const fullSrc = item.imageUrl || previewSrc;
   const resolvedPreviewSrc = resolveLegacyImageUrl(previewSrc);
   const resolvedFullSrc = resolveLegacyImageUrl(fullSrc);

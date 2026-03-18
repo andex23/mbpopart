@@ -10,7 +10,6 @@ const templates: Template[] = [
       status: 'notForSale',
       inventoryOnly: false,
       featured: false,
-      comingSoon: false,
     },
   },
   {
@@ -21,7 +20,6 @@ const templates: Template[] = [
       status: 'available',
       inventoryOnly: true,
       featured: false,
-      comingSoon: false,
     },
   },
   {
@@ -32,7 +30,6 @@ const templates: Template[] = [
       status: 'sold',
       inventoryOnly: true,
       featured: false,
-      comingSoon: false,
     },
   },
 ];

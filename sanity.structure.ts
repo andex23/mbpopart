@@ -122,8 +122,8 @@ export const deskStructure: StructureResolver = (S) =>
             .items([
               singletonItem(S, 'Page Settings', 'paintingsPage', 'paintingsPage'),
               S.listItem()
-                .title('Painting Order & Cleanup')
-                .child(S.component(PaintingOrderPane).title('Painting Order & Cleanup')),
+                .title('Painting Order, Archive & Delete')
+                .child(S.component(PaintingOrderPane).title('Painting Order, Archive & Delete')),
               S.listItem()
                 .title('Gallery Paintings')
                 .child(

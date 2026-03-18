@@ -69,7 +69,6 @@ export interface CmsPainting {
   year?: number;
   copyrightYear?: number;
   description?: PortableTextValue;
-  comingSoon?: boolean;
   mainImage?: unknown;
   mainImageAlt?: string;
   cardImageFit?: CardImageFit;
@@ -86,7 +85,6 @@ export interface CmsPainting {
 export interface CmsPaintingsPage {
   title?: string;
   introText?: PortableTextValue;
-  emptySectionPlaceholderText?: string;
   yearGroupingMode?: string;
 }
 

@@ -62,7 +62,6 @@ Use this for:
 Use this for:
 - gallery page title
 - gallery intro text
-- the message shown in empty painting sections
 
 Important:
 - this is only for the page heading and intro copy
@@ -72,7 +71,7 @@ Important:
 
 Use this area for:
 - `Page Settings`
-- `Painting Order & Cleanup`
+- `Painting Order, Archive & Delete`
 - `Gallery Paintings`
 - `Archived`
 - `Browse by Year`
@@ -81,7 +80,7 @@ Important:
 - add normal website paintings inside `Paintings > Gallery Paintings`
 - those paintings appear in the main `Paintings` page year sections
 - this area does not control the `Available` inventory cards
-- `Painting Order & Cleanup` is the fastest place to reorder a year and hide extra paintings
+- `Painting Order, Archive & Delete` is the fastest place to reorder a year and archive or delete extra paintings
 
 ### Available
 
@@ -194,23 +193,24 @@ Use this for:
 ### Change painting order inside a year
 
 1. Open `Paintings`
-2. Open `Painting Order & Cleanup`
+2. Open `Painting Order, Archive & Delete`
 3. Choose the year
 4. Use `Up`, `Down`, `Top`, or `Bottom`
 5. Click `Save This Year Order`
 
-### Hide an extra painting from the main gallery
+### Archive or delete an extra painting from the main gallery
 
 1. Open `Paintings`
-2. Open `Painting Order & Cleanup`
+2. Open `Painting Order, Archive & Delete`
 3. Choose the year
 4. Use the checkbox if you want to select more than one
-5. Click `Hide` on one item or `Hide Selected`
+5. Click `Archive`, `Archive Selected`, `Delete`, or `Delete Selected`
 
 Important:
-- `Hide` moves that painting to `Archived`
-- `Hide Selected` moves all selected paintings to `Archived`
-- it removes it from the public `Paintings` page without deleting the record
+- `Archive` moves that painting to `Archived`
+- `Archive Selected` moves all selected paintings to `Archived`
+- `Delete` removes the painting from the CMS permanently
+- use `Archive` if you may need the record again later
 
 ### Change the order on the Available page
 
