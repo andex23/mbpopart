@@ -21,6 +21,7 @@ export default function LegacyThumbCard({
   const resolvedPreviewSrc = resolveLegacyImageUrl(previewSrc);
   const resolvedFullSrc = resolveLegacyImageUrl(fullSrc);
   const caption = item.caption?.trim() || 'Untitled';
+  const effectiveImageFit = item.imageFit ?? imageFit;
 
   return (
     <figure className="legacy-thumb">
@@ -32,7 +33,7 @@ export default function LegacyThumbCard({
               alt={caption}
               fill
               className="legacy-thumb-image"
-              style={{ objectFit: imageFit }}
+              style={{ objectFit: effectiveImageFit }}
               sizes="(max-width: 768px) 46vw, (max-width: 1200px) 24vw, 170px"
               referrerPolicy="no-referrer"
               unoptimized
@@ -47,7 +48,7 @@ export default function LegacyThumbCard({
               alt={caption}
               fill
               className="legacy-thumb-image"
-              style={{ objectFit: imageFit }}
+              style={{ objectFit: effectiveImageFit }}
               sizes="(max-width: 768px) 46vw, (max-width: 1200px) 24vw, 170px"
               referrerPolicy="no-referrer"
               unoptimized

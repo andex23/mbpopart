@@ -101,6 +101,9 @@ Fields that control what shows:
   - if empty, the site uses `Year`
 - `Main Image`
   - the image shown in the painting window
+- `Card Preview Fit`
+  - `Fill Window` crops to fill the square card
+  - `Show Full Painting` keeps the whole painting visible inside the square card
 - `Show "Coming Soon" Placeholder`
   - use this if the real image is not ready yet
 
@@ -126,6 +129,8 @@ Fields that control what shows:
   - shown in the lower info line
 - `Price`
   - shown in the lower info line
+- `Card Preview Fit`
+  - use `Show Full Painting` when a tall or wide painting should stay fully visible inside the square card
 
 Important:
 - `Available` and `Sold` paintings appear on the `Available` page
@@ -136,19 +141,23 @@ Important:
 ## Part 1B: Reposition The Image Inside The Small Window
 
 Sometimes the full image is correct, but the smaller card preview crops too high or too low.
+Sometimes the better fix is not cropping at all.
 
 To fix that:
 
 1. Open the painting
-2. Go to `Main Image`
-3. Open the image editor
-4. Adjust the square crop box so the most important area stays visible in the small preview window
-5. If needed, move the hotspot circle too
-6. Save the image edit
-7. Click `Publish`
+2. First decide whether the card should show the full painting
+3. If yes, set `Card Preview Fit` to `Show Full Painting`
+4. If it still needs a crop adjustment, go to `Main Image`
+5. Open the image editor
+6. Adjust the square crop box so the most important area stays visible in the small preview window
+7. If needed, move the hotspot circle too
+8. Save the image edit
+9. Click `Publish`
 
 Example:
 - if a speech bubble is being cut off at the top, move the square crop box upward so more of the upper part of the painting stays visible
+- if the whole painting should be visible in the square card, use `Show Full Painting` instead
 
 ### `Commissions` section
 

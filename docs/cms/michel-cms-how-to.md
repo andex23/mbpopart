@@ -168,12 +168,13 @@ Use this for:
 ### Reposition a painting inside the small window
 
 1. Open the painting
-2. Go to the `Main Image`
-3. Open the image editor
-4. Adjust the square crop box first until the important part of the image sits correctly in the smaller preview window
-5. If needed, move the hotspot circle too
-6. Save the image edit
-7. Click `Publish`
+2. If you want the whole painting to stay visible in the small card, set `Card Preview Fit` to `Show Full Painting`
+3. If you still need a crop adjustment, go to the `Main Image`
+4. Open the image editor
+5. Adjust the square crop box first until the important part of the image sits correctly in the smaller preview window
+6. If needed, move the hotspot circle too
+7. Save the image edit
+8. Click `Publish`
 
 ### Put a painting on the Available page
 

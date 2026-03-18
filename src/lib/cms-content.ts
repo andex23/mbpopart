@@ -317,6 +317,7 @@ function mapPaintingToArtwork(painting: CmsPainting): Artwork | null {
     title,
     imageUrl: fullImage,
     thumbnailUrl: thumbImage,
+    previewImageFit: painting.cardImageFit ?? 'cover',
     dimensions: painting.dimensions ?? null,
     price,
     copyrightYear,
@@ -578,6 +579,7 @@ export async function getAvailablePageContent(): Promise<AvailablePageView> {
         thumbUrl: artwork.thumbnailUrl,
         caption: caption || artwork.paintingName,
         status,
+        imageFit: artwork.previewImageFit ?? 'cover',
       };
 
       const meta = buildAvailableMeta({

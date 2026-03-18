@@ -90,6 +90,7 @@ export const PAINTINGS_QUERY = groq`
     comingSoon,
     mainImage,
     mainImageAlt,
+    cardImageFit,
     galleryImages[]{
       image,
       alt,
@@ -126,6 +127,7 @@ export const AVAILABLE_PAINTINGS_QUERY = groq`
     comingSoon,
     mainImage,
     mainImageAlt,
+    cardImageFit,
     galleryImages[]{
       image,
       alt,

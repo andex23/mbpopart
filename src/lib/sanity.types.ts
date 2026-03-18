@@ -60,6 +60,7 @@ export interface CmsBioPage {
 }
 
 export type PaintingStatus = 'available' | 'sold' | 'notForSale' | 'archive';
+export type CardImageFit = 'cover' | 'contain';
 
 export interface CmsPainting {
   _id: string;
@@ -71,6 +72,7 @@ export interface CmsPainting {
   comingSoon?: boolean;
   mainImage?: unknown;
   mainImageAlt?: string;
+  cardImageFit?: CardImageFit;
   galleryImages?: CmsImageItem[];
   status?: PaintingStatus;
   inventoryOnly?: boolean;

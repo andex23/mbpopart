@@ -80,6 +80,21 @@ export const painting = defineType({
       validation: (Rule) => Rule.max(140),
     }),
     defineField({
+      name: 'cardImageFit',
+      title: 'Card Preview Fit',
+      type: 'string',
+      group: 'images',
+      description: 'Use "Show Full Painting" when the small square card should keep the whole artwork visible instead of cropping it.',
+      options: {
+        list: [
+          { title: 'Fill Window', value: 'cover' },
+          { title: 'Show Full Painting', value: 'contain' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'cover',
+    }),
+    defineField({
       name: 'galleryImages',
       title: 'Additional Images (Optional)',
       type: 'array',
@@ -182,12 +197,14 @@ export const painting = defineType({
       comingSoon: 'comingSoon',
       sortOrder: 'sortOrder',
       inventoryOnly: 'inventoryOnly',
+      cardImageFit: 'cardImageFit',
     },
-    prepare({ title, caption, year, copyrightYear, media, status, comingSoon, sortOrder, inventoryOnly }) {
+    prepare({ title, caption, year, copyrightYear, media, status, comingSoon, sortOrder, inventoryOnly, cardImageFit }) {
       return {
         title: caption || title || 'Untitled painting',
         subtitle:
           `${copyrightYear ?? year ?? 'no year'} · ${status ?? 'no status'} · order: ${sortOrder ?? 'auto'}${inventoryOnly ? ' · inventory only' : ''}${comingSoon ? ' · coming soon' : ''}` +
+          `${cardImageFit === 'contain' ? ' · full card' : ''}` +
           `${caption && title ? ` · title: ${title}` : ''}`,
         media,
       };

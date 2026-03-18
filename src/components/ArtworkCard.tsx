@@ -33,7 +33,8 @@ export default function ArtworkCard({ work, onClick, priority = false }: Artwork
           src={resolvedPreviewSrc}
           alt={title}
           fill
-          className="img-zoom object-cover"
+          className="img-zoom"
+          style={{ objectFit: work.previewImageFit ?? 'cover' }}
           sizes="(max-width: 640px) 48vw, (max-width: 768px) 32vw, (max-width: 1024px) 24vw, 180px"
           priority={priority}
           referrerPolicy="no-referrer"

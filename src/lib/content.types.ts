@@ -9,6 +9,7 @@ export interface LegacyThumbItem {
   caption: string;
   meta?: string;
   status?: LegacyStatus;
+  imageFit?: 'cover' | 'contain';
 }
 
 export interface NavigationViewItem {
