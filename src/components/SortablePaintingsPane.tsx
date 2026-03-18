@@ -126,6 +126,31 @@ const itemMetaStyle: React.CSSProperties = {
   lineHeight: 1.4,
 };
 
+const itemBodyStyle: React.CSSProperties = {
+  display: 'grid',
+  gap: '8px',
+};
+
+const itemContentStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: '24px minmax(0, 1fr)',
+  gap: '10px',
+  alignItems: 'start',
+};
+
+const checkboxStyle: React.CSSProperties = {
+  width: '18px',
+  height: '18px',
+  margin: 0,
+  accentColor: '#1f2937',
+  cursor: 'pointer',
+};
+
+const selectionCountStyle: React.CSSProperties = {
+  color: '#334155',
+  fontWeight: 600,
+};
+
 const rowButtonGroupStyle: React.CSSProperties = {
   display: 'flex',
   flexWrap: 'wrap',
@@ -249,6 +274,7 @@ export default function SortablePaintingsPane({
   const [isLoading, setIsLoading] = React.useState(true);
   const [isSaving, setIsSaving] = React.useState(false);
   const [archivingId, setArchivingId] = React.useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
   const [message, setMessage] = React.useState('');
   const [warning, setWarning] = React.useState('');
   const [refreshTick, setRefreshTick] = React.useState(0);
@@ -303,6 +329,10 @@ export default function SortablePaintingsPane({
   }, [client, query, refreshTick, scope, selectedYear]);
 
   React.useEffect(() => {
+    setSelectedIds((current) => current.filter((id) => draftItems.some((item) => item._id === id)));
+  }, [draftItems]);
+
+  React.useEffect(() => {
     if (scope === 'year') {
       setDraftItems(getItemsForYear(paintings, selectedYear));
       return;
@@ -312,6 +342,38 @@ export default function SortablePaintingsPane({
   }, [paintings, scope, selectedYear]);
 
   const years = getYears(paintings);
+  const selectedIdSet = React.useMemo(() => new Set(selectedIds), [selectedIds]);
+  const allShownSelected = draftItems.length > 0 && draftItems.every((item) => selectedIdSet.has(item._id));
+
+  function toggleSelection(id: string) {
+    setSelectedIds((current) => (
+      current.includes(id)
+        ? current.filter((itemId) => itemId !== id)
+        : [...current, id]
+    ));
+    setMessage('');
+    setWarning('');
+  }
+
+  function toggleSelectAllShown() {
+    setSelectedIds((current) => {
+      if (draftItems.length > 0 && draftItems.every((item) => current.includes(item._id))) {
+        return current.filter((id) => !draftItems.some((item) => item._id === id));
+      }
+
+      const next = new Set(current);
+      draftItems.forEach((item) => next.add(item._id));
+      return [...next];
+    });
+    setMessage('');
+    setWarning('');
+  }
+
+  function clearSelection() {
+    setSelectedIds([]);
+    setMessage('');
+    setWarning('');
+  }
 
   async function saveOrder() {
     if ((scope === 'year' && selectedYear === null) || draftItems.length === 0) {
@@ -363,27 +425,56 @@ export default function SortablePaintingsPane({
     }
   }
 
-  async function archiveItem(item: PaintingOrderItem) {
+  async function archiveItems(itemsToArchive: PaintingOrderItem[]) {
     if (!archiveButtonLabel) {
       return;
     }
 
-    setArchivingId(item._id);
+    if (itemsToArchive.length === 0) {
+      return;
+    }
+
+    const ids = itemsToArchive.map((item) => item._id);
+    const archiveIdSet = new Set(ids);
+    setArchivingId(itemsToArchive.length === 1 ? itemsToArchive[0]._id : '__bulk__');
     setMessage('');
     setWarning('');
 
     try {
-      await client.patch(item._id).set({ status: 'archive' }).commit();
+      const transaction = client.transaction();
+      for (const item of itemsToArchive) {
+        transaction.patch(item._id, {
+          set: { status: 'archive' },
+        });
+      }
+      await transaction.commit();
 
-      const nextPaintings = paintings.filter((painting) => painting._id !== item._id);
+      const nextPaintings = paintings.filter((painting) => !archiveIdSet.has(painting._id));
       setPaintings(nextPaintings);
-      setDraftItems((current) => current.filter((painting) => painting._id !== item._id));
-      setMessage(`Moved "${getDisplayTitle(item)}" to Archived.`);
+      setDraftItems((current) => current.filter((painting) => !archiveIdSet.has(painting._id)));
+      setSelectedIds((current) => current.filter((id) => !archiveIdSet.has(id)));
+      setMessage(
+        itemsToArchive.length === 1
+          ? `Moved "${getDisplayTitle(itemsToArchive[0])}" to Archived.`
+          : `Moved ${itemsToArchive.length} paintings to Archived.`,
+      );
     } catch {
-      setWarning('Could not hide that painting. Try again in a moment.');
+      setWarning(
+        itemsToArchive.length === 1
+          ? 'Could not hide that painting. Try again in a moment.'
+          : 'Could not hide the selected paintings. Try again in a moment.',
+      );
     } finally {
       setArchivingId(null);
     }
+  }
+
+  async function archiveItem(item: PaintingOrderItem) {
+    await archiveItems([item]);
+  }
+
+  async function archiveSelectedItems() {
+    await archiveItems(draftItems.filter((item) => selectedIdSet.has(item._id)));
   }
 
   function moveItem(index: number, direction: -1 | 1) {
@@ -544,6 +635,53 @@ export default function SortablePaintingsPane({
           </button>
         </div>
 
+        {archiveButtonLabel ? (
+          <div style={compactControlRowStyle}>
+            <button
+              type="button"
+              onClick={toggleSelectAllShown}
+              style={compactActionButtonStyle(
+                isLoading || isSaving || draftItems.length === 0 || archivingId !== null
+                  ? disabledButtonStyle
+                  : buttonStyle,
+              )}
+              disabled={isLoading || isSaving || draftItems.length === 0 || archivingId !== null}
+            >
+              {allShownSelected ? 'Clear Shown' : 'Select All Shown'}
+            </button>
+
+            <button
+              type="button"
+              onClick={clearSelection}
+              style={compactActionButtonStyle(
+                isLoading || isSaving || selectedIds.length === 0 || archivingId !== null
+                  ? disabledButtonStyle
+                  : buttonStyle,
+              )}
+              disabled={isLoading || isSaving || selectedIds.length === 0 || archivingId !== null}
+            >
+              Clear Selection
+            </button>
+
+            <button
+              type="button"
+              onClick={archiveSelectedItems}
+              style={compactActionButtonStyle(
+                isLoading || isSaving || selectedIds.length === 0 || archivingId !== null
+                  ? disabledButtonStyle
+                  : dangerButtonStyle,
+              )}
+              disabled={isLoading || isSaving || selectedIds.length === 0 || archivingId !== null}
+            >
+              {archivingId === '__bulk__' ? 'Hiding...' : `Hide Selected (${selectedIds.length})`}
+            </button>
+
+            <span style={selectionCountStyle}>
+              {selectedIds.length} selected
+            </span>
+          </div>
+        ) : null}
+
         {message ? <p style={messageStyle}>{message}</p> : null}
         {warning ? <p style={warningStyle}>{warning}</p> : null}
 
@@ -558,8 +696,28 @@ export default function SortablePaintingsPane({
                 <div style={compactBadgeStyle}>{index + 1}</div>
 
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, color: '#122150' }}>{getDisplayTitle(item)}</div>
-                  <div style={itemMetaStyle}>{buildMetaLine(item, scope)}</div>
+                  <div style={itemBodyStyle}>
+                    {archiveButtonLabel ? (
+                      <label style={itemContentStyle}>
+                        <input
+                          type="checkbox"
+                          checked={selectedIdSet.has(item._id)}
+                          onChange={() => toggleSelection(item._id)}
+                          style={checkboxStyle}
+                          disabled={isSaving || archivingId !== null}
+                        />
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontWeight: 700, color: '#122150' }}>{getDisplayTitle(item)}</div>
+                          <div style={itemMetaStyle}>{buildMetaLine(item, scope)}</div>
+                        </div>
+                      </label>
+                    ) : (
+                      <>
+                        <div style={{ fontWeight: 700, color: '#122150' }}>{getDisplayTitle(item)}</div>
+                        <div style={itemMetaStyle}>{buildMetaLine(item, scope)}</div>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 <div style={compactRowButtonGroupStyle}>

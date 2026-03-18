@@ -218,6 +218,7 @@ Important:
 - this screen controls the main `Paintings` gallery only
 - if a painting belongs in another year section, change its `Year`
 - if a painting is extra and should disappear from the public gallery, click `Hide`
+- you can also tick multiple checkboxes and use `Hide Selected`
 - hidden paintings move to `Paintings > Archived`
 
 ### `Available` section
@@ -389,7 +390,7 @@ Fastest method:
 
 1. Open `Paintings > Painting Order & Cleanup`
 2. Choose the year
-3. Click `Hide`
+3. Click `Hide` on one item, or select several and click `Hide Selected`
 
 Or open the painting and set:
 - `Status = Archive`

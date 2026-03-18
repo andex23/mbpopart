@@ -18,7 +18,8 @@ export default function PaintingOrderPane() {
       intro="Choose a year, move paintings up or down, or hide extras. This controls the display order inside that year section on the website."
       notes={[
         'This screen controls the main Paintings gallery only.',
-        'Use Hide to remove an extra painting from the public gallery quickly. Hidden paintings stay in Archived.',
+        'Use the checkboxes to hide several extra paintings at once, or use Hide on a single item.',
+        'Hidden paintings stay in Archived.',
         'If a painting belongs in a different year section, open that painting and change its Year first.',
       ]}
       query={PAINTING_ORDER_QUERY}

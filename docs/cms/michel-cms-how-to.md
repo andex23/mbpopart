@@ -199,10 +199,12 @@ Use this for:
 1. Open `Paintings`
 2. Open `Painting Order & Cleanup`
 3. Choose the year
-4. Click `Hide` on the extra painting
+4. Use the checkbox if you want to select more than one
+5. Click `Hide` on one item or `Hide Selected`
 
 Important:
 - `Hide` moves that painting to `Archived`
+- `Hide Selected` moves all selected paintings to `Archived`
 - it removes it from the public `Paintings` page without deleting the record
 
 ### Change the order on the Available page
