@@ -140,9 +140,14 @@ Use this for:
 - page title
 - intro text
 - commission process text
-- down payment card label
-- down payment text
+- step 2 down payment label
+- step 2 down payment text
 - commission examples
+
+Important:
+- the website shows 5 commission steps total
+- step 2 is the down payment card
+- the other 4 step items are the image steps
 
 ### Happy Clients Page
 

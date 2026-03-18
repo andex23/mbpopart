@@ -178,8 +178,13 @@ Fields that control what shows:
   - the photo(s) for that commission example
 
 Important:
+- the website shows 5 total commission steps
+- step 2 is the down payment card
+- the other 4 steps are image steps
 - the site usually uses the image marked `Final`
 - if there is no `Final`, it uses another available image
+- only published commission examples show on the page now
+- there are no filler placeholder tiles in this section
 
 ### `Happy Clients` section
 
