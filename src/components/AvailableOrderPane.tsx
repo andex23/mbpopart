@@ -13,17 +13,20 @@ const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && status in ["available", 
 export default function AvailableOrderPane() {
   return (
     <SortablePaintingsPane
-      title="Available Order"
-      intro="Move available and sold cards up or down, then save. This controls the order on the Available page."
+      title="Paintings Shown on Available Page"
+      intro="Move available and sold cards up or down, or archive or delete extras. This is the main management screen for the Available page."
       notes={[
         'This screen controls all paintings currently shown on the Available page.',
         'Use this instead of editing Manual Sort Order by hand.',
+        'Archive removes the painting from the Available page but keeps it in CMS. Delete removes it permanently.',
       ]}
       query={AVAILABLE_ORDER_QUERY}
       scope="flat"
       saveButtonLabel="Save Available Order"
       resetButtonLabel="Reset Order"
       emptyMessage="No available or sold paintings were found. Add available items first."
+      archiveButtonLabel="Archive"
+      deleteButtonLabel="Delete"
     />
   );
 }

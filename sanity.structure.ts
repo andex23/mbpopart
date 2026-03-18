@@ -1,6 +1,8 @@
+import React from 'react';
 import type { StructureResolver } from 'sanity/structure';
 import AvailableOrderPane from './src/components/AvailableOrderPane';
 import PaintingOrderPane from './src/components/PaintingOrderPane';
+import { PaintingOrderView } from './src/components/PaintingOrderPane';
 import StudioPreviewPane from './src/components/StudioPreviewPane';
 
 type StudioYearRange = {
@@ -93,6 +95,21 @@ function paintingRangeParams(range: StudioYearRange): Record<string, number> {
   return params;
 }
 
+const YearGalleryPane = (year: number) => function YearGalleryPaneComponent() {
+  return React.createElement(PaintingOrderView, {
+    defaultYear: year,
+    showYearSelector: false,
+    title: `Paintings - ${year}`,
+    intro: `This screen manages the ${year} gallery section. Reorder, archive, or delete paintings here.`,
+    notes: [
+      'This screen shows only one year section.',
+      'Use the checkboxes to archive or delete several paintings at once, or use the row buttons on a single item.',
+      'If a painting belongs in another year section, open Edit Individual Paintings and change its Year first.',
+    ],
+    emptyMessage: `No paintings were found for ${year}.`,
+  });
+};
+
 const singletonItem = (
   S: Parameters<StructureResolver>[0],
   title: string,
@@ -122,13 +139,13 @@ export const deskStructure: StructureResolver = (S) =>
             .items([
               singletonItem(S, 'Page Settings', 'paintingsPage', 'paintingsPage'),
               S.listItem()
-                .title('Painting Order, Archive & Delete')
-                .child(S.component(PaintingOrderPane).title('Painting Order, Archive & Delete')),
-              S.listItem()
                 .title('Gallery Paintings')
+                .child(S.component(PaintingOrderPane).title('Gallery Paintings')),
+              S.listItem()
+                .title('Edit Individual Paintings')
                 .child(
                   S.documentList()
-                    .title('Gallery Paintings')
+                    .title('Edit Individual Paintings')
                     .schemaType('painting')
                     .filter(activeGalleryPaintingFilter)
                     .initialValueTemplates([S.initialValueTemplateItem('gallery-painting')])
@@ -157,10 +174,10 @@ export const deskStructure: StructureResolver = (S) =>
                               .title(range.title)
                               .items([
                                 S.listItem()
-                                  .title(`All ${range.title}`)
+                                  .title(`Edit All ${range.title}`)
                                   .child(
                                     S.documentList()
-                                      .title(`${range.title} Paintings`)
+                                      .title(`Edit ${range.title} Paintings`)
                                       .schemaType('painting')
                                       .filter(`${paintingRangeFilter(range)} && (!defined(status) || status != "archive")`)
                                       .params(paintingRangeParams(range))
@@ -171,13 +188,7 @@ export const deskStructure: StructureResolver = (S) =>
                                   S.listItem()
                                     .title(String(year))
                                     .child(
-                                      S.documentList()
-                                        .title(`Paintings - ${year}`)
-                                        .schemaType('painting')
-                                        .filter(`${activeGalleryPaintingFilter} && year == $year`)
-                                        .params({ year })
-                                        .initialValueTemplates([S.initialValueTemplateItem('gallery-painting')])
-                                        .defaultOrdering(paintingDefaultOrdering),
+                                      S.component(YearGalleryPane(year)).title(`Paintings - ${year}`),
                                     ),
                                 ),
                               ]),
@@ -195,13 +206,13 @@ export const deskStructure: StructureResolver = (S) =>
             .items([
               singletonItem(S, 'Page Settings', 'availablePage', 'availablePage'),
               S.listItem()
-                .title('Available Order')
-                .child(S.component(AvailableOrderPane).title('Available Order')),
-              S.listItem()
                 .title('Paintings Shown on Available Page')
+                .child(S.component(AvailableOrderPane).title('Paintings Shown on Available Page')),
+              S.listItem()
+                .title('Edit Available Paintings')
                 .child(
                   S.documentList()
-                    .title('Available Page Paintings')
+                    .title('Edit Available Paintings')
                     .schemaType('painting')
                     .filter('_type == "painting" && status in ["available", "sold"]')
                     .initialValueTemplates([

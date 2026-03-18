@@ -125,7 +125,7 @@ export const painting = defineType({
       title: 'Manual Sort Order (Optional)',
       type: 'number',
       group: 'placement',
-      description: 'Lower values appear first within the same year. Easiest method: use Paintings > Painting Order, Archive & Delete in the CMS.',
+      description: 'Lower values appear first within the same year. Easiest method: use Paintings > Gallery Paintings in the CMS.',
       validation: (Rule) => Rule.min(0).max(100000),
     }),
     defineField({

@@ -65,29 +65,30 @@ Use this for:
 
 Important:
 - this is only for the page heading and intro copy
-- the actual painting records are in `Paintings > Gallery Paintings`
+- the actual painting records are in `Paintings > Edit Individual Paintings`
 
 ### Paintings
 
 Use this area for:
 - `Page Settings`
-- `Painting Order, Archive & Delete`
 - `Gallery Paintings`
+- `Edit Individual Paintings`
 - `Archived`
 - `Browse by Year`
 
 Important:
-- add normal website paintings inside `Paintings > Gallery Paintings`
+- add normal website paintings inside `Paintings > Edit Individual Paintings`
 - those paintings appear in the main `Paintings` page year sections
 - this area does not control the `Available` inventory cards
-- `Painting Order, Archive & Delete` is the fastest place to reorder a year and archive or delete extra paintings
+- `Gallery Paintings` is the fastest place to reorder a year and archive or delete extra paintings
+- use `Edit Individual Paintings` when you want to open and edit painting records one by one
 
 ### Available
 
 Use this area for:
 - `Page Settings`
-- `Available Order`
 - `Paintings Shown on Available Page`
+- `Edit Available Paintings`
 - `Available Only`
 - `Sold Items Still Showing Here`
 
@@ -95,6 +96,8 @@ Important:
 - add available or sold inventory cards from inside the `Available` section
 - those records are kept separate from the main `Paintings` year gallery
 - this is the correct place to manage the cards shown on the `Available` page
+- use `Paintings Shown on Available Page` to reorder, archive, or delete cards
+- use `Edit Available Paintings` when you want to open and edit available records one by one
 
 ### Painting Record
 
@@ -110,7 +113,7 @@ Use this for each individual painting or inventory card:
 Important:
 - `Status` controls the visible tag such as `Available` or `Sold`
 - records created from the `Available` section are already tagged correctly for that page
-- records created from `Paintings > Gallery Paintings` are normal gallery paintings
+- records created from `Paintings > Edit Individual Paintings` are normal gallery paintings
 
 ### Painting Order
 
@@ -123,14 +126,15 @@ Important:
 - this only changes order within the same year
 - if a painting should appear in a different section, change that painting's `Year`
 
-### Available Order
+### Available Page Management
 
 Use this for:
 - changing the order of cards on the `Available` page
+- archiving or deleting extra available or sold cards
 - moving available or sold paintings up or down without editing numbers by hand
 
 Important:
-- this controls the `Available` page only
+- open `Available > Paintings Shown on Available Page`
 - use this instead of editing `Manual Sort Order` directly
 
 ### Commissions Page
@@ -166,8 +170,8 @@ Use this for:
 ### Add a new painting
 
 1. Open the correct section
-2. Use `Paintings > Gallery Paintings` for normal gallery paintings
-3. Use `Available > Paintings Shown on Available Page` for available or sold inventory cards
+2. Use `Paintings > Edit Individual Paintings` for normal gallery paintings
+3. Use `Available > Edit Available Paintings` for available or sold inventory cards
 4. Create a new painting there
 5. Add title, year, image, and status
 6. Click `Publish`
@@ -185,7 +189,7 @@ Use this for:
 
 ### Put a painting on the Available page
 
-1. Open `Available > Paintings Shown on Available Page`
+1. Open `Available > Edit Available Paintings`
 2. Add or edit the painting there
 3. Set `Status` to `Available` or `Sold`
 4. Click `Publish`
@@ -193,7 +197,7 @@ Use this for:
 ### Change painting order inside a year
 
 1. Open `Paintings`
-2. Open `Painting Order, Archive & Delete`
+2. Open `Gallery Paintings`
 3. Choose the year
 4. Use `Up`, `Down`, `Top`, or `Bottom`
 5. Click `Save This Year Order`
@@ -201,7 +205,7 @@ Use this for:
 ### Archive or delete an extra painting from the main gallery
 
 1. Open `Paintings`
-2. Open `Painting Order, Archive & Delete`
+2. Open `Gallery Paintings`
 3. Choose the year
 4. Use the checkbox if you want to select more than one
 5. Click `Archive`, `Archive Selected`, `Delete`, or `Delete Selected`
@@ -215,7 +219,7 @@ Important:
 ### Change the order on the Available page
 
 1. Open `Available`
-2. Open `Available Order`
+2. Open `Paintings Shown on Available Page`
 3. Use `Up`, `Down`, `Top`, or `Bottom`
 4. Click `Save Available Order`
 

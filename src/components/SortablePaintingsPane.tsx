@@ -23,6 +23,8 @@ interface SortablePaintingsPaneProps {
   emptyMessage: string;
   archiveButtonLabel?: string;
   deleteButtonLabel?: string;
+  defaultSelectedYear?: number | null;
+  showYearSelector?: boolean;
 }
 
 const API_VERSION = '2021-10-21';
@@ -269,11 +271,13 @@ export default function SortablePaintingsPane({
   emptyMessage,
   archiveButtonLabel,
   deleteButtonLabel,
+  defaultSelectedYear = null,
+  showYearSelector = true,
 }: SortablePaintingsPaneProps) {
   const isCompact = useCompactLayout();
   const client = useClient({ apiVersion: API_VERSION });
   const [paintings, setPaintings] = React.useState<PaintingOrderItem[]>([]);
-  const [selectedYear, setSelectedYear] = React.useState<number | null>(null);
+  const [selectedYear, setSelectedYear] = React.useState<number | null>(defaultSelectedYear);
   const [draftItems, setDraftItems] = React.useState<PaintingOrderItem[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isSaving, setIsSaving] = React.useState(false);
@@ -303,9 +307,11 @@ export default function SortablePaintingsPane({
         if (scope === 'year') {
           const availableYears = getYears(nextPaintings);
           const nextSelectedYear =
-            typeof selectedYear === 'number' && availableYears.includes(selectedYear)
-              ? selectedYear
-              : availableYears[0] ?? null;
+            typeof defaultSelectedYear === 'number' && availableYears.includes(defaultSelectedYear)
+              ? defaultSelectedYear
+              : typeof selectedYear === 'number' && availableYears.includes(selectedYear)
+                ? selectedYear
+                : availableYears[0] ?? null;
 
           setSelectedYear(nextSelectedYear);
           setDraftItems(getItemsForYear(nextPaintings, nextSelectedYear));
@@ -331,7 +337,7 @@ export default function SortablePaintingsPane({
     return () => {
       cancelled = true;
     };
-  }, [client, query, refreshTick, scope, selectedYear]);
+  }, [client, defaultSelectedYear, query, refreshTick, scope, selectedYear]);
 
   React.useEffect(() => {
     setSelectedIds((current) => current.filter((id) => draftItems.some((item) => item._id === id)));
@@ -651,7 +657,7 @@ export default function SortablePaintingsPane({
         ))}
 
         <div style={compactControlRowStyle}>
-          {scope === 'year' ? (
+          {scope === 'year' && showYearSelector ? (
             <label style={compactLabelStyle}>
               <span>Year section</span>
               <select
