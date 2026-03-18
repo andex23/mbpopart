@@ -9,6 +9,7 @@ import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 interface CommissionProcessProps {
   title?: string;
   subtitle?: string;
+  downPaymentLabel?: string;
   downPaymentRule?: string;
   steps: CommissionProcessStepView[];
 }
@@ -42,6 +43,7 @@ function EmptyStepThumb({
 export default function CommissionProcess({
   title = 'The Commission Process',
   subtitle = 'Many commissions follow a structured creative process — from your reference photo to a finished original Michel painting.',
+  downPaymentLabel = '50% Down Payment',
   downPaymentRule = 'Clients can make their 50% Down Payment via Zelle, Venmo, or Cash',
   steps,
 }: CommissionProcessProps) {
@@ -60,13 +62,13 @@ export default function CommissionProcess({
 
     const paymentStep: CommissionProcessStepView = {
       id: 'down-payment-step',
-      label: 'Down Payment',
+      label: downPaymentLabel,
       images: [],
       caption: downPaymentRule,
     };
 
     return [normalized[0], paymentStep, ...normalized.slice(1)];
-  }, [downPaymentRule, steps]);
+  }, [downPaymentLabel, downPaymentRule, steps]);
 
   const viewerItems: LegacyThumbItem[] = useMemo(
     () =>

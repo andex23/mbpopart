@@ -47,6 +47,7 @@ export default async function CommissionsPage() {
       <CommissionProcess
         title={commissionsPage.processTitle}
         subtitle={commissionsPage.processSubtitle}
+        downPaymentLabel={commissionsPage.downPaymentLabel}
         downPaymentRule={commissionsPage.downPaymentRule}
         steps={commissionsPage.processSteps}
       />

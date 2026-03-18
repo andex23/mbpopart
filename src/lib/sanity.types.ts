@@ -122,6 +122,7 @@ export interface CmsCommissionsPage {
   introText?: PortableTextValue;
   howItWorksTitle?: string;
   howItWorksSubtitle?: string;
+  downPaymentLabel?: string;
   downPaymentRule?: string;
   examplesTitle?: string;
   steps?: CmsCommissionStep[];

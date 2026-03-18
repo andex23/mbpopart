@@ -72,14 +72,16 @@ Important:
 
 Use this area for:
 - `Page Settings`
+- `Painting Order & Cleanup`
 - `Gallery Paintings`
-- `Painting Order`
-- paintings grouped by year range
+- `Archived`
+- `Browse by Year`
 
 Important:
 - add normal website paintings inside `Paintings > Gallery Paintings`
 - those paintings appear in the main `Paintings` page year sections
 - this area does not control the `Available` inventory cards
+- `Painting Order & Cleanup` is the fastest place to reorder a year and hide extra paintings
 
 ### Available
 
@@ -138,6 +140,7 @@ Use this for:
 - page title
 - intro text
 - commission process text
+- down payment card label
 - down payment text
 - commission examples
 
@@ -186,10 +189,21 @@ Use this for:
 ### Change painting order inside a year
 
 1. Open `Paintings`
-2. Open `Painting Order`
+2. Open `Painting Order & Cleanup`
 3. Choose the year
 4. Use `Up`, `Down`, `Top`, or `Bottom`
 5. Click `Save This Year Order`
+
+### Hide an extra painting from the main gallery
+
+1. Open `Paintings`
+2. Open `Painting Order & Cleanup`
+3. Choose the year
+4. Click `Hide` on the extra painting
+
+Important:
+- `Hide` moves that painting to `Archived`
+- it removes it from the public `Paintings` page without deleting the record
 
 ### Change the order on the Available page
 

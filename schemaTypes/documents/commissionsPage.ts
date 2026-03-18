@@ -36,6 +36,14 @@ export const commissionsPage = defineType({
       validation: (Rule) => Rule.max(220),
     }),
     defineField({
+      name: 'downPaymentLabel',
+      title: 'Down Payment Card Label',
+      type: 'string',
+      description: 'Text shown below the inserted payment card between steps 1 and 2.',
+      initialValue: '50% Down Payment',
+      validation: (Rule) => Rule.required().max(60),
+    }),
+    defineField({
       name: 'downPaymentRule',
       title: 'Down Payment Rule',
       type: 'text',
@@ -45,9 +53,9 @@ export const commissionsPage = defineType({
     }),
     defineField({
       name: 'steps',
-      title: 'Process Steps (Exactly 4)',
+      title: 'Image Steps (Exactly 4)',
       type: 'array',
-      description: 'Steps are shown in a fixed 4-step template in the frontend.',
+      description: 'These are the 4 image-based steps. The payment card is managed separately above.',
       of: [defineArrayMember({ type: 'commissionStepItem' })],
       validation: (Rule) => Rule.required().min(4).max(4),
     }),

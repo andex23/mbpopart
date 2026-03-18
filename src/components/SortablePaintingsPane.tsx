@@ -22,6 +22,7 @@ interface SortablePaintingsPaneProps {
   saveButtonLabel: string;
   resetButtonLabel: string;
   emptyMessage: string;
+  archiveButtonLabel?: string;
 }
 
 const API_VERSION = '2021-10-21';
@@ -139,6 +140,13 @@ const rowButtonStyle: React.CSSProperties = {
   fontSize: '0.92rem',
 };
 
+const dangerButtonStyle: React.CSSProperties = {
+  ...buttonStyle,
+  borderColor: '#d97706',
+  color: '#92400e',
+  background: '#fff7ed',
+};
+
 const messageStyle: React.CSSProperties = {
   margin: '0 0 14px',
   padding: '10px 12px',
@@ -231,6 +239,7 @@ export default function SortablePaintingsPane({
   saveButtonLabel,
   resetButtonLabel,
   emptyMessage,
+  archiveButtonLabel,
 }: SortablePaintingsPaneProps) {
   const isCompact = useCompactLayout();
   const client = useClient({ apiVersion: API_VERSION });
@@ -239,6 +248,7 @@ export default function SortablePaintingsPane({
   const [draftItems, setDraftItems] = React.useState<PaintingOrderItem[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isSaving, setIsSaving] = React.useState(false);
+  const [archivingId, setArchivingId] = React.useState<string | null>(null);
   const [message, setMessage] = React.useState('');
   const [warning, setWarning] = React.useState('');
   const [refreshTick, setRefreshTick] = React.useState(0);
@@ -350,6 +360,29 @@ export default function SortablePaintingsPane({
       setWarning('Save failed. Try again in a moment.');
     } finally {
       setIsSaving(false);
+    }
+  }
+
+  async function archiveItem(item: PaintingOrderItem) {
+    if (!archiveButtonLabel) {
+      return;
+    }
+
+    setArchivingId(item._id);
+    setMessage('');
+    setWarning('');
+
+    try {
+      await client.patch(item._id).set({ status: 'archive' }).commit();
+
+      const nextPaintings = paintings.filter((painting) => painting._id !== item._id);
+      setPaintings(nextPaintings);
+      setDraftItems((current) => current.filter((painting) => painting._id !== item._id));
+      setMessage(`Moved "${getDisplayTitle(item)}" to Archived.`);
+    } catch {
+      setWarning('Could not hide that painting. Try again in a moment.');
+    } finally {
+      setArchivingId(null);
     }
   }
 
@@ -570,6 +603,21 @@ export default function SortablePaintingsPane({
                   >
                     Bottom
                   </button>
+                  {archiveButtonLabel ? (
+                    <button
+                      type="button"
+                      onClick={() => archiveItem(item)}
+                      style={{
+                        ...(isCompact ? compactRowButtonStyle : rowButtonStyle),
+                        ...dangerButtonStyle,
+                        ...(isCompact ? { gridColumn: '1 / -1' } : {}),
+                        ...(archivingId === item._id || isSaving ? disabledButtonStyle : {}),
+                      }}
+                      disabled={archivingId === item._id || isSaving}
+                    >
+                      {archivingId === item._id ? 'Hiding...' : archiveButtonLabel}
+                    </button>
+                  ) : null}
                 </div>
               </div>
             ))}

@@ -91,6 +91,7 @@ const FALLBACK_HERO_IMAGES = [
 
 const AVAILABLE_COMING_SOON_IMAGE = '/placeholders/new-painting-coming-soon.svg';
 const DEFAULT_AVAILABLE_TITLE = 'Available';
+const DEFAULT_COMMISSION_DOWN_PAYMENT_LABEL = '50% Down Payment';
 const DEFAULT_COMMISSION_DOWN_PAYMENT_RULE =
   'Clients can make their 50% Down Payment via Zelle, Venmo, or Cash';
 const DEFAULT_COMMISSION_PROCESS_SUBTITLE =
@@ -510,15 +511,13 @@ export async function getBioPageContent(): Promise<BioPageView> {
     )
     .filter((item): item is LegacyThumbItem => item !== null);
 
-  const mergedGallery = mergeLegacyThumbItems(cmsGallery, bioItems);
-
   return {
     title: page?.title?.trim() || 'INTRO BIO',
     portraitImageUrl: getSanityImageUrl(page?.portraitImage, { width: 220, height: 220, fit: 'crop' }),
     body: (page?.body && page.body.length > 0)
       ? page.body
       : portableTextFromLongText(siteContent.bio.bioText),
-    galleryItems: mergedGallery.length > 0 ? mergedGallery : bioItems,
+    galleryItems: cmsGallery.length > 0 ? cmsGallery : bioItems,
   };
 }
 
@@ -538,8 +537,6 @@ export async function getPaintingsPageContent(): Promise<PaintingsPageView> {
     .map(mapPaintingToArtwork)
     .filter((item): item is Artwork => item !== null);
 
-  const sourceArtworks = mergeArtworks(cmsArtworks, getAllArtworks());
-
   return {
     title: page?.title?.trim() || 'Paintings',
     introText: (page?.introText && page.introText.length > 0)
@@ -549,7 +546,7 @@ export async function getPaintingsPageContent(): Promise<PaintingsPageView> {
           'Use the year buttons to jump directly to a specific collection.',
         ]),
     emptySectionPlaceholderText: page?.emptySectionPlaceholderText?.trim() || DEFAULT_PLACEHOLDER_TITLE,
-    yearGroups: getGroupedYearRanges(sourceArtworks),
+    yearGroups: getGroupedYearRanges(cmsArtworks.length > 0 ? cmsArtworks : getAllArtworks()),
   };
 }
 
@@ -603,6 +600,7 @@ export async function getAvailablePageContent(): Promise<AvailablePageView> {
         caption: DEFAULT_PLACEHOLDER_TITLE,
         status: undefined,
         meta: undefined,
+        imageFit: undefined,
       } satisfies LegacyThumbItem;
     }
 
@@ -621,6 +619,7 @@ export async function getAvailablePageContent(): Promise<AvailablePageView> {
       meta: buildAvailableMeta({
         fallbackMeta: item.meta,
       }),
+      imageFit: item.imageFit,
     } satisfies LegacyThumbItem;
   });
 
@@ -638,6 +637,7 @@ export async function getAvailablePageContent(): Promise<AvailablePageView> {
         thumbUrl: AVAILABLE_COMING_SOON_IMAGE,
         caption: DEFAULT_PLACEHOLDER_TITLE,
         meta: undefined,
+        imageFit: undefined,
       } satisfies LegacyThumbItem,
     ];
 
@@ -687,7 +687,6 @@ export async function getCommissionsPageContent(): Promise<CommissionsPageView> 
     })
     .filter((item): item is LegacyThumbItem => item !== null);
 
-  const mergedExamples = mergeLegacyThumbItems(exampleItems, commissionItems);
   const resolvedProcessSteps = processSteps.length === 4 ? processSteps : commissionProcessSteps;
 
   return {
@@ -699,10 +698,13 @@ export async function getCommissionsPageContent(): Promise<CommissionsPageView> 
     processSubtitle: normalizeCommissionSpelling(
       page?.howItWorksSubtitle?.trim() || DEFAULT_COMMISSION_PROCESS_SUBTITLE,
     ),
+    downPaymentLabel: normalizeCommissionSpelling(
+      page?.downPaymentLabel?.trim() || DEFAULT_COMMISSION_DOWN_PAYMENT_LABEL,
+    ),
     downPaymentRule: page?.downPaymentRule?.trim() || DEFAULT_COMMISSION_DOWN_PAYMENT_RULE,
     processSteps: resolvedProcessSteps,
     examplesTitle: page?.examplesTitle?.trim() || 'Recent Commission Examples',
-    exampleItems: mergedExamples.length > 0 ? mergedExamples : commissionItems,
+    exampleItems: exampleItems.length > 0 ? exampleItems : commissionItems,
   };
 }
 
@@ -742,20 +744,12 @@ export async function getHappyClientsPageContent(): Promise<HappyClientsPageView
     order: 9999,
   }));
 
-  const mergedPhotos = mergeUniqueByKey(photos, fallbackPhotos, (item) => {
-    const imageKey = normalizeString(item.image);
-    if (imageKey) {
-      return `img:${imageKey}`;
-    }
-    return `caption:${normalizeString(item.caption)}`;
-  });
-
   return {
     title: page?.title?.trim() || DEFAULT_HAPPY_CLIENTS_TITLE,
     introText: (page?.introText && page.introText.length > 0)
       ? page.introText
       : paragraphsToPortableText(legacyPageCopy.photos.paragraphs),
-    photos: mergedPhotos.length > 0 ? mergedPhotos : fallbackPhotos,
+    photos: photos.length > 0 ? photos : fallbackPhotos,
   };
 }
 

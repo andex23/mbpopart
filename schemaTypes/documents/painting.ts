@@ -107,7 +107,7 @@ export const painting = defineType({
       title: 'Status',
       type: 'string',
       group: 'placement',
-      description: 'Available and Sold paintings appear on the Available page automatically. Use this to control what shows there.',
+      description: 'Available and Sold paintings appear on the Available page automatically. Use Archive to hide a gallery painting from the public site.',
       options: {
         list: [
           { title: 'Available', value: 'available' },
@@ -140,7 +140,7 @@ export const painting = defineType({
       title: 'Manual Sort Order (Optional)',
       type: 'number',
       group: 'placement',
-      description: 'Lower values appear first within the same year. Easiest method: use Paintings > Painting Order in the CMS.',
+      description: 'Lower values appear first within the same year. Easiest method: use Paintings > Painting Order & Cleanup in the CMS.',
       validation: (Rule) => Rule.min(0).max(100000),
     }),
     defineField({

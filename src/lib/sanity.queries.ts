@@ -151,6 +151,7 @@ export const COMMISSIONS_PAGE_QUERY = groq`
     introText,
     howItWorksTitle,
     howItWorksSubtitle,
+    downPaymentLabel,
     downPaymentRule,
     examplesTitle,
     steps[]{

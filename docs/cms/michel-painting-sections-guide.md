@@ -37,6 +37,8 @@ These are controlled by individual `Painting` documents, but they now live in 2 
 
 - `Paintings > Gallery Paintings`
   - for the main year-by-year gallery
+- `Paintings > Painting Order & Cleanup`
+  - for reordering one year and hiding extra gallery paintings quickly
 - `Available > Paintings Shown on Available Page`
   - for the available/sold inventory cards
 
@@ -203,7 +205,7 @@ Fields that control what shows:
 
 Open:
 - `Paintings`
-- `Painting Order`
+- `Painting Order & Cleanup`
 
 Then:
 
@@ -215,6 +217,8 @@ Important:
 - this changes order only inside that year
 - this screen controls the main `Paintings` gallery only
 - if a painting belongs in another year section, change its `Year`
+- if a painting is extra and should disappear from the public gallery, click `Hide`
+- hidden paintings move to `Paintings > Archived`
 
 ### `Available` section
 
@@ -381,8 +385,13 @@ You have 2 choices:
 
 #### Safer option: hide it but keep the record
 
-Open the painting and set:
+Fastest method:
 
+1. Open `Paintings > Painting Order & Cleanup`
+2. Choose the year
+3. Click `Hide`
+
+Or open the painting and set:
 - `Status = Archive`
 
 This removes it from the public site while keeping it in the CMS.
@@ -444,7 +453,7 @@ Edit:
 ### If you want to change the order inside one year
 
 Use:
-- `Paintings > Painting Order`
+- `Paintings > Painting Order & Cleanup`
 
 ### If you want a painting to show on `Available`
 
@@ -458,7 +467,10 @@ Use:
 
 ### If you want a painting hidden from the public site but still saved in CMS
 
-Set:
+Use:
+- `Paintings > Painting Order & Cleanup > Hide`
+
+Or set:
 - `Status = Archive`
 
 ## Best Practice

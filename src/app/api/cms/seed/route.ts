@@ -562,6 +562,7 @@ async function buildSingletonSeedDocuments(client: SanityClient) {
       howItWorksTitle: 'The Commission Process',
       howItWorksSubtitle:
         'Many commissions follow a structured creative process — from your reference photo to a finished original Michel painting.',
+      downPaymentLabel: '50% Down Payment',
       downPaymentRule: 'Clients can make their 50% Down Payment via Zelle, Venmo, or Cash',
       examplesTitle: 'Recent Commission Examples',
       steps: commissionSteps,

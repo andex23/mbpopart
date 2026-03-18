@@ -81,6 +81,7 @@ export interface CommissionsPageView {
   introText: PortableTextValue;
   processTitle: string;
   processSubtitle: string;
+  downPaymentLabel: string;
   downPaymentRule: string;
   processSteps: CommissionProcessStepView[];
   examplesTitle: string;

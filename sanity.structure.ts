@@ -36,6 +36,7 @@ const availableInventoryOrdering = [
 ];
 
 const galleryPaintingFilter = '_type == "painting" && (!defined(inventoryOnly) || inventoryOnly != true)';
+const activeGalleryPaintingFilter = `${galleryPaintingFilter} && (!defined(status) || status != "archive")`;
 
 function getYearsForRange(range: StudioYearRange): number[] {
   if (range.from === null && range.to !== null) {
@@ -121,23 +122,32 @@ export const deskStructure: StructureResolver = (S) =>
             .items([
               singletonItem(S, 'Page Settings', 'paintingsPage', 'paintingsPage'),
               S.listItem()
-                .title('Painting Order')
-                .child(S.component(PaintingOrderPane).title('Painting Order')),
+                .title('Painting Order & Cleanup')
+                .child(S.component(PaintingOrderPane).title('Painting Order & Cleanup')),
               S.listItem()
                 .title('Gallery Paintings')
                 .child(
                   S.documentList()
                     .title('Gallery Paintings')
                     .schemaType('painting')
-                    .filter(galleryPaintingFilter)
+                    .filter(activeGalleryPaintingFilter)
                     .initialValueTemplates([S.initialValueTemplateItem('gallery-painting')])
                     .defaultOrdering(paintingDefaultOrdering),
                 ),
               S.listItem()
-                .title('By Year Range')
+                .title('Archived')
+                .child(
+                  S.documentList()
+                    .title('Archived Paintings')
+                    .schemaType('painting')
+                    .filter(`${galleryPaintingFilter} && status == "archive"`)
+                    .defaultOrdering(paintingDefaultOrdering),
+                ),
+              S.listItem()
+                .title('Browse by Year')
                 .child(
                   S.list()
-                    .title('Paintings by Year Range')
+                    .title('Browse by Year')
                     .items(
                       PAINTING_YEAR_RANGES.map((range) =>
                         S.listItem()
@@ -152,7 +162,7 @@ export const deskStructure: StructureResolver = (S) =>
                                     S.documentList()
                                       .title(`${range.title} Paintings`)
                                       .schemaType('painting')
-                                      .filter(paintingRangeFilter(range))
+                                      .filter(`${paintingRangeFilter(range)} && (!defined(status) || status != "archive")`)
                                       .params(paintingRangeParams(range))
                                       .initialValueTemplates([S.initialValueTemplateItem('gallery-painting')])
                                       .defaultOrdering(paintingDefaultOrdering),
@@ -164,7 +174,7 @@ export const deskStructure: StructureResolver = (S) =>
                                       S.documentList()
                                         .title(`Paintings - ${year}`)
                                         .schemaType('painting')
-                                        .filter(`${galleryPaintingFilter} && year == $year`)
+                                        .filter(`${activeGalleryPaintingFilter} && year == $year`)
                                         .params({ year })
                                         .initialValueTemplates([S.initialValueTemplateItem('gallery-painting')])
                                         .defaultOrdering(paintingDefaultOrdering),
@@ -174,44 +184,6 @@ export const deskStructure: StructureResolver = (S) =>
                           ),
                       ),
                     ),
-                ),
-              S.listItem()
-                .title('Available')
-                .child(
-                  S.documentList()
-                    .title('Available Paintings')
-                    .schemaType('painting')
-                    .filter('_type == "painting" && status == "available"')
-                    .initialValueTemplates([S.initialValueTemplateItem('available-inventory-painting')])
-                    .defaultOrdering(availableInventoryOrdering),
-                ),
-              S.listItem()
-                .title('Sold')
-                .child(
-                  S.documentList()
-                    .title('Sold Paintings')
-                    .schemaType('painting')
-                    .filter('_type == "painting" && status == "sold"')
-                    .initialValueTemplates([S.initialValueTemplateItem('sold-inventory-painting')])
-                    .defaultOrdering(availableInventoryOrdering),
-                ),
-              S.listItem()
-                .title('Featured')
-                .child(
-                  S.documentList()
-                    .title('Featured Paintings')
-                    .schemaType('painting')
-                    .filter(`${galleryPaintingFilter} && featured == true`)
-                    .defaultOrdering(paintingDefaultOrdering),
-                ),
-              S.listItem()
-                .title('Archived')
-                .child(
-                  S.documentList()
-                    .title('Archived Paintings')
-                    .schemaType('painting')
-                    .filter(`${galleryPaintingFilter} && status == "archive"`)
-                    .defaultOrdering(paintingDefaultOrdering),
                 ),
             ]),
         ),
