@@ -61,7 +61,7 @@ export const painting = defineType({
       title: 'Main Image',
       type: 'image',
       group: 'images',
-      description: 'Upload high-resolution image. To nudge how it sits inside the smaller card window, open the image editor and adjust the hotspot/crop so the important area stays visible.',
+      description: 'Upload high-resolution image. To change how it sits inside the smaller card window, open the image editor and adjust the square crop first. Then move the hotspot circle if needed to keep the important area visible.',
       options: { hotspot: true },
       validation: (Rule) =>
         Rule.custom((value, context) => {

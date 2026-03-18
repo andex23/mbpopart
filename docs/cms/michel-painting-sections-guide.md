@@ -107,7 +107,7 @@ Fields that control what shows:
 Important:
 - `Price` is not the main text on the regular `Paintings` grid
 - `Year` controls which year section the painting belongs to
-- if the image sits too high or too low inside the smaller card window, open the `Main Image` editor and adjust the hotspot/crop
+- if the image sits too high or too low inside the smaller card window, open the `Main Image` editor and adjust the square crop first, then the hotspot if needed
 
 ### `Available` section
 
@@ -131,7 +131,7 @@ Important:
 - `Available` and `Sold` paintings appear on the `Available` page
 - `Not For Sale` and `Archive` do not appear on the `Available` page
 - these inventory cards are separate from the main year gallery on the `Paintings` page
-- if a quote bubble or important detail is getting cut off in the small card window, open the `Main Image` editor and adjust the hotspot/crop
+- if a quote bubble or important detail is getting cut off in the small card window, open the `Main Image` editor and move the square crop box first
 
 ## Part 1B: Reposition The Image Inside The Small Window
 
@@ -142,12 +142,13 @@ To fix that:
 1. Open the painting
 2. Go to `Main Image`
 3. Open the image editor
-4. Adjust the hotspot/crop so the most important area stays visible in the small preview window
-5. Save the image edit
-6. Click `Publish`
+4. Adjust the square crop box so the most important area stays visible in the small preview window
+5. If needed, move the hotspot circle too
+6. Save the image edit
+7. Click `Publish`
 
 Example:
-- if a speech bubble is being cut off at the top, nudge the hotspot lower so more of the upper part of the painting stays visible
+- if a speech bubble is being cut off at the top, move the square crop box upward so more of the upper part of the painting stays visible
 
 ### `Commissions` section
 

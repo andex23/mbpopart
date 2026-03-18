@@ -170,9 +170,10 @@ Use this for:
 1. Open the painting
 2. Go to the `Main Image`
 3. Open the image editor
-4. Adjust the hotspot/crop until the important part of the image sits correctly in the smaller preview window
-5. Save the image edit
-6. Click `Publish`
+4. Adjust the square crop box first until the important part of the image sits correctly in the smaller preview window
+5. If needed, move the hotspot circle too
+6. Save the image edit
+7. Click `Publish`
 
 ### Put a painting on the Available page
 
