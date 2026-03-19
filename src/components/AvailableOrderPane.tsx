@@ -13,12 +13,13 @@ const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && status in ["available", 
 export default function AvailableOrderPane() {
   return (
     <SortablePaintingsPane
-      title="Paintings Shown on Available Page"
-      intro="Move available and sold cards up or down, or archive or delete extras. This is the main management screen for the Available page."
+      title="Paintings Shown on Available Page (Order & Cleanup)"
+      intro="Use this screen for bulk reorder, archive, and delete on the Available page. When you need to change one painting’s Title, Year, Dimensions, Price, Status, or image, use Edit Available Paintings (Details)."
       notes={[
         'This screen controls all paintings currently shown on the Available page.',
         'Use this instead of editing Manual Sort Order by hand.',
         'Archive removes the painting from the Available page but keeps it in CMS. Delete removes it permanently.',
+        'Available and Sold cards shown here are controlled by each painting record’s Status field.',
       ]}
       query={AVAILABLE_ORDER_QUERY}
       scope="flat"

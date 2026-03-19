@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
@@ -24,25 +24,15 @@ export default function Navigation({ items }: NavigationProps) {
   const searchParams = useSearchParams();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobilePaintingsOpen, setMobilePaintingsOpen] = useState(false);
+  const [desktopPaintingsOpen, setDesktopPaintingsOpen] = useState(false);
+  const desktopPaintingsRef = useRef<HTMLDivElement | null>(null);
   const sortedItems = sortNavigationItems(items);
   const paintingsItem = sortedItems.find((item) => item.key === 'paintings');
+  const searchParamsKey = searchParams.toString();
   const selectedRangeKey = pathname === '/gallery'
     ? normalizeRangeFilterKey(searchParams.get('range') ?? searchParams.get('year'))
     : null;
   const paintingMenuRanges = YEAR_RANGE_FILTERS;
-  const selectedYearParam = searchParams.get('year');
-  const galleryCurrentHref = (() => {
-    if (!selectedRangeKey) {
-      return '/gallery';
-    }
-
-    const params = new URLSearchParams();
-    params.set('range', selectedRangeKey);
-    if (selectedYearParam && /^\d{4}$/.test(selectedYearParam)) {
-      params.set('year', selectedYearParam);
-    }
-    return `/gallery?${params.toString()}`;
-  })();
 
   useEffect(() => {
     if (mobileOpen) {
@@ -55,7 +45,8 @@ export default function Navigation({ items }: NavigationProps) {
 
   useEffect(() => {
     setMobileOpen(false);
-  }, [pathname]);
+    setDesktopPaintingsOpen(false);
+  }, [pathname, searchParamsKey]);
 
   useEffect(() => {
     if (!mobileOpen) {
@@ -67,6 +58,7 @@ export default function Navigation({ items }: NavigationProps) {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setMobileOpen(false);
+        setDesktopPaintingsOpen(false);
       }
     };
 
@@ -75,6 +67,25 @@ export default function Navigation({ items }: NavigationProps) {
       window.removeEventListener('keydown', onKeyDown);
     };
   }, []);
+
+  useEffect(() => {
+    if (!desktopPaintingsOpen) {
+      return undefined;
+    }
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (desktopPaintingsRef.current?.contains(event.target as Node)) {
+        return;
+      }
+
+      setDesktopPaintingsOpen(false);
+    };
+
+    window.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      window.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [desktopPaintingsOpen]);
 
   const isActive = (href: string) => {
     return pathname === href;
@@ -97,22 +108,41 @@ export default function Navigation({ items }: NavigationProps) {
           <nav className="site-nav-desktop" aria-label="Main navigation">
             {sortedItems.map((item) => (
               item.key === 'paintings' && paintingsItem ? (
-                <div key={item.key} className="site-nav-dropdown">
-                  <Link
-                    href={galleryCurrentHref}
+                <div
+                  key={item.key}
+                  ref={desktopPaintingsRef}
+                  className={`site-nav-dropdown ${desktopPaintingsOpen ? 'open' : ''}`}
+                >
+                  <button
+                    type="button"
                     className={`site-nav-btn ${pathname === '/gallery' ? 'active' : ''}`}
+                    aria-expanded={desktopPaintingsOpen}
+                    aria-haspopup="menu"
+                    aria-controls="site-paintings-menu"
+                    onClick={() => setDesktopPaintingsOpen((value) => !value)}
                   >
                     {paintingsItem.label} <ChevronDown className="w-3.5 h-3.5" />
-                  </Link>
-                  <div className="site-nav-dropdown-menu">
-                    <Link href="/gallery" className={`site-subnav-btn ${selectedRangeKey === null && pathname === '/gallery' ? 'active' : ''}`}>
+                  </button>
+                  <div
+                    id="site-paintings-menu"
+                    className={`site-nav-dropdown-menu ${desktopPaintingsOpen ? 'open' : ''}`}
+                    role="menu"
+                  >
+                    <Link
+                      href="/gallery"
+                      onClick={() => setDesktopPaintingsOpen(false)}
+                      className={`site-subnav-btn ${selectedRangeKey === null && pathname === '/gallery' ? 'active' : ''}`}
+                      role="menuitem"
+                    >
                       All Years
                     </Link>
                     {paintingMenuRanges.map((range) => (
                       <Link
                         key={range.key}
                         href={`/gallery?range=${encodeURIComponent(range.key)}`}
+                        onClick={() => setDesktopPaintingsOpen(false)}
                         className={`site-subnav-btn ${selectedRangeKey === range.key ? 'active' : ''}`}
+                        role="menuitem"
                       >
                         {range.label}
                       </Link>

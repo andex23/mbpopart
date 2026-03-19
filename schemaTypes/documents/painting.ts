@@ -30,7 +30,7 @@ export const painting = defineType({
       title: 'Year',
       type: 'number',
       group: 'content',
-      description: 'Use a 4-digit year like 2019.',
+      description: 'Use the exact 4-digit year like 2019. The website year menus and year sections are built directly from this field.',
       validation: (Rule) => Rule.required().integer().min(1900).max(2100),
     }),
     defineField({
@@ -125,7 +125,7 @@ export const painting = defineType({
       title: 'Manual Sort Order (Optional)',
       type: 'number',
       group: 'placement',
-      description: 'Lower values appear first within the same year. Easiest method: use Paintings > Gallery Paintings in the CMS.',
+      description: 'Lower values appear first within the same year. Easiest method: use Paintings > Gallery Paintings (Order & Cleanup) or Available > Paintings Shown on Available Page (Order & Cleanup).',
       validation: (Rule) => Rule.min(0).max(100000),
     }),
     defineField({

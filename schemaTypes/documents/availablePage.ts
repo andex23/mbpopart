@@ -9,7 +9,7 @@ export const availablePage = defineType({
       name: 'title',
       title: 'Page Title',
       type: 'string',
-      description: 'Short section title shown in blue at the top of the page. Manage the actual Available/Sold painting cards in Available > Paintings Shown on Available Page.',
+      description: 'Short section title shown in blue at the top of the page. Use Available > Paintings Shown on Available Page (Order & Cleanup) for bulk reorder/cleanup, or Available > Edit Available Paintings (Details) for one-by-one edits.',
       initialValue: 'Available',
       validation: (Rule) => Rule.required().max(80),
     }),

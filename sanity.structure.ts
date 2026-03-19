@@ -99,12 +99,13 @@ const YearGalleryPane = (year: number) => function YearGalleryPaneComponent() {
   return React.createElement(PaintingOrderView, {
     defaultYear: year,
     showYearSelector: false,
-    title: `Paintings - ${year}`,
-    intro: `This screen manages the ${year} gallery section. Reorder, archive, or delete paintings here.`,
+    title: `${year} Paintings (Order & Cleanup)`,
+    intro: `Use this screen to review just the ${year} section. Reorder, archive, or delete paintings for that year here.`,
     notes: [
       'This screen shows only one year section.',
-      'Use the checkboxes to archive or delete several paintings at once, or use the row buttons on a single item.',
-      'If a painting belongs in another year section, open Edit Individual Paintings and change its Year first.',
+      'Use this for quick cleanup inside a single year.',
+      'The website year menus are built from the exact Year field on each painting record.',
+      'If a painting belongs in another year section, open Edit Individual Paintings (Details) and change its Year first.',
     ],
     emptyMessage: `No paintings were found for ${year}.`,
   });
@@ -137,22 +138,22 @@ export const deskStructure: StructureResolver = (S) =>
           S.list()
             .title('Paintings')
             .items([
-              singletonItem(S, 'Page Settings', 'paintingsPage', 'paintingsPage'),
+              singletonItem(S, 'Page Settings & Intro', 'paintingsPage', 'paintingsPage'),
               S.listItem()
-                .title('Gallery Paintings')
-                .child(S.component(PaintingOrderPane).title('Gallery Paintings')),
+                .title('Gallery Paintings (Order & Cleanup)')
+                .child(S.component(PaintingOrderPane).title('Gallery Paintings (Order & Cleanup)')),
               S.listItem()
-                .title('Edit Individual Paintings')
+                .title('Edit Individual Paintings (Details)')
                 .child(
                   S.documentList()
-                    .title('Edit Individual Paintings')
+                    .title('Edit Individual Paintings (Details)')
                     .schemaType('painting')
                     .filter(activeGalleryPaintingFilter)
                     .initialValueTemplates([S.initialValueTemplateItem('gallery-painting')])
                     .defaultOrdering(paintingDefaultOrdering),
                 ),
               S.listItem()
-                .title('Archived')
+                .title('Archived Paintings')
                 .child(
                   S.documentList()
                     .title('Archived Paintings')
@@ -161,10 +162,10 @@ export const deskStructure: StructureResolver = (S) =>
                     .defaultOrdering(paintingDefaultOrdering),
                 ),
               S.listItem()
-                .title('Browse by Year')
+                .title('Browse by Year (Review by Section)')
                 .child(
                   S.list()
-                    .title('Browse by Year')
+                    .title('Browse by Year (Review by Section)')
                     .items(
                       PAINTING_YEAR_RANGES.map((range) =>
                         S.listItem()
@@ -174,10 +175,10 @@ export const deskStructure: StructureResolver = (S) =>
                               .title(range.title)
                               .items([
                                 S.listItem()
-                                  .title(`Edit All ${range.title}`)
+                                  .title(`Edit Details in ${range.title}`)
                                   .child(
                                     S.documentList()
-                                      .title(`Edit ${range.title} Paintings`)
+                                      .title(`Edit ${range.title} Painting Details`)
                                       .schemaType('painting')
                                       .filter(`${paintingRangeFilter(range)} && (!defined(status) || status != "archive")`)
                                       .params(paintingRangeParams(range))
@@ -186,9 +187,9 @@ export const deskStructure: StructureResolver = (S) =>
                                   ),
                                 ...getYearsForRange(range).map((year) =>
                                   S.listItem()
-                                    .title(String(year))
+                                    .title(`${year} (Order & Cleanup)`)
                                     .child(
-                                      S.component(YearGalleryPane(year)).title(`Paintings - ${year}`),
+                                      S.component(YearGalleryPane(year)).title(`${year} Paintings (Order & Cleanup)`),
                                     ),
                                 ),
                               ]),
@@ -204,15 +205,15 @@ export const deskStructure: StructureResolver = (S) =>
           S.list()
             .title('Available')
             .items([
-              singletonItem(S, 'Page Settings', 'availablePage', 'availablePage'),
+              singletonItem(S, 'Page Settings & Intro', 'availablePage', 'availablePage'),
               S.listItem()
-                .title('Paintings Shown on Available Page')
-                .child(S.component(AvailableOrderPane).title('Paintings Shown on Available Page')),
+                .title('Paintings Shown on Available Page (Order & Cleanup)')
+                .child(S.component(AvailableOrderPane).title('Paintings Shown on Available Page (Order & Cleanup)')),
               S.listItem()
-                .title('Edit Available Paintings')
+                .title('Edit Available Paintings (Details)')
                 .child(
                   S.documentList()
-                    .title('Edit Available Paintings')
+                    .title('Edit Available Paintings (Details)')
                     .schemaType('painting')
                     .filter('_type == "painting" && status in ["available", "sold"]')
                     .initialValueTemplates([
@@ -225,17 +226,17 @@ export const deskStructure: StructureResolver = (S) =>
                 .title('Available Only')
                 .child(
                   S.documentList()
-                    .title('Available Paintings')
+                    .title('Available Paintings Only')
                     .schemaType('painting')
                     .filter('_type == "painting" && status == "available"')
                     .initialValueTemplates([S.initialValueTemplateItem('available-inventory-painting')])
                     .defaultOrdering(availableInventoryOrdering),
                 ),
               S.listItem()
-                .title('Sold Items Still Showing Here')
+                .title('Sold Still Showing on Available Page')
                 .child(
                   S.documentList()
-                    .title('Sold Paintings on Available Page')
+                    .title('Sold Paintings Still Showing on Available Page')
                     .schemaType('painting')
                     .filter('_type == "painting" && status == "sold"')
                     .initialValueTemplates([S.initialValueTemplateItem('sold-inventory-painting')])

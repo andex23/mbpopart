@@ -95,42 +95,45 @@ const selectStyle: React.CSSProperties = {
 
 const listStyle: React.CSSProperties = {
   display: 'grid',
-  gap: '10px',
+  gap: '14px',
 };
 
 const rowStyle: React.CSSProperties = {
   display: 'grid',
-  gridTemplateColumns: '64px minmax(0, 1fr) auto',
-  gap: '12px',
-  alignItems: 'center',
-  padding: '12px 14px',
-  borderRadius: '12px',
-  border: '1px solid #c6d3e1',
+  gridTemplateColumns: '84px minmax(0, 1fr)',
+  gap: '16px',
+  alignItems: 'start',
+  padding: '18px',
+  borderRadius: '16px',
+  border: '1px solid #cfd9e6',
   background: '#ffffff',
+  boxShadow: '0 10px 24px rgba(15, 23, 42, 0.06)',
 };
 
 const badgeStyle: React.CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  minWidth: '42px',
-  padding: '8px 10px',
+  width: '68px',
+  minWidth: '68px',
+  minHeight: '68px',
+  padding: '10px',
   borderRadius: '999px',
   background: '#1f2937',
   color: '#ffffff',
   fontWeight: 700,
+  fontSize: '1.35rem',
 };
 
 const itemMetaStyle: React.CSSProperties = {
-  marginTop: '3px',
-  color: '#334155',
-  fontSize: '0.92rem',
-  lineHeight: 1.4,
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '8px',
 };
 
 const itemBodyStyle: React.CSSProperties = {
   display: 'grid',
-  gap: '8px',
+  gap: '14px',
 };
 
 const itemContentStyle: React.CSSProperties = {
@@ -149,21 +152,65 @@ const checkboxStyle: React.CSSProperties = {
 };
 
 const selectionCountStyle: React.CSSProperties = {
-  color: '#334155',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minHeight: '40px',
+  padding: '8px 12px',
+  borderRadius: '999px',
+  background: '#e7eef8',
+  color: '#24364d',
   fontWeight: 600,
 };
 
-const rowButtonGroupStyle: React.CSSProperties = {
-  display: 'flex',
-  flexWrap: 'wrap',
+const notesWrapStyle: React.CSSProperties = {
+  display: 'grid',
   gap: '8px',
-  justifyContent: 'flex-end',
+  marginTop: '14px',
+  padding: '14px 16px',
+  borderRadius: '12px',
+  background: '#eef4ff',
+  border: '1px solid #d6e3f3',
+};
+
+const actionSectionsStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'minmax(0, 1.4fr) minmax(220px, 0.9fr)',
+  gap: '12px',
+  alignItems: 'start',
+};
+
+const actionSectionStyle: React.CSSProperties = {
+  display: 'grid',
+  gap: '8px',
+};
+
+const actionLabelStyle: React.CSSProperties = {
+  margin: 0,
+  color: '#516277',
+  fontSize: '0.78rem',
+  fontWeight: 700,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+};
+
+const actionGridStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+  gap: '8px',
+};
+
+const destructiveGridStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+  gap: '8px',
 };
 
 const rowButtonStyle: React.CSSProperties = {
   ...buttonStyle,
-  minWidth: '68px',
-  padding: '8px 10px',
+  minWidth: 0,
+  width: '100%',
+  padding: '10px 12px',
   fontSize: '0.92rem',
 };
 
@@ -196,8 +243,36 @@ const warningStyle: React.CSSProperties = {
   color: '#8a4b00',
 };
 
-function useCompactLayout(breakpoint = 760): boolean {
-  const [isCompact, setIsCompact] = React.useState(false);
+const statusChipStyle: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '6px 10px',
+  borderRadius: '999px',
+  background: '#eef3f8',
+  color: '#334155',
+  fontSize: '0.82rem',
+  fontWeight: 700,
+  lineHeight: 1,
+};
+
+const itemTitleStyle: React.CSSProperties = {
+  margin: 0,
+  fontSize: '1.15rem',
+  lineHeight: 1.25,
+  fontWeight: 700,
+  color: '#122150',
+};
+
+const itemSecondaryTitleStyle: React.CSSProperties = {
+  margin: 0,
+  color: '#516277',
+  fontSize: '0.92rem',
+  lineHeight: 1.5,
+};
+
+function useViewportMatch(breakpoint = 760): boolean {
+  const [matches, setMatches] = React.useState(false);
 
   React.useEffect(() => {
     if (typeof window === 'undefined') {
@@ -205,18 +280,68 @@ function useCompactLayout(breakpoint = 760): boolean {
     }
 
     const mediaQuery = window.matchMedia(`(max-width: ${breakpoint}px)`);
-    const sync = () => setIsCompact(mediaQuery.matches);
+    const sync = () => setMatches(mediaQuery.matches);
     sync();
 
     mediaQuery.addEventListener('change', sync);
     return () => mediaQuery.removeEventListener('change', sync);
   }, [breakpoint]);
 
-  return isCompact;
+  return matches;
+}
+
+function useElementWidth<T extends HTMLElement>(ref: React.RefObject<T | null>): number {
+  const [width, setWidth] = React.useState(0);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined' || !ref.current) {
+      return undefined;
+    }
+
+    const element = ref.current;
+    const sync = () => setWidth(element.getBoundingClientRect().width);
+    sync();
+
+    const observer = new ResizeObserver(() => {
+      sync();
+    });
+
+    observer.observe(element);
+    window.addEventListener('resize', sync);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', sync);
+    };
+  }, [ref]);
+
+  return width;
 }
 
 function getDisplayTitle(item: PaintingOrderItem): string {
   return item.caption?.trim() || item.title?.trim() || 'Untitled painting';
+}
+
+function getSecondaryTitle(item: PaintingOrderItem): string | null {
+  if (!item.title || !item.caption) {
+    return null;
+  }
+
+  if (item.title.trim() === item.caption.trim()) {
+    return null;
+  }
+
+  return `Record title: ${item.title}`;
+}
+
+function formatStatusLabel(status: string | undefined): string {
+  if (!status) {
+    return 'No status';
+  }
+
+  return status
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/^\w/, (letter) => letter.toUpperCase());
 }
 
 function getYears(items: PaintingOrderItem[]): number[] {
@@ -243,21 +368,18 @@ function reorderItems(items: PaintingOrderItem[], fromIndex: number, toIndex: nu
   return next;
 }
 
-function buildMetaLine(item: PaintingOrderItem, scope: SortScope): string {
+function buildMetaParts(item: PaintingOrderItem, scope: SortScope): string[] {
   const parts: string[] = [];
 
-  if (item.title && item.caption && item.caption.trim() !== item.title.trim()) {
-    parts.push(`Title: ${item.title}`);
-  }
+  parts.push(formatStatusLabel(item.status));
 
   if (scope === 'flat' && typeof item.year === 'number') {
-    parts.push(`year: ${item.year}`);
+    parts.push(`Year ${item.year}`);
   }
 
-  parts.push(item.status ?? 'no status');
-  parts.push(`current sort: ${item.sortOrder ?? 'auto'}`);
+  parts.push(`Current sort ${item.sortOrder ?? 'auto'}`);
 
-  return parts.join(' · ');
+  return parts;
 }
 
 export default function SortablePaintingsPane({
@@ -274,7 +396,12 @@ export default function SortablePaintingsPane({
   defaultSelectedYear = null,
   showYearSelector = true,
 }: SortablePaintingsPaneProps) {
-  const isCompact = useCompactLayout();
+  const viewportCompact = useViewportMatch(760);
+  const viewportNarrow = useViewportMatch(1180);
+  const panelRef = React.useRef<HTMLDivElement | null>(null);
+  const panelWidth = useElementWidth(panelRef);
+  const isCompact = panelWidth > 0 ? panelWidth <= 720 : viewportCompact;
+  const isNarrow = panelWidth > 0 ? panelWidth <= 960 : viewportNarrow;
   const client = useClient({ apiVersion: API_VERSION });
   const [paintings, setPaintings] = React.useState<PaintingOrderItem[]>([]);
   const [selectedYear, setSelectedYear] = React.useState<number | null>(defaultSelectedYear);
@@ -603,7 +730,7 @@ export default function SortablePaintingsPane({
     : selectStyle;
 
   const compactActionButtonStyle = (baseStyle: React.CSSProperties): React.CSSProperties => (
-    isCompact
+    isCompact || isNarrow
       ? {
           ...baseStyle,
           width: '100%',
@@ -615,27 +742,20 @@ export default function SortablePaintingsPane({
     ? {
         ...rowStyle,
         gridTemplateColumns: 'minmax(0, 1fr)',
-        gap: '10px',
-        padding: '12px',
+        gap: '14px',
+        padding: '14px',
       }
     : rowStyle;
 
   const compactBadgeStyle: React.CSSProperties = isCompact
     ? {
         ...badgeStyle,
-        minWidth: '40px',
-        width: 'fit-content',
+        width: '56px',
+        minWidth: '56px',
+        minHeight: '56px',
+        fontSize: '1.1rem',
       }
     : badgeStyle;
-
-  const compactRowButtonGroupStyle: React.CSSProperties = isCompact
-    ? {
-        ...rowButtonGroupStyle,
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-        justifyContent: 'stretch',
-      }
-    : rowButtonGroupStyle;
 
   const compactRowButtonStyle: React.CSSProperties = isCompact
     ? {
@@ -645,16 +765,58 @@ export default function SortablePaintingsPane({
       }
     : rowButtonStyle;
 
+  const notesCardStyle: React.CSSProperties = isCompact
+    ? {
+        ...notesWrapStyle,
+        padding: '12px 14px',
+      }
+    : notesWrapStyle;
+
+  const responsiveActionSectionsStyle: React.CSSProperties = isNarrow
+    ? {
+        ...actionSectionsStyle,
+        gridTemplateColumns: 'minmax(0, 1fr)',
+      }
+    : actionSectionsStyle;
+
+  const responsiveActionGridStyle: React.CSSProperties = isCompact
+    ? {
+        ...actionGridStyle,
+        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+      }
+    : isNarrow
+      ? {
+          ...actionGridStyle,
+          gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+        }
+      : actionGridStyle;
+
+  const responsiveDestructiveGridStyle: React.CSSProperties = isCompact
+    ? {
+        ...destructiveGridStyle,
+        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+      }
+    : isNarrow
+      ? {
+          ...destructiveGridStyle,
+          gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+        }
+      : destructiveGridStyle;
+
   return (
-    <div style={compactPanelStyle}>
+    <div ref={panelRef} style={compactPanelStyle}>
       <div style={compactCardStyle}>
         <h2 style={{ margin: '0 0 8px', fontSize: '1.5rem', lineHeight: 1.15, color: '#122150' }}>{title}</h2>
         <p style={{ margin: '0', lineHeight: 1.6, color: '#20304b' }}>{intro}</p>
-        {notes.map((note) => (
-          <p key={note} style={{ margin: '10px 0 0', lineHeight: 1.6, color: '#334155' }}>
-            {note}
-          </p>
-        ))}
+        {notes.length > 0 ? (
+          <div style={notesCardStyle}>
+            {notes.map((note) => (
+              <p key={note} style={{ margin: 0, lineHeight: 1.6, color: '#334155' }}>
+                {note}
+              </p>
+            ))}
+          </div>
+        ) : null}
 
         <div style={compactControlRowStyle}>
           {scope === 'year' && showYearSelector ? (
@@ -794,90 +956,112 @@ export default function SortablePaintingsPane({
                           disabled={isSaving || isActing}
                         />
                         <div style={{ minWidth: 0 }}>
-                          <div style={{ fontWeight: 700, color: '#122150' }}>{getDisplayTitle(item)}</div>
-                          <div style={itemMetaStyle}>{buildMetaLine(item, scope)}</div>
+                          <p style={itemTitleStyle}>{getDisplayTitle(item)}</p>
+                          {getSecondaryTitle(item) ? (
+                            <p style={itemSecondaryTitleStyle}>{getSecondaryTitle(item)}</p>
+                          ) : null}
+                          <div style={itemMetaStyle}>
+                            {buildMetaParts(item, scope).map((part) => (
+                              <span key={part} style={statusChipStyle}>{part}</span>
+                            ))}
+                          </div>
                         </div>
                       </label>
                     ) : (
                       <>
-                        <div style={{ fontWeight: 700, color: '#122150' }}>{getDisplayTitle(item)}</div>
-                        <div style={itemMetaStyle}>{buildMetaLine(item, scope)}</div>
+                        <p style={itemTitleStyle}>{getDisplayTitle(item)}</p>
+                        {getSecondaryTitle(item) ? (
+                          <p style={itemSecondaryTitleStyle}>{getSecondaryTitle(item)}</p>
+                        ) : null}
+                        <div style={itemMetaStyle}>
+                          {buildMetaParts(item, scope).map((part) => (
+                            <span key={part} style={statusChipStyle}>{part}</span>
+                          ))}
+                        </div>
                       </>
                     )}
                   </div>
-                </div>
+                  <div style={responsiveActionSectionsStyle}>
+                    <div style={actionSectionStyle}>
+                      <p style={actionLabelStyle}>Move</p>
+                      <div style={responsiveActionGridStyle}>
+                        <button
+                          type="button"
+                          onClick={() => moveToEdge(index, 'top')}
+                          style={index === 0 ? { ...disabledButtonStyle, ...compactRowButtonStyle } : compactRowButtonStyle}
+                          disabled={index === 0 || isSaving || isActing}
+                        >
+                          Top
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => moveItem(index, -1)}
+                          style={index === 0 ? { ...disabledButtonStyle, ...compactRowButtonStyle } : compactRowButtonStyle}
+                          disabled={index === 0 || isSaving || isActing}
+                        >
+                          Up
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => moveItem(index, 1)}
+                          style={
+                            index === draftItems.length - 1
+                              ? { ...disabledButtonStyle, ...compactRowButtonStyle }
+                              : compactRowButtonStyle
+                          }
+                          disabled={index === draftItems.length - 1 || isSaving || isActing}
+                        >
+                          Down
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => moveToEdge(index, 'bottom')}
+                          style={
+                            index === draftItems.length - 1
+                              ? { ...disabledButtonStyle, ...compactRowButtonStyle }
+                              : compactRowButtonStyle
+                          }
+                          disabled={index === draftItems.length - 1 || isSaving || isActing}
+                        >
+                          Bottom
+                        </button>
+                      </div>
+                    </div>
 
-                <div style={compactRowButtonGroupStyle}>
-                  <button
-                    type="button"
-                    onClick={() => moveToEdge(index, 'top')}
-                    style={index === 0 ? { ...disabledButtonStyle, ...compactRowButtonStyle } : compactRowButtonStyle}
-                    disabled={index === 0 || isSaving || isActing}
-                  >
-                    Top
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => moveItem(index, -1)}
-                    style={index === 0 ? { ...disabledButtonStyle, ...compactRowButtonStyle } : compactRowButtonStyle}
-                    disabled={index === 0 || isSaving || isActing}
-                  >
-                    Up
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => moveItem(index, 1)}
-                    style={
-                      index === draftItems.length - 1
-                        ? { ...disabledButtonStyle, ...compactRowButtonStyle }
-                        : compactRowButtonStyle
-                    }
-                    disabled={index === draftItems.length - 1 || isSaving || isActing}
-                  >
-                    Down
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => moveToEdge(index, 'bottom')}
-                    style={
-                      index === draftItems.length - 1
-                        ? { ...disabledButtonStyle, ...compactRowButtonStyle }
-                        : compactRowButtonStyle
-                    }
-                    disabled={index === draftItems.length - 1 || isSaving || isActing}
-                  >
-                    Bottom
-                  </button>
-                  {archiveButtonLabel ? (
-                    <button
-                      type="button"
-                      onClick={() => archiveItem(item)}
-                      style={{
-                        ...(isCompact ? compactRowButtonStyle : rowButtonStyle),
-                        ...dangerButtonStyle,
-                        ...(isCompact ? { gridColumn: '1 / -1' } : {}),
-                        ...(archivingId === item._id || isSaving || isActing ? disabledButtonStyle : {}),
-                      }}
-                      disabled={archivingId === item._id || isSaving || isActing}
-                    >
-                      {archivingId === item._id ? 'Archiving...' : archiveButtonLabel}
-                    </button>
-                  ) : null}
-                  {deleteButtonLabel ? (
-                    <button
-                      type="button"
-                      onClick={() => deleteItem(item)}
-                      style={{
-                        ...(isCompact ? compactRowButtonStyle : rowButtonStyle),
-                        ...deleteButtonStyle,
-                        ...(isCompact ? { gridColumn: '1 / -1' } : {}),
-                        ...(deletingId === item._id || isSaving || isActing ? disabledButtonStyle : {}),
-                      }}
-                      disabled={deletingId === item._id || isSaving || isActing}
-                    >
-                      {deletingId === item._id ? 'Deleting...' : deleteButtonLabel}
-                    </button>
-                  ) : null}
+                    {archiveButtonLabel || deleteButtonLabel ? (
+                      <div style={actionSectionStyle}>
+                        <p style={actionLabelStyle}>Remove</p>
+                        <div style={responsiveDestructiveGridStyle}>
+                          {archiveButtonLabel ? (
+                            <button
+                              type="button"
+                              onClick={() => archiveItem(item)}
+                              style={{
+                                ...compactRowButtonStyle,
+                                ...(archivingId === item._id || isSaving || isActing ? disabledButtonStyle : dangerButtonStyle),
+                              }}
+                              disabled={archivingId === item._id || isSaving || isActing}
+                            >
+                              {archivingId === item._id ? 'Archiving...' : archiveButtonLabel}
+                            </button>
+                          ) : null}
+                          {deleteButtonLabel ? (
+                            <button
+                              type="button"
+                              onClick={() => deleteItem(item)}
+                              style={{
+                                ...compactRowButtonStyle,
+                                ...(deletingId === item._id || isSaving || isActing ? disabledButtonStyle : deleteButtonStyle),
+                              }}
+                              disabled={deletingId === item._id || isSaving || isActing}
+                            >
+                              {deletingId === item._id ? 'Deleting...' : deleteButtonLabel}
+                            </button>
+                          ) : null}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
               </div>
             ))}

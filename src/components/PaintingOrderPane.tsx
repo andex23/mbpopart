@@ -22,13 +22,14 @@ export interface PaintingOrderPaneProps {
 export function PaintingOrderView({
   defaultYear = null,
   showYearSelector = true,
-  title = 'Gallery Paintings',
-  intro = 'Choose a year, move paintings up or down, or archive or delete extras. This is the main gallery management screen for the Paintings page.',
+  title = 'Gallery Paintings (Order & Cleanup)',
+  intro = 'Use this main gallery screen for bulk reorder, archive, and delete. When you need to change one painting’s Year, Title, Dimensions, Price, Status, or image, use Edit Individual Paintings (Details) instead.',
   notes = [
     'This screen controls the main Paintings gallery only.',
-    'Use the checkboxes to archive or delete several paintings at once, or use the row buttons on a single item.',
-    'Archived paintings stay in CMS under Archived. Delete removes them permanently.',
-    'If a painting belongs in a different year section, open Edit Individual Paintings and change its Year first.',
+    'Use the checkboxes for bulk cleanup, or use the row buttons on a single item.',
+    'The website year menus are built from the exact Year field on each painting record.',
+    'If a painting belongs in a different year section, open Edit Individual Paintings (Details) and change its Year first.',
+    'Archived paintings stay in CMS under Archived Paintings. Delete removes them permanently.',
   ],
   emptyMessage = 'No paintings were found for this year. Choose another year or add paintings first.',
 }: PaintingOrderPaneProps) {
