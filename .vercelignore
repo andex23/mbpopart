@@ -1,0 +1,8 @@
+.git
+.next
+.next-stale-build
+.playwright-cli
+node_modules
+output
+.codex-write-test
+.env*
