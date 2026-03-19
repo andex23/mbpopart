@@ -43,6 +43,7 @@ export const painting = defineType({
       description: 'Choose the exact year from the dropdown. The website year menus and year sections are built directly from this field.',
       options: {
         list: PAINTING_YEAR_OPTIONS,
+        layout: 'dropdown',
       },
       validation: (Rule) => Rule.required().integer().min(1900).max(2100),
     }),
