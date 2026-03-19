@@ -25,13 +25,14 @@ export interface PaintingOrderPaneProps {
 export function PaintingOrderView({
   defaultYear = null,
   showYearSelector = true,
-  title = 'Gallery Paintings (Order & Cleanup)',
-  intro = 'Use this main gallery screen for bulk reorder, archive, and delete. When you need to change one painting’s Year, Title, Dimensions, Price, Status, or image, use Edit Individual Paintings (Details) instead.',
+  title = 'Add / Reorder Year Gallery Paintings',
+  intro = 'Use this screen for the main year gallery: bulk reorder, archive, and delete. Most new paintings should be created as a Year Gallery Painting first. When you need to edit one painting’s Year, Title, Dimensions, Price, Status, or image, use Edit One Gallery Painting instead.',
   notes = [
     'This screen controls the main Paintings gallery only.',
     'Use the checkboxes for bulk cleanup, or use the row buttons on a single item.',
     'The website year menus are built from the exact Year field on each painting record.',
-    'If a painting belongs in a different year section, open Edit Individual Paintings (Details) and change its Year first.',
+    'If a year-gallery painting should also show on the Available page, open that same painting record and turn on Show on Available Page.',
+    'If a painting belongs in a different year section, open Edit One Gallery Painting and change its Year first.',
     'Archived paintings stay in CMS under Archived Paintings. Delete removes them permanently.',
   ],
   emptyMessage = 'No paintings were found for this year. Choose another year or add paintings first.',

@@ -2,6 +2,7 @@ import { defineArrayMember, defineField, defineType } from 'sanity';
 
 const EARLIEST_SELECTABLE_YEAR = 1950;
 const LATEST_SELECTABLE_YEAR = new Date().getFullYear() + 5;
+const PAINTING_VALIDATION_API_VERSION = '2026-02-23';
 const PAINTING_YEAR_OPTIONS = Array.from(
   { length: LATEST_SELECTABLE_YEAR - EARLIEST_SELECTABLE_YEAR + 1 },
   (_, index) => {
@@ -106,7 +107,7 @@ export const painting = defineType({
       title: 'Status',
       type: 'string',
       group: 'placement',
-      description: 'Use this for the painting status label. Use Archive to hide a gallery painting from the public site.',
+      description: 'This is the visible label for the painting. It does not decide whether the painting appears on the Available page. Use Show on Available Page separately.',
       options: {
         list: [
           { title: 'Available', value: 'available' },
@@ -125,14 +126,60 @@ export const painting = defineType({
       title: 'Show on Available Page',
       type: 'boolean',
       group: 'placement',
-      description: 'Turn this on only if the painting should appear on the Available page. Leave it off to keep the painting only in its year gallery.',
+      initialValue: false,
+      description: 'Simplest workflow: keep one painting record, then turn this on only if this same painting should also appear on the Available page. Leave it off for normal year-gallery paintings.',
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          if (value !== true) {
+            return true;
+          }
+
+          const document = context.document as {
+            _id?: string;
+            title?: string;
+            status?: string;
+          } | undefined;
+
+          const title = document?.title?.trim();
+          if (!title) {
+            return true;
+          }
+
+          if (!['available', 'sold', 'commission'].includes(document?.status ?? '')) {
+            return 'Use Status = Available, Sold, or Commission before showing this painting on the Available page.';
+          }
+
+          const baseId = document?._id?.replace(/^drafts\./, '');
+          const draftId = baseId ? `drafts.${baseId}` : null;
+          const publishedId = baseId ?? null;
+          const client = context.getClient({ apiVersion: PAINTING_VALIDATION_API_VERSION });
+          const duplicateCount = await client.fetch<number>(
+            `count(*[
+              _type == "painting" &&
+              defined(showOnAvailablePage) &&
+              showOnAvailablePage == true &&
+              status in ["available", "sold", "commission"] &&
+              lower(title) == $title &&
+              !(_id in [$draftId, $publishedId])
+            ])`,
+            {
+              title: title.toLowerCase(),
+              draftId,
+              publishedId,
+            },
+          );
+
+          return duplicateCount > 0
+            ? 'Another painting with this same title is already set to show on the Available page. Use that record instead of creating a duplicate.'
+            : true;
+        }),
     }),
     defineField({
       name: 'inventoryOnly',
-      title: 'Inventory Only',
+      title: 'Available Page Only (Hide From Year Gallery)',
       type: 'boolean',
       group: 'placement',
-      description: 'Use for Available/Sold inventory cards that should appear on the Available page, but not in the main Paintings year gallery.',
+      description: 'Turn this on only for a stand-alone Available-page card that should not appear in the main Paintings year gallery.',
       initialValue: false,
     }),
     defineField({
@@ -147,7 +194,7 @@ export const painting = defineType({
       title: 'Manual Sort Order (Optional)',
       type: 'number',
       group: 'placement',
-      description: 'Lower values appear first within the same year. Easiest method: use Paintings > Gallery Paintings (Order & Cleanup) or Available > Paintings Shown on Available Page (Order & Cleanup).',
+      description: 'Lower values appear first within the same year. Easiest method: use Paintings > 1. Add / Reorder Year Gallery Paintings or Available > 1. Reorder Available Page Cards.',
       validation: (Rule) => Rule.min(0).max(100000),
     }),
     defineField({
@@ -210,8 +257,8 @@ export const painting = defineType({
       return {
         title: caption || title || 'Untitled painting',
         subtitle:
-          `${copyrightYear ?? year ?? 'no year'} · ${status ?? 'no status'} · order: ${sortOrder ?? 'auto'}${inventoryOnly ? ' · inventory only' : ''}` +
-          `${showOnAvailablePage === true ? ' · on available page' : showOnAvailablePage === false ? ' · hidden from available page' : ''}` +
+          `${copyrightYear ?? year ?? 'no year'} · ${status ?? 'no status'} · order: ${sortOrder ?? 'auto'}${inventoryOnly ? ' · available-page-only' : ' · year gallery'}` +
+          `${showOnAvailablePage === true ? ' · shown on available page' : showOnAvailablePage === false ? ' · hidden from available page' : ''}` +
           `${cardImageFit === 'contain' ? ' · full card' : ''}` +
           `${caption && title ? ` · title: ${title}` : ''}`,
         media,

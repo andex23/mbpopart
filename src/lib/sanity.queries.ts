@@ -114,7 +114,7 @@ export const AVAILABLE_PAGE_QUERY = groq`
 `;
 
 export const AVAILABLE_PAINTINGS_QUERY = groq`
-  *[_type == "painting" && status in ["available", "sold"] && ((defined(showOnAvailablePage) && showOnAvailablePage == true) || (!defined(showOnAvailablePage) && defined(inventoryOnly) && inventoryOnly == true))]
+  *[_type == "painting" && status in ["available", "sold", "commission"] && defined(showOnAvailablePage) && showOnAvailablePage == true]
   | order(sortOrder asc, year desc, _updatedAt desc){
     _id,
     title,

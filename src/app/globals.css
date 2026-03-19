@@ -1607,6 +1607,10 @@ a:hover {
   color: #9f2940;
 }
 
+.legacy-status.commission {
+  color: #1e78b3;
+}
+
 .legacy-meta {
   margin: 4px 0 0;
   font-size: 0.72rem;

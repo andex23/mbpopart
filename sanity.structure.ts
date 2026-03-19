@@ -32,7 +32,7 @@ const paintingDefaultOrdering = [
 ];
 
 const availablePageFilter =
-  '_type == "painting" && status in ["available", "sold"] && ((defined(showOnAvailablePage) && showOnAvailablePage == true) || (!defined(showOnAvailablePage) && defined(inventoryOnly) && inventoryOnly == true))';
+  '_type == "painting" && defined(showOnAvailablePage) && showOnAvailablePage == true && status in ["available", "sold", "commission"]';
 
 const availableInventoryOrdering = [
   { field: 'sortOrder', direction: 'asc' as const },
@@ -108,7 +108,7 @@ const YearGalleryPane = (year: number) => function YearGalleryPaneComponent() {
       'This screen shows only one year section.',
       'Use this for quick cleanup inside a single year.',
       'The website year menus are built from the exact Year field on each painting record.',
-      'If a painting belongs in another year section, open Edit Individual Paintings (Details) and change its Year first.',
+      'If a painting belongs in another year section, open Edit One Gallery Painting and change its Year first.',
     ],
     emptyMessage: `No paintings were found for ${year}.`,
   });
@@ -143,32 +143,32 @@ export const deskStructure: StructureResolver = (S) =>
             .items([
               singletonItem(S, 'Page Settings & Intro', 'paintingsPage', 'paintingsPage'),
               S.listItem()
-                .title('Gallery Paintings (Order & Cleanup)')
-                .child(S.component(PaintingOrderPane).title('Gallery Paintings (Order & Cleanup)')),
+                .title('1. Add / Reorder Year Gallery Paintings')
+                .child(S.component(PaintingOrderPane).title('Add / Reorder Year Gallery Paintings')),
               S.listItem()
-                .title('Edit Individual Paintings (Details)')
+                .title('2. Edit One Gallery Painting')
                 .child(
                   S.documentList()
-                    .title('Edit Individual Paintings (Details)')
+                    .title('Edit One Gallery Painting')
                     .schemaType('painting')
                     .filter(activeGalleryPaintingFilter)
                     .initialValueTemplates([S.initialValueTemplateItem('gallery-painting')])
                     .defaultOrdering(paintingDefaultOrdering),
                 ),
               S.listItem()
-                .title('Archived Paintings')
+                .title('3. Hidden Gallery Paintings (Archived)')
                 .child(
                   S.documentList()
-                    .title('Archived Paintings')
+                    .title('Hidden Gallery Paintings (Archived)')
                     .schemaType('painting')
                     .filter(`${galleryPaintingFilter} && status == "archive"`)
                     .defaultOrdering(paintingDefaultOrdering),
                 ),
               S.listItem()
-                .title('Browse by Year (Review by Section)')
+                .title('4. Review One Year At A Time')
                 .child(
                   S.list()
-                    .title('Browse by Year (Review by Section)')
+                    .title('Review One Year At A Time')
                     .items(
                       PAINTING_YEAR_RANGES.map((range) =>
                         S.listItem()
@@ -178,10 +178,10 @@ export const deskStructure: StructureResolver = (S) =>
                               .title(range.title)
                               .items([
                                 S.listItem()
-                                  .title(`Edit Details in ${range.title}`)
+                                  .title(`Edit One Painting in ${range.title}`)
                                   .child(
                                     S.documentList()
-                                      .title(`Edit ${range.title} Painting Details`)
+                                      .title(`Edit One Painting in ${range.title}`)
                                       .schemaType('painting')
                                       .filter(`${paintingRangeFilter(range)} && (!defined(status) || status != "archive")`)
                                       .params(paintingRangeParams(range))
@@ -210,39 +210,43 @@ export const deskStructure: StructureResolver = (S) =>
             .items([
               singletonItem(S, 'Page Settings & Intro', 'availablePage', 'availablePage'),
               S.listItem()
-                .title('Paintings Shown on Available Page (Order & Cleanup)')
-                .child(S.component(AvailableOrderPane).title('Paintings Shown on Available Page (Order & Cleanup)')),
+                .title('1. Reorder Available Page Cards')
+                .child(S.component(AvailableOrderPane).title('Reorder Available Page Cards')),
               S.listItem()
-                .title('Edit Available Paintings (Details)')
+                .title('2. Edit Available Page Cards')
                 .child(
                   S.documentList()
-                    .title('Edit Available Paintings (Details)')
+                    .title('Edit Available Page Cards')
                     .schemaType('painting')
                     .filter(availablePageFilter)
                     .initialValueTemplates([
                       S.initialValueTemplateItem('available-inventory-painting'),
                       S.initialValueTemplateItem('sold-inventory-painting'),
+                      S.initialValueTemplateItem('commission-inventory-painting'),
                     ])
                     .defaultOrdering(availableInventoryOrdering),
                 ),
               S.listItem()
-                .title('Available Only')
+                .title('3. Available Cards Only')
                 .child(
                   S.documentList()
-                    .title('Available Paintings Only')
+                    .title('Available Cards Only')
                     .schemaType('painting')
                     .filter(`${availablePageFilter} && status == "available"`)
                     .initialValueTemplates([S.initialValueTemplateItem('available-inventory-painting')])
                     .defaultOrdering(availableInventoryOrdering),
                 ),
               S.listItem()
-                .title('Sold Still Showing on Available Page')
+                .title('4. Sold / Commission Cards Still Showing')
                 .child(
                   S.documentList()
-                    .title('Sold Paintings Still Showing on Available Page')
+                    .title('Sold / Commission Cards Still Showing on Available Page')
                     .schemaType('painting')
-                    .filter(`${availablePageFilter} && status == "sold"`)
-                    .initialValueTemplates([S.initialValueTemplateItem('sold-inventory-painting')])
+                    .filter(`${availablePageFilter} && status in ["sold", "commission"]`)
+                    .initialValueTemplates([
+                      S.initialValueTemplateItem('sold-inventory-painting'),
+                      S.initialValueTemplateItem('commission-inventory-painting'),
+                    ])
                     .defaultOrdering(availableInventoryOrdering),
                 ),
             ]),

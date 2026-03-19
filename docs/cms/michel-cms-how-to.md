@@ -65,42 +65,44 @@ Use this for:
 
 Important:
 - this is only for the page heading and intro copy
-- the actual painting records are in `Paintings > Edit Individual Paintings (Details)`
+- the actual painting records are in `Paintings > 2. Edit One Gallery Painting`
 
 ### Paintings
 
 Use this area for:
 - `Page Settings & Intro`
-- `Gallery Paintings (Order & Cleanup)`
-- `Edit Individual Paintings (Details)`
-- `Archived Paintings`
-- `Browse by Year (Review by Section)`
+- `1. Add / Reorder Year Gallery Paintings`
+- `2. Edit One Gallery Painting`
+- `3. Hidden Gallery Paintings (Archived)`
+- `4. Review One Year At A Time`
 
 Important:
-- add normal website paintings inside `Paintings > Edit Individual Paintings (Details)`
+- add normal website paintings inside `Paintings > 2. Edit One Gallery Painting`
 - those paintings appear in the main `Paintings` page year sections
-- this area does not control the `Available` inventory cards
-- `Gallery Paintings (Order & Cleanup)` is the fastest place to reorder a year and archive or delete extra paintings
+- easiest rule: create the painting once in `Paintings`, then turn on `Show on Available Page` only if that same record should also appear on the `Available` page
+- this area is the main place to manage paintings that belong in year sections
+- `1. Add / Reorder Year Gallery Paintings` is the fastest place to reorder a year and archive or delete extra paintings
 - it now shows a small image thumbnail for each painting, so you can identify paintings visually while sorting
-- use `Edit Individual Paintings (Details)` when you want to open and edit painting records one by one
-- use `Browse by Year (Review by Section)` when you want to clean up one year at a time
+- use `2. Edit One Gallery Painting` when you want to open and edit painting records one by one
+- use `4. Review One Year At A Time` when you want to clean up one year at a time
 
 ### Available
 
 Use this area for:
 - `Page Settings & Intro`
-- `Paintings Shown on Available Page (Order & Cleanup)`
-- `Edit Available Paintings (Details)`
-- `Available Only`
-- `Sold Still Showing on Available Page`
+- `1. Reorder Available Page Cards`
+- `2. Edit Available Page Cards`
+- `3. Available Cards Only`
+- `4. Sold / Commission Cards Still Showing`
 
 Important:
-- add available or sold inventory cards from inside the `Available` section
-- those records are kept separate from the main `Paintings` year gallery
-- this is the correct place to manage the cards shown on the `Available` page
-- use `Paintings Shown on Available Page (Order & Cleanup)` to reorder, archive, or delete cards
+- most of the time you do not need a second record here
+- easiest method: open the year-gallery painting and turn on `Show on Available Page`
+- only create a separate record in `Available` when the card should appear on the `Available` page but not in the year gallery
+- `Available Page Only (Hide From Year Gallery)` is the switch for those stand-alone cards
+- use `1. Reorder Available Page Cards` to reorder, archive, or delete cards
 - it also shows a small image thumbnail for each card so you can recognize paintings visually
-- use `Edit Available Paintings (Details)` when you want to open and edit available records one by one
+- use `2. Edit Available Page Cards` when you want to open and edit available-page records one by one
 
 ### Painting Record
 
@@ -114,9 +116,11 @@ Use this for each individual painting or inventory card:
 - dimensions
 
 Important:
-- `Status` controls the visible tag such as `Available` or `Sold`
-- records created from the `Available` section are already tagged correctly for that page
-- records created from `Paintings > Edit Individual Paintings` are normal gallery paintings
+- `Status` controls the visible tag such as `Available`, `Sold`, or `Commission`
+- `Status` does not decide page placement by itself
+- `Show on Available Page` decides whether the painting also appears on the `Available` page
+- records created from `Paintings > 2. Edit One Gallery Painting` are normal gallery paintings
+- records created from `Available > 2. Edit Available Page Cards` are stand-alone Available-page cards
 - `Year` is selected from a dropdown instead of being typed by hand
 - if you choose `2026`, the painting appears in the website section `2026–Current`
 
@@ -131,6 +135,7 @@ Important:
 - this only changes order for the main `Paintings` gallery
 - this only changes order within the same year
 - if a painting should appear in a different section, change that painting's `Year`
+- if a painting should also appear on the `Available` page, turn on `Show on Available Page`
 
 ### Available Page Management
 
@@ -140,7 +145,7 @@ Use this for:
 - moving available or sold paintings up or down without editing numbers by hand
 
 Important:
-- open `Available > Paintings Shown on Available Page (Order & Cleanup)`
+- open `Available > 1. Reorder Available Page Cards`
 - use this instead of editing `Manual Sort Order` directly
 - each row shows a small image thumbnail so it is easier to recognize the painting while sorting
 
@@ -177,8 +182,9 @@ Use this for:
 ### Add a new painting
 
 1. Open the correct section
-2. Use `Paintings > Edit Individual Paintings (Details)` for normal gallery paintings
-3. Use `Available > Edit Available Paintings (Details)` for available or sold inventory cards
+2. Use `Paintings > 2. Edit One Gallery Painting` for normal gallery paintings
+3. Turn on `Show on Available Page` only if that same painting should also appear on the `Available` page
+4. Use `Available > 2. Edit Available Page Cards` only when the card should exist on the `Available` page without appearing in the year gallery
 4. Create a new painting there
 5. Add title, choose the exact `Year` from the dropdown, then add the image and status
 6. Click `Publish`
@@ -196,15 +202,20 @@ Use this for:
 
 ### Put a painting on the Available page
 
-1. Open `Available > Edit Available Paintings (Details)`
-2. Add or edit the painting there
-3. Set `Status` to `Available` or `Sold`
-4. Click `Publish`
+1. Open the painting record
+2. If it is a normal year painting, use `Paintings > 2. Edit One Gallery Painting`
+3. Turn on `Show on Available Page`
+4. Set `Status` to `Available`, `Sold`, or `Commission`
+5. Click `Publish`
+
+Important:
+- this does not remove the painting from its year section
+- use `Available > 2. Edit Available Page Cards` only when you want a separate Available-page-only card
 
 ### Change painting order inside a year
 
 1. Open `Paintings`
-2. Open `Gallery Paintings (Order & Cleanup)`
+2. Open `1. Add / Reorder Year Gallery Paintings`
 3. Choose the year
 4. Use `Up`, `Down`, `Top`, or `Bottom`
 5. Click `Save This Year Order`
@@ -212,7 +223,7 @@ Use this for:
 ### Archive or delete an extra painting from the main gallery
 
 1. Open `Paintings`
-2. Open `Gallery Paintings (Order & Cleanup)`
+2. Open `1. Add / Reorder Year Gallery Paintings`
 3. Choose the year
 4. Use the checkbox if you want to select more than one
 5. Click `Archive`, `Archive Selected`, `Delete`, or `Delete Selected`
@@ -226,7 +237,7 @@ Important:
 ### Change the order on the Available page
 
 1. Open `Available`
-2. Open `Paintings Shown on Available Page (Order & Cleanup)`
+2. Open `1. Reorder Available Page Cards`
 3. Use `Up`, `Down`, `Top`, or `Bottom`
 4. Click `Save Available Order`
 

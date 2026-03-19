@@ -4,17 +4,18 @@ import { schemaTypes } from './schemaTypes';
 const templates: Template[] = [
   {
     id: 'gallery-painting',
-    title: 'Gallery Painting',
+    title: 'Year Gallery Painting',
     schemaType: 'painting',
     value: {
       status: 'notForSale',
+      showOnAvailablePage: false,
       inventoryOnly: false,
       featured: false,
     },
   },
   {
     id: 'available-inventory-painting',
-    title: 'Available Inventory Painting',
+    title: 'Available Page Only Card',
     schemaType: 'painting',
     value: {
       status: 'available',
@@ -25,10 +26,21 @@ const templates: Template[] = [
   },
   {
     id: 'sold-inventory-painting',
-    title: 'Sold Inventory Painting',
+    title: 'Sold Available Page Only Card',
     schemaType: 'painting',
     value: {
       status: 'sold',
+      showOnAvailablePage: true,
+      inventoryOnly: true,
+      featured: false,
+    },
+  },
+  {
+    id: 'commission-inventory-painting',
+    title: 'Commission Available Page Only Card',
+    schemaType: 'painting',
+    value: {
+      status: 'commission',
       showOnAvailablePage: true,
       inventoryOnly: true,
       featured: false,

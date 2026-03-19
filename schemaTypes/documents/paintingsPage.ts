@@ -9,7 +9,7 @@ export const paintingsPage = defineType({
       name: 'title',
       title: 'Page Title',
       type: 'string',
-      description: 'This controls the big blue page heading only. Use Paintings > Gallery Paintings (Order & Cleanup) for bulk reorder/cleanup, or Paintings > Edit Individual Paintings (Details) for one-by-one field edits.',
+      description: 'This controls the big blue page heading only. Use Paintings > 1. Add / Reorder Year Gallery Paintings for bulk reorder/cleanup, or Paintings > 2. Edit One Gallery Painting for one-by-one field edits.',
       initialValue: 'PAINTINGS',
       validation: (Rule) => Rule.required().max(80),
     }),

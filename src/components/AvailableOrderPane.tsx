@@ -1,7 +1,7 @@
 import React from 'react';
 import SortablePaintingsPane from './SortablePaintingsPane';
 
-const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && status in ["available", "sold"] && ((defined(showOnAvailablePage) && showOnAvailablePage == true) || (!defined(showOnAvailablePage) && defined(inventoryOnly) && inventoryOnly == true))] | order(sortOrder asc, year desc, _updatedAt desc){
+const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && defined(showOnAvailablePage) && showOnAvailablePage == true && status in ["available", "sold", "commission"]] | order(sortOrder asc, year desc, _updatedAt desc){
   _id,
   title,
   caption,
@@ -17,19 +17,20 @@ const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && status in ["available", 
 export default function AvailableOrderPane() {
   return (
     <SortablePaintingsPane
-      title="Paintings Shown on Available Page (Order & Cleanup)"
-      intro="Use this screen for bulk reorder, archive, and delete on the Available page. When you need to change one painting’s Title, Year, Dimensions, Price, Status, or image, use Edit Available Paintings (Details)."
+      title="Reorder Available Page Cards"
+      intro="Use this screen for bulk reorder, archive, and delete on the Available page. Easiest workflow: use the same year-gallery painting record and turn on Show on Available Page. Only create a separate Available Page Only card when it should not appear in the year gallery."
       notes={[
         'This screen controls all paintings currently shown on the Available page.',
         'Use this instead of editing Manual Sort Order by hand.',
-        'Archive removes the painting from the Available page but keeps it in CMS. Delete removes it permanently.',
-        'To remove a painting from the Available page without removing it from its year gallery, turn off Show on Available Page in the painting record.',
+        'A painting can stay in its year gallery and also appear here if Show on Available Page is turned on.',
+        'Archive removes the painting from the public site but keeps it in CMS. Delete removes it permanently.',
+        'To remove a painting from the Available page without removing it from its year gallery, turn off Show on Available Page in that same painting record.',
       ]}
       query={AVAILABLE_ORDER_QUERY}
       scope="flat"
       saveButtonLabel="Save Available Order"
       resetButtonLabel="Reset Order"
-      emptyMessage="No available or sold paintings were found. Add available items first."
+      emptyMessage="No available-page cards were found. Turn on Show on Available Page, or add an Available Page Only card first."
       archiveButtonLabel="Archive"
       deleteButtonLabel="Delete"
     />
