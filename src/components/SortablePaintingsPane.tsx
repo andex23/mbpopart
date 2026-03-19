@@ -14,6 +14,11 @@ type PaintingOrderItem = {
 };
 
 type SortScope = 'year' | 'flat';
+type MetaPart = {
+  key: string;
+  label: string;
+  value: string;
+};
 
 interface SortablePaintingsPaneProps {
   title: string;
@@ -129,9 +134,10 @@ const badgeStyle: React.CSSProperties = {
 };
 
 const itemMetaStyle: React.CSSProperties = {
-  display: 'flex',
-  flexWrap: 'wrap',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(138px, max-content))',
   gap: '8px',
+  alignItems: 'start',
 };
 
 const itemBodyStyle: React.CSSProperties = {
@@ -148,7 +154,7 @@ const itemContentStyle: React.CSSProperties = {
 
 const itemContentCompactStyle: React.CSSProperties = {
   display: 'grid',
-  gridTemplateColumns: '24px minmax(0, 1fr)',
+  gridTemplateColumns: '24px 88px minmax(0, 1fr)',
   gap: '10px',
   alignItems: 'start',
 };
@@ -165,8 +171,7 @@ const itemPreviewStyle: React.CSSProperties = {
 
 const itemPreviewCompactStyle: React.CSSProperties = {
   ...itemPreviewStyle,
-  width: '100%',
-  maxWidth: '132px',
+  width: '88px',
 };
 
 const itemPreviewImageStyle: React.CSSProperties = {
@@ -289,16 +294,35 @@ const warningStyle: React.CSSProperties = {
 };
 
 const statusChipStyle: React.CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '6px 10px',
-  borderRadius: '999px',
+  display: 'grid',
+  gap: '2px',
+  minWidth: 0,
+  padding: '8px 11px',
+  borderRadius: '12px',
   background: '#eef3f8',
   color: '#334155',
-  fontSize: '0.82rem',
+  lineHeight: 1.2,
+  textAlign: 'left',
+  justifyItems: 'start',
+  border: '1px solid #d8e2ef',
+};
+
+const metaLabelStyle: React.CSSProperties = {
+  margin: 0,
+  color: '#64748b',
+  fontSize: '0.7rem',
   fontWeight: 700,
-  lineHeight: 1,
+  lineHeight: 1.1,
+  letterSpacing: '0.06em',
+  textTransform: 'uppercase',
+};
+
+const metaValueStyle: React.CSSProperties = {
+  margin: 0,
+  color: '#334155',
+  fontSize: '0.94rem',
+  fontWeight: 700,
+  lineHeight: 1.2,
 };
 
 const itemTitleStyle: React.CSSProperties = {
@@ -413,16 +437,28 @@ function reorderItems(items: PaintingOrderItem[], fromIndex: number, toIndex: nu
   return next;
 }
 
-function buildMetaParts(item: PaintingOrderItem, scope: SortScope): string[] {
-  const parts: string[] = [];
+function buildMetaParts(item: PaintingOrderItem, scope: SortScope): MetaPart[] {
+  const parts: MetaPart[] = [];
 
-  parts.push(formatStatusLabel(item.status));
+  parts.push({
+    key: `status-${item._id}`,
+    label: 'Status',
+    value: formatStatusLabel(item.status),
+  });
 
   if (scope === 'flat' && typeof item.year === 'number') {
-    parts.push(`Year ${item.year}`);
+    parts.push({
+      key: `year-${item._id}`,
+      label: 'Year',
+      value: String(item.year),
+    });
   }
 
-  parts.push(`Current sort ${item.sortOrder ?? 'auto'}`);
+  parts.push({
+    key: `sort-${item._id}`,
+    label: 'Current Sort',
+    value: String(item.sortOrder ?? 'Auto'),
+  });
 
   return parts;
 }
@@ -810,6 +846,13 @@ export default function SortablePaintingsPane({
     ? itemPreviewCompactStyle
     : itemPreviewStyle;
 
+  const responsiveMetaStyle: React.CSSProperties = isCompact
+    ? {
+        ...itemMetaStyle,
+        gridTemplateColumns: 'minmax(0, 1fr)',
+      }
+    : itemMetaStyle;
+
   const compactBadgeStyle: React.CSSProperties = isCompact
     ? {
         ...badgeStyle,
@@ -1038,9 +1081,12 @@ export default function SortablePaintingsPane({
                           {getSecondaryTitle(item) ? (
                             <p style={itemSecondaryTitleStyle}>{getSecondaryTitle(item)}</p>
                           ) : null}
-                          <div style={itemMetaStyle}>
+                          <div style={responsiveMetaStyle}>
                             {buildMetaParts(item, scope).map((part) => (
-                              <span key={part} style={statusChipStyle}>{part}</span>
+                              <span key={part.key} style={statusChipStyle}>
+                                <span style={metaLabelStyle}>{part.label}</span>
+                                <span style={metaValueStyle}>{part.value}</span>
+                              </span>
                             ))}
                           </div>
                         </div>
@@ -1066,9 +1112,12 @@ export default function SortablePaintingsPane({
                         {getSecondaryTitle(item) ? (
                           <p style={itemSecondaryTitleStyle}>{getSecondaryTitle(item)}</p>
                         ) : null}
-                        <div style={itemMetaStyle}>
+                        <div style={responsiveMetaStyle}>
                           {buildMetaParts(item, scope).map((part) => (
-                            <span key={part} style={statusChipStyle}>{part}</span>
+                            <span key={part.key} style={statusChipStyle}>
+                              <span style={metaLabelStyle}>{part.label}</span>
+                              <span style={metaValueStyle}>{part.value}</span>
+                            </span>
                           ))}
                         </div>
                       </>
