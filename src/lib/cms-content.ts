@@ -151,12 +151,15 @@ function buildAvailableMeta(options: {
   return parts.length > 0 ? parts.join(' · ') : undefined;
 }
 
-function toLegacyStatus(status: PaintingStatus | undefined): 'AVAILABLE' | 'SOLD' | undefined {
+function toLegacyStatus(status: PaintingStatus | undefined): 'AVAILABLE' | 'SOLD' | 'COMMISSION' | undefined {
   if (status === 'available') {
     return 'AVAILABLE';
   }
   if (status === 'sold') {
     return 'SOLD';
+  }
+  if (status === 'commission') {
+    return 'COMMISSION';
   }
   return undefined;
 }

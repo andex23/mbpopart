@@ -1,4 +1,4 @@
-export type LegacyStatus = 'AVAILABLE' | 'SOLD';
+export type LegacyStatus = 'AVAILABLE' | 'SOLD' | 'COMMISSION';
 
 export interface LegacyThumbItem {
   imageUrl: string;

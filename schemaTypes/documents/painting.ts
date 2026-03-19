@@ -111,6 +111,7 @@ export const painting = defineType({
         list: [
           { title: 'Available', value: 'available' },
           { title: 'Sold', value: 'sold' },
+          { title: 'Commission', value: 'commission' },
           { title: 'Not For Sale', value: 'notForSale' },
           { title: 'Archive', value: 'archive' },
         ],
@@ -124,7 +125,7 @@ export const painting = defineType({
       title: 'Show on Available Page',
       type: 'boolean',
       group: 'placement',
-      description: 'Turn this on if the painting should appear on the Available page. Turn it off to remove it from Available without removing it from its year in the main Paintings gallery.',
+      description: 'Turn this on only if the painting should appear on the Available page. Leave it off to keep the painting only in its year gallery.',
     }),
     defineField({
       name: 'inventoryOnly',

@@ -32,7 +32,7 @@ const paintingDefaultOrdering = [
 ];
 
 const availablePageFilter =
-  '_type == "painting" && ((defined(showOnAvailablePage) && showOnAvailablePage == true) || (!defined(showOnAvailablePage) && status in ["available", "sold"]))';
+  '_type == "painting" && status in ["available", "sold"] && ((defined(showOnAvailablePage) && showOnAvailablePage == true) || (!defined(showOnAvailablePage) && defined(inventoryOnly) && inventoryOnly == true))';
 
 const availableInventoryOrdering = [
   { field: 'sortOrder', direction: 'asc' as const },
@@ -218,7 +218,7 @@ export const deskStructure: StructureResolver = (S) =>
                   S.documentList()
                     .title('Edit Available Paintings (Details)')
                     .schemaType('painting')
-                    .filter('_type == "painting" && status in ["available", "sold"]')
+                    .filter(availablePageFilter)
                     .initialValueTemplates([
                       S.initialValueTemplateItem('available-inventory-painting'),
                       S.initialValueTemplateItem('sold-inventory-painting'),

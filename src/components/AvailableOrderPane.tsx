@@ -1,7 +1,7 @@
 import React from 'react';
 import SortablePaintingsPane from './SortablePaintingsPane';
 
-const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && ((defined(showOnAvailablePage) && showOnAvailablePage == true) || (!defined(showOnAvailablePage) && status in ["available", "sold"]))] | order(sortOrder asc, year desc, _updatedAt desc){
+const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && status in ["available", "sold"] && ((defined(showOnAvailablePage) && showOnAvailablePage == true) || (!defined(showOnAvailablePage) && defined(inventoryOnly) && inventoryOnly == true))] | order(sortOrder asc, year desc, _updatedAt desc){
   _id,
   title,
   caption,

@@ -59,7 +59,7 @@ export interface CmsBioPage {
   galleryImages?: CmsImageItem[];
 }
 
-export type PaintingStatus = 'available' | 'sold' | 'notForSale' | 'archive';
+export type PaintingStatus = 'available' | 'sold' | 'commission' | 'notForSale' | 'archive';
 export type CardImageFit = 'cover' | 'contain';
 
 export interface CmsPainting {

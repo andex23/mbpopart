@@ -16,7 +16,9 @@ export default function ArtworkCard({ work, onClick, priority = false }: Artwork
   const previewSrc = work.thumbnailUrl || work.imageUrl;
   const resolvedPreviewSrc = resolveLegacyImageUrl(previewSrc);
   const title = getArtworkDisplayTitle(work);
-  const galleryStatus = work.status === 'AVAILABLE' ? work.status : undefined;
+  const galleryStatus = work.status === 'AVAILABLE' || work.status === 'COMMISSION'
+    ? work.status
+    : undefined;
   const statusClassName = galleryStatus ? `artwork-preview-status ${galleryStatus.toLowerCase()}` : null;
   const copyrightYear = work.copyrightYear ?? getArtworkYearValue(work);
   const metaParts = [

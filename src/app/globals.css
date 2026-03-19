@@ -1458,6 +1458,10 @@ a:hover {
   color: #6ee7ad;
 }
 
+.artwork-preview-status.commission {
+  color: #8fd9ff;
+}
+
 .artwork-preview-status.sold {
   color: #ff93a3;
 }

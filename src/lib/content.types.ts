@@ -1,7 +1,7 @@
 import type { Artwork, YearGroup } from '@/data/artworks';
 import type { NavKey, PortableTextValue } from './sanity.types';
 
-export type LegacyStatus = 'AVAILABLE' | 'SOLD';
+export type LegacyStatus = 'AVAILABLE' | 'SOLD' | 'COMMISSION';
 
 export interface LegacyThumbItem {
   imageUrl: string;
