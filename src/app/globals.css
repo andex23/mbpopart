@@ -1444,6 +1444,24 @@ a:hover {
   letter-spacing: 0.01em;
 }
 
+.artwork-preview-status {
+  margin: 4px 0 0;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.artwork-preview-status.available {
+  color: #6ee7ad;
+}
+
+.artwork-preview-status.sold {
+  color: #ff93a3;
+}
+
 .artwork-preview-meta {
   margin: 3px 0 0;
   color: rgba(255, 255, 255, 0.92);

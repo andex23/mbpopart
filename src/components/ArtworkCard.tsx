@@ -16,6 +16,7 @@ export default function ArtworkCard({ work, onClick, priority = false }: Artwork
   const previewSrc = work.thumbnailUrl || work.imageUrl;
   const resolvedPreviewSrc = resolveLegacyImageUrl(previewSrc);
   const title = getArtworkDisplayTitle(work);
+  const statusClassName = work.status ? `artwork-preview-status ${work.status.toLowerCase()}` : null;
   const copyrightYear = work.copyrightYear ?? getArtworkYearValue(work);
   const metaParts = [
     work.dimensions?.trim(),
@@ -42,6 +43,7 @@ export default function ArtworkCard({ work, onClick, priority = false }: Artwork
         />
         <div className="artwork-preview-overlay">
           <p className="artwork-preview-title">{title}</p>
+          {work.status ? <p className={statusClassName ?? undefined}>{work.status}</p> : null}
           {metadata ? <p className="artwork-preview-meta">{metadata}</p> : null}
         </div>
       </div>

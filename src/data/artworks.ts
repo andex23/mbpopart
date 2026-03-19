@@ -6,6 +6,7 @@ export interface Artwork {
   title: string;
   imageUrl: string;
   thumbnailUrl: string;
+  status?: 'AVAILABLE' | 'SOLD';
   previewImageFit?: 'cover' | 'contain' | null;
   dimensions: string | null;
   price?: string | null;

@@ -318,6 +318,7 @@ function mapPaintingToArtwork(painting: CmsPainting): Artwork | null {
     title,
     imageUrl: fullImage,
     thumbnailUrl: thumbImage,
+    status: toLegacyStatus(painting.status),
     previewImageFit: painting.cardImageFit ?? 'cover',
     dimensions: painting.dimensions ?? null,
     price,
