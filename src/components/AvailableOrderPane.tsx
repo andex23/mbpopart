@@ -7,7 +7,10 @@ const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && status in ["available", 
   caption,
   year,
   sortOrder,
-  status
+  status,
+  mainImageAlt,
+  cardImageFit,
+  "imageUrl": mainImage.asset->url
 }`;
 
 export default function AvailableOrderPane() {

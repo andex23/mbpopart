@@ -8,6 +8,9 @@ type PaintingOrderItem = {
   year?: number;
   sortOrder?: number;
   status?: string;
+  imageUrl?: string;
+  mainImageAlt?: string;
+  cardImageFit?: 'cover' | 'contain';
 };
 
 type SortScope = 'year' | 'flat';
@@ -138,9 +141,51 @@ const itemBodyStyle: React.CSSProperties = {
 
 const itemContentStyle: React.CSSProperties = {
   display: 'grid',
+  gridTemplateColumns: '24px 112px minmax(0, 1fr)',
+  gap: '12px',
+  alignItems: 'start',
+};
+
+const itemContentCompactStyle: React.CSSProperties = {
+  display: 'grid',
   gridTemplateColumns: '24px minmax(0, 1fr)',
   gap: '10px',
   alignItems: 'start',
+};
+
+const itemPreviewStyle: React.CSSProperties = {
+  width: '112px',
+  aspectRatio: '1 / 1',
+  borderRadius: '12px',
+  overflow: 'hidden',
+  border: '1px solid #cfd9e6',
+  background: 'linear-gradient(180deg, #f8fafc, #e7eef8)',
+  boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.7)',
+};
+
+const itemPreviewCompactStyle: React.CSSProperties = {
+  ...itemPreviewStyle,
+  width: '100%',
+  maxWidth: '132px',
+};
+
+const itemPreviewImageStyle: React.CSSProperties = {
+  display: 'block',
+  width: '100%',
+  height: '100%',
+};
+
+const itemPreviewPlaceholderStyle: React.CSSProperties = {
+  display: 'grid',
+  placeItems: 'center',
+  width: '100%',
+  height: '100%',
+  padding: '10px',
+  textAlign: 'center',
+  color: '#64748b',
+  fontSize: '0.78rem',
+  fontWeight: 700,
+  lineHeight: 1.35,
 };
 
 const checkboxStyle: React.CSSProperties = {
@@ -380,6 +425,16 @@ function buildMetaParts(item: PaintingOrderItem, scope: SortScope): string[] {
   parts.push(`Current sort ${item.sortOrder ?? 'auto'}`);
 
   return parts;
+}
+
+function buildPreviewImageUrl(imageUrl: string | undefined): string | null {
+  const trimmed = imageUrl?.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const separator = trimmed.includes('?') ? '&' : '?';
+  return `${trimmed}${separator}w=320&h=320&fit=max&auto=format`;
 }
 
 export default function SortablePaintingsPane({
@@ -747,6 +802,14 @@ export default function SortablePaintingsPane({
       }
     : rowStyle;
 
+  const responsiveItemContentStyle: React.CSSProperties = isCompact
+    ? itemContentCompactStyle
+    : itemContentStyle;
+
+  const responsivePreviewStyle: React.CSSProperties = isCompact
+    ? itemPreviewCompactStyle
+    : itemPreviewStyle;
+
   const compactBadgeStyle: React.CSSProperties = isCompact
     ? {
         ...badgeStyle,
@@ -947,7 +1010,7 @@ export default function SortablePaintingsPane({
                 <div style={{ minWidth: 0 }}>
                   <div style={itemBodyStyle}>
                     {archiveButtonLabel || deleteButtonLabel ? (
-                      <label style={itemContentStyle}>
+                      <label style={responsiveItemContentStyle}>
                         <input
                           type="checkbox"
                           checked={selectedIdSet.has(item._id)}
@@ -955,6 +1018,21 @@ export default function SortablePaintingsPane({
                           style={checkboxStyle}
                           disabled={isSaving || isActing}
                         />
+                        <div style={responsivePreviewStyle}>
+                          {buildPreviewImageUrl(item.imageUrl) ? (
+                            <img
+                              src={buildPreviewImageUrl(item.imageUrl) ?? undefined}
+                              alt={item.mainImageAlt?.trim() || getDisplayTitle(item)}
+                              style={{
+                                ...itemPreviewImageStyle,
+                                objectFit: item.cardImageFit === 'contain' ? 'contain' : 'cover',
+                              }}
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div style={itemPreviewPlaceholderStyle}>No image saved yet</div>
+                          )}
+                        </div>
                         <div style={{ minWidth: 0 }}>
                           <p style={itemTitleStyle}>{getDisplayTitle(item)}</p>
                           {getSecondaryTitle(item) ? (
@@ -969,6 +1047,21 @@ export default function SortablePaintingsPane({
                       </label>
                     ) : (
                       <>
+                        <div style={responsivePreviewStyle}>
+                          {buildPreviewImageUrl(item.imageUrl) ? (
+                            <img
+                              src={buildPreviewImageUrl(item.imageUrl) ?? undefined}
+                              alt={item.mainImageAlt?.trim() || getDisplayTitle(item)}
+                              style={{
+                                ...itemPreviewImageStyle,
+                                objectFit: item.cardImageFit === 'contain' ? 'contain' : 'cover',
+                              }}
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div style={itemPreviewPlaceholderStyle}>No image saved yet</div>
+                          )}
+                        </div>
                         <p style={itemTitleStyle}>{getDisplayTitle(item)}</p>
                         {getSecondaryTitle(item) ? (
                           <p style={itemSecondaryTitleStyle}>{getSecondaryTitle(item)}</p>

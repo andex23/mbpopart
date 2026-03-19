@@ -7,7 +7,10 @@ const PAINTING_ORDER_QUERY = `*[_type == "painting" && defined(year) && (!define
   caption,
   year,
   sortOrder,
-  status
+  status,
+  mainImageAlt,
+  cardImageFit,
+  "imageUrl": mainImage.asset->url
 }`;
 
 export interface PaintingOrderPaneProps {
