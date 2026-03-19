@@ -503,6 +503,7 @@ async function buildSingletonSeedDocuments(client: SanityClient) {
       contactPhone: commonContact.phone,
       locationLabel: 'Venice Florida USA',
       sandsDisplayMessage: siteContent.homepage.exhibiting[0] ?? '',
+      maintenanceModeEnabled: false,
       footerPortrait,
       footerText: '© 2026 Michel Balasis',
       socialLinks: [],

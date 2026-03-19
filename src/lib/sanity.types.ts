@@ -12,6 +12,7 @@ export interface CmsSiteSettings {
   contactPhone?: string;
   locationLabel?: string;
   sandsDisplayMessage?: string;
+  maintenanceModeEnabled?: boolean;
   footerText?: string;
   footerPortrait?: unknown;
   socialLinks?: Array<{ label?: string; url?: string }>;

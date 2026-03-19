@@ -401,6 +401,7 @@ function toFallbackSiteSettings(): SiteSettingsView {
     contactPhone: commonContact.phone,
     locationLabel: 'Venice Florida USA',
     sandsDisplayMessage: siteContent.homepage.exhibiting[0] ?? '',
+    maintenanceModeEnabled: false,
     footerText: DEFAULT_FOOTER_COPY,
     footerPortraitUrl: '/assets/mbface.png',
     socialLinks: [],
@@ -429,6 +430,7 @@ export async function getSiteSettingsContent(): Promise<SiteSettingsView> {
     contactPhone: settings.contactPhone?.trim() || commonContact.phone,
     locationLabel: settings.locationLabel?.trim() || 'Venice Florida USA',
     sandsDisplayMessage: settings.sandsDisplayMessage?.trim() || siteContent.homepage.exhibiting[0] || '',
+    maintenanceModeEnabled: settings.maintenanceModeEnabled === true,
     footerText: settings.footerText?.trim() || DEFAULT_FOOTER_COPY,
     footerPortraitUrl: getSanityImageUrl(settings.footerPortrait, { width: 280, fit: 'crop' }) || '/assets/mbface.png',
     socialLinks: (settings.socialLinks ?? [])

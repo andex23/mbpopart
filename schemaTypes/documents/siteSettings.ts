@@ -54,6 +54,14 @@ export const siteSettings = defineType({
       validation: (Rule) => Rule.max(8),
     }),
     defineField({
+      name: 'maintenanceModeEnabled',
+      title: 'Maintenance Mode',
+      type: 'boolean',
+      initialValue: false,
+      description:
+        'Turn on the full-page under construction screen for public visitors. Sanity Studio and the private preview bypass still work.',
+    }),
+    defineField({
       name: 'footerPortrait',
       title: 'Footer Portrait (Optional)',
       type: 'image',

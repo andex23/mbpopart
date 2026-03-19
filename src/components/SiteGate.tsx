@@ -14,13 +14,12 @@ interface SiteGateProps {
   siteSettings: {
     contactEmail: string;
     contactPhone: string;
+    maintenanceModeEnabled: boolean;
     footerText: string;
     footerPortraitUrl?: string;
     socialLinks: Array<{ label: string; url: string }>;
   };
 }
-
-const MAINTENANCE_MODE = true;
 
 export default function SiteGate({
   children,
@@ -30,8 +29,9 @@ export default function SiteGate({
 }: SiteGateProps) {
   const pathname = usePathname();
   const isStudioRoute = pathname.startsWith('/studio');
+  const maintenanceModeEnabled = siteSettings.maintenanceModeEnabled === true;
 
-  if (MAINTENANCE_MODE && !isStudioRoute && !previewBypassEnabled) {
+  if (maintenanceModeEnabled && !isStudioRoute && !previewBypassEnabled) {
     return (
       <main className="site-shell site-shell-construction">
         <ConstructionNotice

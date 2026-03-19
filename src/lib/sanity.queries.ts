@@ -12,6 +12,7 @@ export const SITE_SETTINGS_QUERY = groq`
       label,
       url
     },
+    maintenanceModeEnabled,
     footerPortrait,
     footerText,
     footerLinks[]{

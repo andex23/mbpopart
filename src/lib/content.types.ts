@@ -27,6 +27,7 @@ export interface SiteSettingsView {
   contactPhone: string;
   locationLabel: string;
   sandsDisplayMessage: string;
+  maintenanceModeEnabled: boolean;
   footerText: string;
   footerPortraitUrl?: string;
   socialLinks: Array<{ label: string; url: string }>;
