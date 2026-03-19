@@ -60,6 +60,8 @@ Important:
 - an available or sold inventory card should be created from `Available > Edit Available Paintings (Details)`
 - this keeps the main gallery separate from the available inventory
 - the two order-and-cleanup screens now show a small thumbnail for each item, so it is easier to recognize paintings visually while sorting
+- `Year` is selected from a dropdown instead of being typed by hand
+- if you choose `2026`, the painting appears in the website section `2026–Current`
 
 ### `Commissions`
 
@@ -113,6 +115,8 @@ Fields that control what shows:
 Important:
 - `Price` is not the main text on the regular `Paintings` grid
 - `Year` controls which year section the painting belongs to
+- choose `Year` from the dropdown list instead of typing it by hand
+- a painting with `Year = 2026` shows inside `2026–Current` on the website
 - if the image sits too high or too low inside the smaller card window, open the `Main Image` editor and adjust the square crop first, then the hotspot if needed
 
 ### `Available` section

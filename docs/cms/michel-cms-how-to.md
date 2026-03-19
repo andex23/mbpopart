@@ -117,6 +117,8 @@ Important:
 - `Status` controls the visible tag such as `Available` or `Sold`
 - records created from the `Available` section are already tagged correctly for that page
 - records created from `Paintings > Edit Individual Paintings` are normal gallery paintings
+- `Year` is selected from a dropdown instead of being typed by hand
+- if you choose `2026`, the painting appears in the website section `2026–Current`
 
 ### Painting Order & Cleanup
 
@@ -178,7 +180,7 @@ Use this for:
 2. Use `Paintings > Edit Individual Paintings (Details)` for normal gallery paintings
 3. Use `Available > Edit Available Paintings (Details)` for available or sold inventory cards
 4. Create a new painting there
-5. Add title, year, image, and status
+5. Add title, choose the exact `Year` from the dropdown, then add the image and status
 6. Click `Publish`
 
 ### Reposition a painting inside the small window

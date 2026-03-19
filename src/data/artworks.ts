@@ -125,6 +125,11 @@ function parseYearGroupBounds(yearLabel: string): { from: number; to: number } |
     return { from: Number.NEGATIVE_INFINITY, to: upperYear };
   }
 
+  const openEndedMatch = yearLabel.match(/(\d{4})\s*[-–]\s*(current|present)/i);
+  if (openEndedMatch) {
+    return { from: Number(openEndedMatch[1]), to: Number.POSITIVE_INFINITY };
+  }
+
   const rangeMatch = yearLabel.match(/(\d{4})\s*[-–]\s*(\d{4})/);
   if (rangeMatch) {
     const start = Number(rangeMatch[1]);

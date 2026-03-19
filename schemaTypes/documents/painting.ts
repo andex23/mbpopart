@@ -1,5 +1,15 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 
+const EARLIEST_SELECTABLE_YEAR = 1950;
+const LATEST_SELECTABLE_YEAR = new Date().getFullYear() + 5;
+const PAINTING_YEAR_OPTIONS = Array.from(
+  { length: LATEST_SELECTABLE_YEAR - EARLIEST_SELECTABLE_YEAR + 1 },
+  (_, index) => {
+    const year = LATEST_SELECTABLE_YEAR - index;
+    return { title: String(year), value: year };
+  },
+);
+
 export const painting = defineType({
   name: 'painting',
   title: 'Painting',
@@ -30,7 +40,10 @@ export const painting = defineType({
       title: 'Year',
       type: 'number',
       group: 'content',
-      description: 'Use the exact 4-digit year like 2019. The website year menus and year sections are built directly from this field.',
+      description: 'Choose the exact year from the dropdown. The website year menus and year sections are built directly from this field.',
+      options: {
+        list: PAINTING_YEAR_OPTIONS,
+      },
       validation: (Rule) => Rule.required().integer().min(1900).max(2100),
     }),
     defineField({
