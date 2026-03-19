@@ -106,7 +106,7 @@ export const painting = defineType({
       title: 'Status',
       type: 'string',
       group: 'placement',
-      description: 'Available and Sold paintings appear on the Available page automatically. Use Archive to hide a gallery painting from the public site.',
+      description: 'Use this for the painting status label. Use Archive to hide a gallery painting from the public site.',
       options: {
         list: [
           { title: 'Available', value: 'available' },
@@ -118,6 +118,13 @@ export const painting = defineType({
       },
       initialValue: 'notForSale',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'showOnAvailablePage',
+      title: 'Show on Available Page',
+      type: 'boolean',
+      group: 'placement',
+      description: 'Turn this on if the painting should appear on the Available page. Turn it off to remove it from Available without removing it from its year in the main Paintings gallery.',
     }),
     defineField({
       name: 'inventoryOnly',
@@ -193,15 +200,17 @@ export const painting = defineType({
       copyrightYear: 'copyrightYear',
       media: 'mainImage',
       status: 'status',
+      showOnAvailablePage: 'showOnAvailablePage',
       sortOrder: 'sortOrder',
       inventoryOnly: 'inventoryOnly',
       cardImageFit: 'cardImageFit',
     },
-    prepare({ title, caption, year, copyrightYear, media, status, sortOrder, inventoryOnly, cardImageFit }) {
+    prepare({ title, caption, year, copyrightYear, media, status, showOnAvailablePage, sortOrder, inventoryOnly, cardImageFit }) {
       return {
         title: caption || title || 'Untitled painting',
         subtitle:
           `${copyrightYear ?? year ?? 'no year'} · ${status ?? 'no status'} · order: ${sortOrder ?? 'auto'}${inventoryOnly ? ' · inventory only' : ''}` +
+          `${showOnAvailablePage === true ? ' · on available page' : showOnAvailablePage === false ? ' · hidden from available page' : ''}` +
           `${cardImageFit === 'contain' ? ' · full card' : ''}` +
           `${caption && title ? ` · title: ${title}` : ''}`,
         media,

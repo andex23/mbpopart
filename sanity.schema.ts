@@ -18,6 +18,7 @@ const templates: Template[] = [
     schemaType: 'painting',
     value: {
       status: 'available',
+      showOnAvailablePage: true,
       inventoryOnly: true,
       featured: false,
     },
@@ -28,6 +29,7 @@ const templates: Template[] = [
     schemaType: 'painting',
     value: {
       status: 'sold',
+      showOnAvailablePage: true,
       inventoryOnly: true,
       featured: false,
     },

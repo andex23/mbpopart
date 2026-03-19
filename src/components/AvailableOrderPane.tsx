@@ -1,13 +1,14 @@
 import React from 'react';
 import SortablePaintingsPane from './SortablePaintingsPane';
 
-const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && status in ["available", "sold"]] | order(sortOrder asc, year desc, _updatedAt desc){
+const AVAILABLE_ORDER_QUERY = `*[_type == "painting" && ((defined(showOnAvailablePage) && showOnAvailablePage == true) || (!defined(showOnAvailablePage) && status in ["available", "sold"]))] | order(sortOrder asc, year desc, _updatedAt desc){
   _id,
   title,
   caption,
   year,
   sortOrder,
   status,
+  showOnAvailablePage,
   mainImageAlt,
   cardImageFit,
   "imageUrl": mainImage.asset->url
@@ -22,7 +23,7 @@ export default function AvailableOrderPane() {
         'This screen controls all paintings currently shown on the Available page.',
         'Use this instead of editing Manual Sort Order by hand.',
         'Archive removes the painting from the Available page but keeps it in CMS. Delete removes it permanently.',
-        'Available and Sold cards shown here are controlled by each painting record’s Status field.',
+        'To remove a painting from the Available page without removing it from its year gallery, turn off Show on Available Page in the painting record.',
       ]}
       query={AVAILABLE_ORDER_QUERY}
       scope="flat"

@@ -74,6 +74,7 @@ export interface CmsPainting {
   cardImageFit?: CardImageFit;
   galleryImages?: CmsImageItem[];
   status?: PaintingStatus;
+  showOnAvailablePage?: boolean;
   inventoryOnly?: boolean;
   featured?: boolean;
   sortOrder?: number;

@@ -114,7 +114,7 @@ export const AVAILABLE_PAGE_QUERY = groq`
 `;
 
 export const AVAILABLE_PAINTINGS_QUERY = groq`
-  *[_type == "painting" && status in ["available", "sold"]]
+  *[_type == "painting" && ((defined(showOnAvailablePage) && showOnAvailablePage == true) || (!defined(showOnAvailablePage) && status in ["available", "sold"]))]
   | order(sortOrder asc, year desc, _updatedAt desc){
     _id,
     title,
@@ -133,6 +133,7 @@ export const AVAILABLE_PAINTINGS_QUERY = groq`
       featured
     },
     status,
+    showOnAvailablePage,
     inventoryOnly,
     featured,
     sortOrder,

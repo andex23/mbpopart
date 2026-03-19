@@ -31,6 +31,9 @@ const paintingDefaultOrdering = [
   { field: '_updatedAt', direction: 'desc' as const },
 ];
 
+const availablePageFilter =
+  '_type == "painting" && ((defined(showOnAvailablePage) && showOnAvailablePage == true) || (!defined(showOnAvailablePage) && status in ["available", "sold"]))';
+
 const availableInventoryOrdering = [
   { field: 'sortOrder', direction: 'asc' as const },
   { field: 'year', direction: 'desc' as const },
@@ -228,7 +231,7 @@ export const deskStructure: StructureResolver = (S) =>
                   S.documentList()
                     .title('Available Paintings Only')
                     .schemaType('painting')
-                    .filter('_type == "painting" && status == "available"')
+                    .filter(`${availablePageFilter} && status == "available"`)
                     .initialValueTemplates([S.initialValueTemplateItem('available-inventory-painting')])
                     .defaultOrdering(availableInventoryOrdering),
                 ),
@@ -238,7 +241,7 @@ export const deskStructure: StructureResolver = (S) =>
                   S.documentList()
                     .title('Sold Paintings Still Showing on Available Page')
                     .schemaType('painting')
-                    .filter('_type == "painting" && status == "sold"')
+                    .filter(`${availablePageFilter} && status == "sold"`)
                     .initialValueTemplates([S.initialValueTemplateItem('sold-inventory-painting')])
                     .defaultOrdering(availableInventoryOrdering),
                 ),
