@@ -357,11 +357,12 @@ a:hover {
 
 .site-nav-dropdown-menu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: 100%;
   left: 0;
   z-index: 60;
   display: none;
   width: 172px;
+  padding-top: 6px;
   border-radius: 0 0 8px 8px;
   overflow: hidden;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.34);
