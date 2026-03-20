@@ -547,6 +547,15 @@ async function buildSingletonSeedDocuments(client: SanityClient) {
         'Use the year buttons to jump directly to a specific collection.',
       ]),
       yearGroupingMode: 'computed',
+      yearRangeLabels: {
+        before1998: '1998 and Before',
+        y1999to2004: '1999–2004',
+        y2005to2009: '2005–2009',
+        y2010to2015: '2010–2015',
+        y2016to2020: '2016–2020',
+        y2021to2025: '2021–2025',
+        y2026current: '2026–Current',
+      },
     },
     {
       _id: 'availablePage',

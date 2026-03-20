@@ -6,10 +6,12 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ConstructionNotice from '@/components/ConstructionNotice';
 import type { NavigationViewItem } from '@/lib/content.types';
+import type { YearRangeFilter } from '@/data/artworks';
 
 interface SiteGateProps {
   children: React.ReactNode;
   navigation: NavigationViewItem[];
+  paintingMenuRanges: YearRangeFilter[];
   previewBypassEnabled: boolean;
   siteSettings: {
     contactEmail: string;
@@ -24,6 +26,7 @@ interface SiteGateProps {
 export default function SiteGate({
   children,
   navigation,
+  paintingMenuRanges,
   previewBypassEnabled,
   siteSettings,
 }: SiteGateProps) {
@@ -47,7 +50,7 @@ export default function SiteGate({
   return (
     <>
       <Suspense fallback={null}>
-        <Navigation items={navigation} />
+        <Navigation items={navigation} paintingMenuRanges={paintingMenuRanges} />
       </Suspense>
       <main className="site-shell">{children}</main>
       <Footer

@@ -12,7 +12,6 @@ import {
   getArtworkYearValue,
   getRangeFromFilterKey,
   normalizeRangeFilterKey,
-  YEAR_RANGE_FILTERS,
 } from '@/data/artworks';
 import type { Artwork } from '@/data/artworks';
 import type { PaintingsPageView, SiteSettingsView } from '@/lib/content.types';
@@ -67,7 +66,10 @@ export default function GalleryClientPage({ pageContent, siteSettings }: Gallery
       return pageContent.yearGroups;
     }
 
-    return pageContent.yearGroups.filter((group) => doesYearGroupMatchRangeFilter(group.year, activeRangeKey));
+    return pageContent.yearGroups.filter((group) => (
+      group.rangeKey === activeRangeKey ||
+      doesYearGroupMatchRangeFilter(group.year, activeRangeKey)
+    ));
   }, [activeRangeKey, pageContent.yearGroups]);
 
   const rangeBuckets = useMemo(() => {
@@ -223,7 +225,7 @@ export default function GalleryClientPage({ pageContent, siteSettings }: Gallery
     }
   };
 
-  const activeRangeLabel = YEAR_RANGE_FILTERS.find((range) => range.key === activeRangeKey)?.label;
+  const activeRangeLabel = pageContent.yearRanges.find((range) => range.key === activeRangeKey)?.label;
   const emptySectionLabel = (activeYear !== null ? String(activeYear) : activeRangeLabel) || 'Selected Section';
 
   const leftContent = activeRangeKey === null ? (
@@ -253,7 +255,7 @@ export default function GalleryClientPage({ pageContent, siteSettings }: Gallery
           >
             All Years
           </RetroNavButton>
-          {YEAR_RANGE_FILTERS.map((range) => (
+          {pageContent.yearRanges.map((range) => (
             <RetroNavButton
               type="button"
               key={range.key}

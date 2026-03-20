@@ -1,4 +1,4 @@
-import type { Artwork, YearGroup } from '@/data/artworks';
+import type { Artwork, YearGroup, YearRangeFilter } from '@/data/artworks';
 import type { NavKey, PortableTextValue } from './sanity.types';
 
 export type LegacyStatus = 'AVAILABLE' | 'SOLD' | 'COMMISSION';
@@ -60,6 +60,7 @@ export interface BioPageView {
 export interface PaintingsPageView {
   title: string;
   introText: PortableTextValue;
+  yearRanges: YearRangeFilter[];
   yearGroups: YearGroup[];
 }
 
@@ -144,6 +145,7 @@ export interface VenuesPageView {
 export interface GlobalContentView {
   siteSettings: SiteSettingsView;
   navigation: NavigationViewItem[];
+  paintingMenuRanges: YearRangeFilter[];
 }
 
 export interface GalleryContentView {

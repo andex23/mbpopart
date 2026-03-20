@@ -74,7 +74,16 @@ export const PAINTINGS_PAGE_QUERY = groq`
   *[_type == "paintingsPage"][0]{
     title,
     introText,
-    yearGroupingMode
+    yearGroupingMode,
+    yearRangeLabels{
+      before1998,
+      y1999to2004,
+      y2005to2009,
+      y2010to2015,
+      y2016to2020,
+      y2021to2025,
+      y2026current
+    }
   }
 `;
 

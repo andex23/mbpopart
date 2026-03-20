@@ -1,5 +1,5 @@
-import type { Artwork, YearGroup, YearRangeFilter } from '@/data/artworks';
-import { YEAR_RANGE_FILTERS, getAllArtworks } from '@/data/artworks';
+import type { Artwork, YearGroup, YearRangeFilter, YearRangeLabelOverrides } from '@/data/artworks';
+import { YEAR_RANGE_FILTERS, getAllArtworks, getYearRangeFilters } from '@/data/artworks';
 import {
   availableItems,
   bioItems,
@@ -367,9 +367,16 @@ function doesBoundsMatchRange(bounds: { from: number; to: number }, range: YearR
   return bounds.from <= rangeTo && bounds.to >= rangeFrom;
 }
 
-function getGroupedYearRanges(artworks: Artwork[]): YearGroup[] {
+function getPaintingsYearRanges(page?: CmsPaintingsPage | null): YearRangeFilter[] {
+  return getYearRangeFilters((page?.yearRangeLabels ?? undefined) as YearRangeLabelOverrides | undefined);
+}
+
+function getGroupedYearRanges(
+  artworks: Artwork[],
+  yearRanges: YearRangeFilter[] = YEAR_RANGE_FILTERS,
+): YearGroup[] {
   const bucket = new Map<string, Artwork[]>();
-  for (const range of YEAR_RANGE_FILTERS) {
+  for (const range of yearRanges) {
     bucket.set(range.key, []);
   }
 
@@ -379,7 +386,7 @@ function getGroupedYearRanges(artworks: Artwork[]): YearGroup[] {
       continue;
     }
 
-    const match = YEAR_RANGE_FILTERS.find((range) => doesBoundsMatchRange(bounds, range));
+    const match = yearRanges.find((range) => doesBoundsMatchRange(bounds, range));
     if (!match) {
       continue;
     }
@@ -387,7 +394,8 @@ function getGroupedYearRanges(artworks: Artwork[]): YearGroup[] {
     bucket.get(match.key)?.push(artwork);
   }
 
-  return YEAR_RANGE_FILTERS.map((range, index) => ({
+  return yearRanges.map((range, index) => ({
+    rangeKey: range.key,
     year: range.label,
     works: bucket.get(range.key) ?? [],
     accentClass: ACCENT_CYCLE[index % ACCENT_CYCLE.length],
@@ -462,14 +470,19 @@ export async function getNavigationContent(): Promise<NavigationViewItem[]> {
 }
 
 export async function getGlobalContent(): Promise<GlobalContentView> {
-  const [siteSettings, navigation] = await Promise.all([
+  const [siteSettings, navigation, paintingsPage] = await Promise.all([
     getSiteSettingsContent(),
     getNavigationContent(),
+    sanityFetch<CmsPaintingsPage>({
+      query: PAINTINGS_PAGE_QUERY,
+      tags: ['paintingsPage'],
+    }),
   ]);
 
   return {
     siteSettings,
     navigation,
+    paintingMenuRanges: getPaintingsYearRanges(paintingsPage),
   };
 }
 
@@ -542,6 +555,7 @@ export async function getPaintingsPageContent(): Promise<PaintingsPageView> {
   const cmsArtworks = (paintings ?? [])
     .map(mapPaintingToArtwork)
     .filter((item): item is Artwork => item !== null);
+  const yearRanges = getPaintingsYearRanges(page);
 
   return {
     title: page?.title?.trim() || 'Paintings',
@@ -551,7 +565,8 @@ export async function getPaintingsPageContent(): Promise<PaintingsPageView> {
           'Browse Michel Balasis paintings by year. Click any thumbnail to view a larger image.',
           'Use the year buttons to jump directly to a specific collection.',
         ]),
-    yearGroups: getGroupedYearRanges(cmsArtworks.length > 0 ? cmsArtworks : getAllArtworks()),
+    yearRanges,
+    yearGroups: getGroupedYearRanges(cmsArtworks.length > 0 ? cmsArtworks : getAllArtworks(), yearRanges),
   };
 }
 

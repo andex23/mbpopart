@@ -19,6 +19,7 @@ export interface Artwork {
 }
 
 export interface YearGroup {
+  rangeKey?: string;
   year: string;
   works: Artwork[];
   accentClass: string;
@@ -29,6 +30,16 @@ export interface YearRangeFilter {
   label: string;
   from: number | null;
   to: number | null;
+}
+
+export interface YearRangeLabelOverrides {
+  before1998?: string;
+  y1999to2004?: string;
+  y2005to2009?: string;
+  y2010to2015?: string;
+  y2016to2020?: string;
+  y2021to2025?: string;
+  y2026current?: string;
 }
 
 const rawArtworks: Artwork[] = scrapedArtworks as Artwork[];
@@ -50,6 +61,30 @@ export const YEAR_RANGE_FILTERS: YearRangeFilter[] = [
   { key: '2021-2025', label: '2021–2025', from: 2021, to: 2025 },
   { key: '2026-current', label: '2026–Current', from: 2026, to: null },
 ];
+
+const YEAR_RANGE_LABEL_FIELD_BY_KEY: Record<string, keyof YearRangeLabelOverrides> = {
+  'before-1998': 'before1998',
+  '1999-2004': 'y1999to2004',
+  '2005-2009': 'y2005to2009',
+  '2010-2015': 'y2010to2015',
+  '2016-2020': 'y2016to2020',
+  '2021-2025': 'y2021to2025',
+  '2026-current': 'y2026current',
+};
+
+export function getYearRangeFilters(
+  labelOverrides?: YearRangeLabelOverrides | null,
+): YearRangeFilter[] {
+  return YEAR_RANGE_FILTERS.map((range) => {
+    const overrideKey = YEAR_RANGE_LABEL_FIELD_BY_KEY[range.key];
+    const overrideLabel = overrideKey ? labelOverrides?.[overrideKey]?.trim() : undefined;
+
+    return {
+      ...range,
+      label: overrideLabel || range.label,
+    };
+  });
+}
 
 function getArtworkIdentityKey(work: Artwork): string {
   const imageKey = work.imageUrl?.trim().toLowerCase();

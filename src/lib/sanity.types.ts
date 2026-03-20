@@ -88,6 +88,15 @@ export interface CmsPaintingsPage {
   title?: string;
   introText?: PortableTextValue;
   yearGroupingMode?: string;
+  yearRangeLabels?: {
+    before1998?: string;
+    y1999to2004?: string;
+    y2005to2009?: string;
+    y2010to2015?: string;
+    y2016to2020?: string;
+    y2021to2025?: string;
+    y2026current?: string;
+  };
 }
 
 export interface CmsAvailablePage {

@@ -29,7 +29,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { navigation, siteSettings } = await getGlobalContent();
+  const { navigation, paintingMenuRanges, siteSettings } = await getGlobalContent();
   const cookieStore = await cookies();
   const previewBypassEnabled = cookieStore.get(PREVIEW_BYPASS_COOKIE_NAME)?.value === PREVIEW_BYPASS_COOKIE_VALUE;
 
@@ -44,6 +44,7 @@ export default async function RootLayout({
       <body className="bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased">
         <SiteGate
           navigation={navigation}
+          paintingMenuRanges={paintingMenuRanges}
           siteSettings={siteSettings}
           previewBypassEnabled={previewBypassEnabled}
         >

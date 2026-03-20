@@ -5,12 +5,14 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { ChevronDown, Menu, X } from 'lucide-react';
-import { normalizeRangeFilterKey, YEAR_RANGE_FILTERS } from '@/data/artworks';
+import type { YearRangeFilter } from '@/data/artworks';
+import { normalizeRangeFilterKey } from '@/data/artworks';
 import type { NavigationViewItem } from '@/lib/content.types';
 import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 interface NavigationProps {
   items: NavigationViewItem[];
+  paintingMenuRanges: YearRangeFilter[];
 }
 
 function sortNavigationItems(items: NavigationViewItem[]): NavigationViewItem[] {
@@ -19,7 +21,7 @@ function sortNavigationItems(items: NavigationViewItem[]): NavigationViewItem[] 
     .sort((a, b) => a.order - b.order);
 }
 
-export default function Navigation({ items }: NavigationProps) {
+export default function Navigation({ items, paintingMenuRanges }: NavigationProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -32,8 +34,6 @@ export default function Navigation({ items }: NavigationProps) {
   const selectedRangeKey = pathname === '/gallery'
     ? normalizeRangeFilterKey(searchParams.get('range') ?? searchParams.get('year'))
     : null;
-  const paintingMenuRanges = YEAR_RANGE_FILTERS;
-
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = 'hidden';
