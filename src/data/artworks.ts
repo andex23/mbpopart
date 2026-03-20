@@ -42,7 +42,7 @@ const YEAR_ORDER = [
 ];
 
 export const YEAR_RANGE_FILTERS: YearRangeFilter[] = [
-  { key: 'before-1998', label: 'Before 1998', from: null, to: 1997 },
+  { key: 'before-1998', label: '1998 and Before', from: null, to: 1998 },
   { key: '1999-2004', label: '1999–2004', from: 1999, to: 2004 },
   { key: '2005-2009', label: '2005–2009', from: 2005, to: 2009 },
   { key: '2010-2015', label: '2010–2015', from: 2010, to: 2015 },
@@ -124,6 +124,11 @@ function parseYearGroupBounds(yearLabel: string): { from: number; to: number } |
   if (beforeMatch) {
     const upperYear = Number(beforeMatch[1]) - 1;
     return { from: Number.NEGATIVE_INFINITY, to: upperYear };
+  }
+
+  const andBeforeMatch = yearLabel.match(/(\d{4})\s+(?:and|&)\s+Before/i);
+  if (andBeforeMatch) {
+    return { from: Number.NEGATIVE_INFINITY, to: Number(andBeforeMatch[1]) };
   }
 
   const openEndedMatch = yearLabel.match(/(\d{4})\s*[-–]\s*(current|present)/i);
