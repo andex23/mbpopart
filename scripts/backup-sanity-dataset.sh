@@ -18,7 +18,7 @@ OUTPUT_PATH="${1:-$BACKUP_DIR/${NEXT_PUBLIC_SANITY_DATASET}-${TIMESTAMP}.tar.gz}
 mkdir -p "$(dirname "$OUTPUT_PATH")"
 
 echo "Exporting Sanity dataset '${NEXT_PUBLIC_SANITY_DATASET}'..."
-npx sanity dataset export "$NEXT_PUBLIC_SANITY_DATASET" "$OUTPUT_PATH" --overwrite
+npx --yes sanity dataset export "$NEXT_PUBLIC_SANITY_DATASET" "$OUTPUT_PATH" --overwrite
 
 CHECKSUM="$(shasum -a 256 "$OUTPUT_PATH" | awk '{print $1}')"
 ARCHIVE_NAME="$(basename "$OUTPUT_PATH")"

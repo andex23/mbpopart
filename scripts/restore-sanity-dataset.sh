@@ -41,4 +41,4 @@ if [[ "$TARGET_DATASET" == "${NEXT_PUBLIC_SANITY_DATASET}" && "${SANITY_RESTORE_
 fi
 
 echo "Importing '$ARCHIVE_PATH' into dataset '$TARGET_DATASET'..."
-npx sanity dataset import "$ARCHIVE_PATH" "$TARGET_DATASET" "$IMPORT_MODE"
+npx --yes sanity dataset import "$ARCHIVE_PATH" "$TARGET_DATASET" "$IMPORT_MODE"
