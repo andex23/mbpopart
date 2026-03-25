@@ -23,9 +23,8 @@ export const happyClientsPage = defineType({
       name: 'photos',
       title: 'Photos',
       type: 'array',
-      description: 'Upload photos, drag to reorder, set featured to show first.',
+      description: 'Upload as many photos as needed, drag to reorder, and set featured to show first.',
       of: [defineArrayMember({ type: 'happyClientPhotoItem' })],
-      validation: (Rule) => Rule.max(1500),
     }),
   ],
   preview: {

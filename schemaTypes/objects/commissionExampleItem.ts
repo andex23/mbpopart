@@ -29,8 +29,8 @@ export const commissionExampleItem = defineType({
       name: 'images',
       title: 'Images',
       type: 'array',
+      description: 'Add as many images as needed for this commission example.',
       of: [defineArrayMember({ type: 'commissionExampleImageItem' })],
-      validation: (Rule) => Rule.max(12),
     }),
     defineField({
       name: 'order',

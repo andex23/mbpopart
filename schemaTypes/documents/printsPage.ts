@@ -43,8 +43,8 @@ export const printsPage = defineType({
       name: 'galleryImages',
       title: 'Print Gallery Images',
       type: 'array',
+      description: 'Upload as many print images as needed. Drag to reorder.',
       of: [defineArrayMember({ type: 'galleryImageItem' })],
-      validation: (Rule) => Rule.max(250),
     }),
   ],
   preview: {

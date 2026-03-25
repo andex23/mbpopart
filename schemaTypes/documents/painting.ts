@@ -99,8 +99,8 @@ export const painting = defineType({
       title: 'Additional Images (Optional)',
       type: 'array',
       group: 'images',
+      description: 'Upload as many additional images as needed for this painting.',
       of: [defineArrayMember({ type: 'galleryImageItem' })],
-      validation: (Rule) => Rule.max(20),
     }),
     defineField({
       name: 'status',

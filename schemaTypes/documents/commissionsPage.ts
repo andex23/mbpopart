@@ -64,8 +64,8 @@ export const commissionsPage = defineType({
       name: 'examples',
       title: 'Recent Commission Examples (Optional)',
       type: 'array',
+      description: 'Add as many commission examples as needed.',
       of: [defineArrayMember({ type: 'commissionExampleItem' })],
-      validation: (Rule) => Rule.max(24),
     }),
   ],
   preview: {

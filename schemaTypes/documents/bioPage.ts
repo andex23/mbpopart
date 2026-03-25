@@ -32,9 +32,8 @@ export const bioPage = defineType({
       name: 'galleryImages',
       title: 'Bio Gallery Images',
       type: 'array',
-      description: 'Add/replace/delete images. Drag to reorder.',
+      description: 'Add as many images as needed. Drag to reorder.',
       of: [defineArrayMember({ type: 'galleryImageItem' })],
-      validation: (Rule) => Rule.max(80),
     }),
   ],
   preview: {
