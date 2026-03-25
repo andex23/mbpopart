@@ -31,7 +31,7 @@ export default async function BioPage() {
   );
 
   const rightContent = bioPage.galleryItems.length > 0
-    ? <LegacyThumbGallery items={bioPage.galleryItems.slice(0, 8)} />
+    ? <LegacyThumbGallery items={bioPage.galleryItems} />
     : null;
 
   return (
