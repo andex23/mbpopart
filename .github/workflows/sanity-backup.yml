@@ -1,0 +1,49 @@
+name: Sanity Dataset Backup
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 2 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      NEXT_PUBLIC_SANITY_PROJECT_ID: jwkflhwo
+      NEXT_PUBLIC_SANITY_DATASET: production
+      SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Export Sanity dataset
+        run: bash scripts/backup-sanity-dataset.sh
+
+      - name: Show backup summary
+        run: |
+          echo "## Sanity backup" >> "$GITHUB_STEP_SUMMARY"
+          ls -lh backups/sanity >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sanity-backup-${{ env.NEXT_PUBLIC_SANITY_DATASET }}-${{ github.run_id }}
+          path: |
+            backups/sanity/*.tar.gz
+            backups/sanity/*.sha256
+            backups/sanity/*.json
+          retention-days: 90
+
