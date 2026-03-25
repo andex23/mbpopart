@@ -105,3 +105,21 @@ npx mintlify dev
 3. Add all required environment variables.
 4. Deploy.
 5. Register Studio host in Sanity (`https://your-domain/studio`) and add CORS origin (`https://your-domain`).
+
+## Sanity Backups
+
+Manual backup:
+
+```bash
+SANITY_AUTH_TOKEN=your_sanity_token npm run backup:sanity
+```
+
+Manual restore into a non-production dataset:
+
+```bash
+SANITY_AUTH_TOKEN=your_sanity_token npm run restore:sanity -- backups/sanity/production-YYYYMMDDTHHMMSSZ.tar.gz staging-restore --replace
+```
+
+Detailed backup and restore notes:
+
+- `docs/operations/sanity-backups.md`
