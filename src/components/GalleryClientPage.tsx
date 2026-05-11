@@ -248,13 +248,6 @@ export default function GalleryClientPage({ pageContent, siteSettings }: Gallery
     <>
       {activeRangeKey === null ? (
         <div className="flex flex-wrap gap-2 mb-3">
-          <RetroNavButton
-            type="button"
-            active
-            onClick={() => handleRangeChange(null)}
-          >
-            All Years
-          </RetroNavButton>
           {pageContent.yearRanges.map((range) => (
             <RetroNavButton
               type="button"
@@ -265,6 +258,13 @@ export default function GalleryClientPage({ pageContent, siteSettings }: Gallery
               {range.label}
             </RetroNavButton>
           ))}
+          <RetroNavButton
+            type="button"
+            active
+            onClick={() => handleRangeChange(null)}
+          >
+            All Years
+          </RetroNavButton>
         </div>
       ) : null}
 

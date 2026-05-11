@@ -128,14 +128,6 @@ export default function Navigation({ items, paintingMenuRanges }: NavigationProp
                     className={`site-nav-dropdown-menu ${desktopPaintingsOpen ? 'open' : ''}`}
                     role="menu"
                   >
-                    <Link
-                      href="/gallery"
-                      onClick={() => setDesktopPaintingsOpen(false)}
-                      className={`site-subnav-btn ${selectedRangeKey === null && pathname === '/gallery' ? 'active' : ''}`}
-                      role="menuitem"
-                    >
-                      All Years
-                    </Link>
                     {paintingMenuRanges.map((range) => (
                       <Link
                         key={range.key}
@@ -147,6 +139,14 @@ export default function Navigation({ items, paintingMenuRanges }: NavigationProp
                         {range.label}
                       </Link>
                     ))}
+                    <Link
+                      href="/gallery"
+                      onClick={() => setDesktopPaintingsOpen(false)}
+                      className={`site-subnav-btn ${selectedRangeKey === null && pathname === '/gallery' ? 'active' : ''}`}
+                      role="menuitem"
+                    >
+                      All Years
+                    </Link>
                   </div>
                 </div>
               ) : (
@@ -197,13 +197,6 @@ export default function Navigation({ items, paintingMenuRanges }: NavigationProp
                   </button>
                   <div className={`site-mobile-years-wrap ${mobilePaintingsOpen ? 'open' : ''}`}>
                     <div className="site-mobile-years">
-                      <Link
-                        href="/gallery"
-                        onClick={() => setMobileOpen(false)}
-                        className={`site-mobile-year ${pathname === '/gallery' && !selectedRangeKey ? 'active' : ''}`}
-                      >
-                        All Years
-                      </Link>
                       {paintingMenuRanges.map((range) => (
                         <Link
                           key={range.key}
@@ -214,6 +207,13 @@ export default function Navigation({ items, paintingMenuRanges }: NavigationProp
                           {range.label}
                         </Link>
                       ))}
+                      <Link
+                        href="/gallery"
+                        onClick={() => setMobileOpen(false)}
+                        className={`site-mobile-year ${pathname === '/gallery' && !selectedRangeKey ? 'active' : ''}`}
+                      >
+                        All Years
+                      </Link>
                     </div>
                   </div>
                 </div>

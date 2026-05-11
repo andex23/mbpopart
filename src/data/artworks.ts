@@ -53,13 +53,13 @@ const YEAR_ORDER = [
 ];
 
 export const YEAR_RANGE_FILTERS: YearRangeFilter[] = [
-  { key: 'before-1998', label: '1998 and Before', from: null, to: 1998 },
-  { key: '1999-2004', label: '1999–2004', from: 1999, to: 2004 },
-  { key: '2005-2009', label: '2005–2009', from: 2005, to: 2009 },
-  { key: '2010-2015', label: '2010–2015', from: 2010, to: 2015 },
-  { key: '2016-2020', label: '2016–2020', from: 2016, to: 2020 },
-  { key: '2021-2025', label: '2021–2025', from: 2021, to: 2025 },
   { key: '2026-current', label: '2026–Current', from: 2026, to: null },
+  { key: '2021-2025', label: '2021–2025', from: 2021, to: 2025 },
+  { key: '2016-2020', label: '2016–2020', from: 2016, to: 2020 },
+  { key: '2010-2015', label: '2010–2015', from: 2010, to: 2015 },
+  { key: '2005-2009', label: '2005–2009', from: 2005, to: 2009 },
+  { key: '1999-2004', label: '1999–2004', from: 1999, to: 2004 },
+  { key: 'before-1998', label: '1998 and Before', from: null, to: 1998 },
 ];
 
 const YEAR_RANGE_LABEL_FIELD_BY_KEY: Record<string, keyof YearRangeLabelOverrides> = {
