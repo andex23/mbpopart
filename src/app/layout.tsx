@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import SiteGate from '@/components/SiteGate';
 import { getGlobalContent, getSiteSettingsContent } from '@/lib/cms-content';
@@ -7,14 +8,15 @@ import { PREVIEW_BYPASS_COOKIE_NAME, PREVIEW_BYPASS_COOKIE_VALUE } from '@/lib/p
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettingsContent();
-  const title = settings.seo?.metaTitle || 'Michel Balasis | Pop Art — Chicago';
+  const configuredTitle = settings.seo?.metaTitle?.trim();
+  const title = configuredTitle?.replace(/\s*[\u2014-]\s*Chicago$/i, '') || 'Michel Balasis | Pop Art';
   const description = settings.seo?.metaDescription ||
-    'Original pop art paintings by Michel Balasis. Hand-painted acrylic on canvas, created in Chicago USA.';
+    'Original pop art paintings by Michel Balasis. Hand-painted acrylic on canvas.';
 
   return {
     title,
     description,
-    keywords: ['pop art', 'Chicago', 'Michel Balasis', 'paintings', 'acrylic', 'canvas', 'gallery'],
+    keywords: ['pop art', 'Michel Balasis', 'paintings', 'acrylic', 'canvas', 'gallery'],
     openGraph: {
       title,
       description,
@@ -50,6 +52,7 @@ export default async function RootLayout({
         >
           {children}
         </SiteGate>
+        <Analytics />
       </body>
     </html>
   );

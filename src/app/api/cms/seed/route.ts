@@ -509,7 +509,7 @@ async function buildSingletonSeedDocuments(client: SanityClient) {
       socialLinks: [],
       footerLinks: [],
       defaultSEO: {
-        metaTitle: 'Michel Balasis | Pop Art — Chicago',
+        metaTitle: 'Michel Balasis | Pop Art',
         metaDescription: 'Original pop art paintings by Michel Balasis.',
       },
     },

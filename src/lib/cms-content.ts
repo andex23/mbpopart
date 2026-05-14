@@ -415,7 +415,7 @@ function toFallbackSiteSettings(): SiteSettingsView {
     socialLinks: [],
     footerLinks: [],
     seo: {
-      metaTitle: 'Michel Balasis | Pop Art \u2014 Chicago',
+      metaTitle: 'Michel Balasis | Pop Art',
       metaDescription: 'Original pop art paintings by Michel Balasis.',
     },
   };
