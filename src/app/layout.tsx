@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import SiteGate from '@/components/SiteGate';
 import { getGlobalContent, getSiteSettingsContent } from '@/lib/cms-content';
@@ -52,7 +51,6 @@ export default async function RootLayout({
         >
           {children}
         </SiteGate>
-        <Analytics />
       </body>
     </html>
   );
