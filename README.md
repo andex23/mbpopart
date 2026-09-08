@@ -1,13 +1,21 @@
 # MB Pop Art
 
-Next.js + Sanity implementation of [mbpopart.com](https://www.mbpopart.com), with fixed layout templates and CMS-managed content.
+A client website for painter Michel Balasis, built to present his work and let him manage content through Sanity.
+
+[Visit the website](https://www.mbpopart.com/)
+
+## What it does
+
+- Presents paintings, available work, commissions, and client photos.
+- Keeps page layouts consistent while the artist updates content in an embedded CMS.
+- Includes content revalidation, migration tools, and Sanity backup and restore scripts.
 
 ## Stack
 
 - Next.js 15 (App Router)
 - React 19
 - TypeScript
-- Sanity Studio v3 (embedded at `/studio`)
+- Sanity Studio v4 (embedded at `/studio`)
 
 ## Key Routes
 
