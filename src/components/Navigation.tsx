@@ -8,7 +8,6 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 import type { YearRangeFilter } from '@/data/artworks';
 import { normalizeRangeFilterKey } from '@/data/artworks';
 import type { NavigationViewItem } from '@/lib/content.types';
-import { resolveLegacyImageUrl } from '@/lib/legacy-image';
 
 interface NavigationProps {
   items: NavigationViewItem[];
@@ -96,11 +95,13 @@ export default function Navigation({ items, paintingMenuRanges }: NavigationProp
       <header className="site-header">
         <div className="site-header-inner">
           <Link href="/" className="site-logo" aria-label="MB Pop Art Home">
+            {/* Keep the logo local so it never depends on the retired image host. */}
             <Image
-              src={resolveLegacyImageUrl('https://mbpopart.com/assets/mbpopart-small.png')}
+              src="/assets/mbpopart-small.png"
               alt="MB Pop Art"
-              width={280}
-              height={62}
+              width={200}
+              height={27}
+              priority
               unoptimized
             />
           </Link>
